@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration scan="true">
+<property name="LOG_PATH" value="logs"/>
+ <property name="APPDIR" value="app"/>
+   <appender name="FILEDEBUG" class="ch.qos.logback.core.rolling.RollingFileAppender">
+     <file>${LOG_PATH}/${APPDIR}/debug/log_debug.log</file>
+       <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+	     <Pattern>
+		   %d{yyyy-MM-dd HH:mm:ss} - %msg
+		 </Pattern>
+	   </encoder>
+	   <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+         <fileNamePattern>${LOG_PATH}/${APPDIR}/debug/log-debug-%d{yyyy-MM-dd}.log</fileNamePattern>
+       </rollingPolicy>
+   </appender>
+   
+   <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+     <encoder>
+       <pattern>%-5relative %-5level %logger{35} - %msg%n</pattern>
+     </encoder>
+   </appender>
+   
+   <logger name="com.example.controller" level="debug"
+		additivity="false">
+		<appender-ref ref="FILEDEBUG" />
+   </logger>
+   
+   <root>
+     <appender-ref ref="STDOUT" />
+   </root>
+</configuration>
