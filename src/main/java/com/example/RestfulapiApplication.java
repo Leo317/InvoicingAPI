@@ -8,23 +8,22 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
-import com.example.repo.SummaryRepository;
-
+import com.example.service.IClientService;
 
 @SpringBootApplication
 public class RestfulapiApplication implements CommandLineRunner{
-	
-	@Autowired
-	SummaryRepository repository;
 
+	@Autowired
+	IClientService clientServ;
+	
 	public static void main(String[] args) {
 		SpringApplication.run(RestfulapiApplication.class, args);
 	}
 
 	@Override
 	public void run(String... args) throws Exception {
-		// clear all record if existed before do the tutorial with new data 
-		repository.deleteAll();		
+		// clear all record if existed before do the tutorial with new data
+		clientServ.init();
 	}
 	
 	@Bean
