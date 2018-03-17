@@ -3,6 +3,7 @@ package com.example.model;
 import java.io.Serializable;
 import java.sql.Timestamp;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -16,9 +17,10 @@ public class Products implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private Integer proudctId;
-
-	private String proudctName;
+	private Integer productId;
+	
+	@Column(name="product_name")
+	private String productName;
 
 	private Integer price;
 
@@ -33,8 +35,8 @@ public class Products implements Serializable {
 	public Products() {
 	}
 	
-	public Products(String proudctName, Integer price, Integer quantity, boolean auction, Timestamp insertTime, Timestamp updateTime) {
-		this.proudctName = proudctName;
+	public Products(String productName, Integer price, Integer quantity, boolean auction, Timestamp insertTime, Timestamp updateTime) {
+		this.productName = productName;
 		this.price = price;
 		this.quantity = quantity;
 		this.auction = auction;
@@ -42,20 +44,20 @@ public class Products implements Serializable {
 		this.updateTime = updateTime;
 	}
 
-	public int getProudctId() {
-		return proudctId;
+	public int getProductId() {
+		return productId;
 	}
 
-	public void setProudctId(Integer proudctId) {
-		this.proudctId = proudctId;
+	public void setProductId(Integer productId) {
+		this.productId = productId;
 	}
 
-	public String getProudctName() {
-		return proudctName;
+	public String getProductName() {
+		return productName;
 	}
 
-	public void setProudctName(String proudctName) {
-		this.proudctName = proudctName;
+	public void setProductName(String productName) {
+		this.productName = productName;
 	}
 
 	public int getPrice() {

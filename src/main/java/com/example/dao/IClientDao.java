@@ -7,5 +7,6 @@ import com.example.model.Products;
 public interface IClientDao {
 	
 	public void init(Products product);
-	public List<Products> getOnSaleProudctsList();
+	public List<Products> getOnSaleProductsList();
+	public boolean getProductExist(String productName);
 }

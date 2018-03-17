@@ -8,5 +8,6 @@ public interface IClientService {
 	
 //  public void createAll(List<Mailrecords> recordsList) throws MailrecordsTransactionException;
 	public void init();
-	public List<Products> getOnSaleProudctsList();
+	public List<Products> getOnSaleProductsList();
+	public boolean getProductExist(String productName);
 }

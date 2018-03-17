@@ -2,6 +2,7 @@ package com.example.dao;
 
 import java.util.List;
 
+import org.hibernate.Query;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -21,11 +22,24 @@ public class ClientDaoImpl implements IClientDao {
 	}
 	
 	@Override
-	public List<Products> getOnSaleProudctsList() {
+	public List<Products> getOnSaleProductsList() {
 		return this.sessionFactory.getCurrentSession().createQuery(" from Products where auction=true ").list();
 	}
 
-	
+	@Override
+	public boolean getProductExist(String productName) {
+//		String hql = "select count(*) from Products p where p.productName=" + productName + " and auction=true";
+//		System.out.println(hql);
+//        Query query = this.sessionFactory.openSession().createQuery(hql);
+//        System.out.println(query);
+//        Long count =  (Long)query.uniqueResult();
+//        this.sessionFactory.openSession().close();
+        
+        Long count = (Long)this.sessionFactory.openSession().createQuery("select count(*) from Products where product_name='" + productName + "' and auction=true").uniqueResult();
+        this.sessionFactory.openSession().close();
+        System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" + count);
+        return count > 0? true: false;
+	}
 	
 	
 

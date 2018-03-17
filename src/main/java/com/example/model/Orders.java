@@ -20,7 +20,7 @@ public class Orders implements Serializable {
 	
 	private Integer orderId;
 	
-	private String proudctName;
+	private String productName;
 
 	private Integer quantity;
 
@@ -33,9 +33,9 @@ public class Orders implements Serializable {
 	public Orders() {
 	}
 
-	public Orders(Integer orderId, String proudctName, Integer quantity, Integer price, Integer total, Timestamp insertTime) {
+	public Orders(Integer orderId, String productName, Integer quantity, Integer price, Integer total, Timestamp insertTime) {
 		this.orderId = orderId;
-		this.proudctName = proudctName;
+		this.productName = productName;
 		this.quantity = quantity;
 		this.price = price;
 		this.total = total;
@@ -58,12 +58,12 @@ public class Orders implements Serializable {
 		this.orderId = orderId;
 	}
 
-	public String getProudctName() {
-		return proudctName;
+	public String getProductName() {
+		return productName;
 	}
 
-	public void setProudctName(String proudctName) {
-		this.proudctName = proudctName;
+	public void setProductName(String productName) {
+		this.productName = productName;
 	}
 
 	public Integer getQuantity() {

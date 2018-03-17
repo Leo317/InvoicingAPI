@@ -10,7 +10,6 @@ import org.springframework.transaction.annotation.Transactional;
 import com.example.dao.IClientDao;
 import com.example.model.Products;
 
-@Transactional
 @Service("clientService")
 public class ClientServiceImpl implements IClientService {
   
@@ -18,19 +17,25 @@ public class ClientServiceImpl implements IClientService {
 	private IClientDao clientDao;
 	
 	@Override
+	@Transactional
 	public void init() {
 		// TODO Auto-generated method stub
-		clientDao.init(new Products("ºÚËÉÉ³Ê¿", 25, 24, true, new Timestamp(System.currentTimeMillis()), new Timestamp(System.currentTimeMillis())));
-		clientDao.init(new Products("´óûœ¾G", 70, 5, false, new Timestamp(System.currentTimeMillis()), new Timestamp(System.currentTimeMillis())));
-		clientDao.init(new Products("ûœÏãÄÌ²è", 10, 10, true, new Timestamp(System.currentTimeMillis()), new Timestamp(System.currentTimeMillis())));
+		clientDao.init(new Products("aaa", 25, 24, true, new Timestamp(System.currentTimeMillis()), new Timestamp(System.currentTimeMillis())));
+		clientDao.init(new Products("bbb", 70, 5, false, new Timestamp(System.currentTimeMillis()), new Timestamp(System.currentTimeMillis())));
+		clientDao.init(new Products("ccc", 10, 10, true, new Timestamp(System.currentTimeMillis()), new Timestamp(System.currentTimeMillis())));
 	}
 	
 	@Override
-	public List<Products> getOnSaleProudctsList() {
-		System.out.println("ClientServiceImpl getOnSaleProudctsList");
-		return clientDao.getOnSaleProudctsList();
+	@Transactional
+	public List<Products> getOnSaleProductsList() {
+		System.out.println("ClientServiceImpl getOnSaleProductsList");
+		return clientDao.getOnSaleProductsList();
 	}
 	
+	@Override
+	public boolean getProductExist(String productName) {
+		return clientDao.getProductExist(productName);
+	}
 	
 //	@Autowired
 //	  private MailrecordsDaoImpl mailRecordsDao;

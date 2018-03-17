@@ -2,6 +2,7 @@ package com.example.controller;
 
 import java.util.List;
 
+import org.json.JSONArray;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,22 +19,29 @@ import com.example.page.Status;
 import com.example.service.IClientService;
 
 @RestController
+@RequestMapping("/client")
 public class ClientController {
 	@Autowired
 	IClientService clientServ;
 	
 	private static final Logger logger = LoggerFactory.getLogger(ClientController.class);
 
-	@RequestMapping(value = "/getOnSaleProudctsList", method = RequestMethod.GET, produces = {"application/json"})
+	@RequestMapping(value = "/getOnSaleProductsList", method = RequestMethod.GET, produces = {"application/json"})
 	public List<Products> findOnSaleProducts() {
-		logger.info("Controller getOnSaleProudctsList");
-		return clientServ.getOnSaleProudctsList();
+		logger.info("Controller getOnSaleProductsList");
+		return clientServ.getOnSaleProductsList();
 	}
 	
-	@PostMapping(value = "/orderProudcts")
-	public Response orderProudcts(@RequestBody Products products) {
-		
-		
+	//@PostMapping(value = "/orderProducts")
+	@RequestMapping(value = "/orderProducts", method = RequestMethod.POST, produces = {"application/json"})
+	public Response orderProudcts(@RequestBody Products[] products) {
+		for (int i = 0; i < products.length; i++) {
+			System.out.println("i == " + i);
+			if(!clientServ.getProductExist(products[i].getProductName()))
+				return new AjaxResponse(Status.STATUS400, "Product name : " + products[i].getProductName() + " is not exist or not on sale!!!", null);
+			else
+				System.out.println(products[i].getProductName());
+		}
 		
 		return new AjaxResponse(Status.SUCCESS, "", null);
 	}
