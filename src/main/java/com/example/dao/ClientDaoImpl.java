@@ -1,6 +1,5 @@
 package com.example.dao;
 
-import java.sql.Timestamp;
 import java.util.List;
 
 import org.hibernate.SessionFactory;
