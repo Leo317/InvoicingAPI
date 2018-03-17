@@ -2,9 +2,8 @@ package com.example.controller;
 
 import java.util.List;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -24,9 +23,8 @@ import com.example.view.TestDTO;
 @RestController
 public class MailController {
 	@Autowired
-	MailServiceImpl mailSender;
+	MailServiceImpl mailSender;	
 	
-	private static final Logger logger = LoggerFactory.getLogger(MailController.class);
 	private static final int MAX_EMAIL_SUPPORT = 3;
 	
 	@RequestMapping(name = "/totalEmail", method = RequestMethod.POST, produces = {"application/json"}, consumes="application/json")
@@ -59,7 +57,7 @@ public class MailController {
 		int num2 = Integer.parseInt(id2);
 		int total = num1 + num2;
 
-		mailSender.sendAndSaveMail(num1, num2, total, testDTOList, logger);
+		mailSender.sendAndSaveMail(num1, num2, total, testDTOList);
 		
 		return new AjaxResponse(Status.SUCCESS, "", null); 	
 	}
@@ -69,7 +67,7 @@ public class MailController {
 	
 	@RequestMapping(value = "/searchEmailRecords", method = RequestMethod.GET, produces = {"application/json"})
 	public List<Mailrecords> search(@RequestParam(value="keyword", defaultValue="") String keyword) {
-      if("".equals(keyword)) {
+      if(StringUtils.isEmpty(keyword)) {
         return keywordFinderService.findAll();
       }
 

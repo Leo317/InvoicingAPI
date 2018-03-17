@@ -8,31 +8,32 @@ import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 
 import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.mail.MailParseException;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.example.dao.MailrecordsDaoImpl;
+import com.example.dao.IMailrecordsDao;
 import com.example.exception.MailrecordsTransactionException;
 import com.example.model.Mailrecords;
 
 @Service("mailService")
 public class MailServiceImpl implements IMailService{
   @Autowired
-  private MailrecordsDaoImpl mailRecordsDao;
+  private IMailrecordsDao iMailRecordsDao;
   
-  public static final String FROM = "thirdwork00@gmail.com";
+  @Autowired
+  private JavaMailSender javaMailSender;
   
-  JavaMailSender javaMailSender;
-  
+  private static final Logger logger = LoggerFactory.getLogger(MailServiceImpl.class);
+
+  @Override
   @Transactional
   public void sendAndSaveMail(int num1, int num2, int total, 
-    List<String> emails, Logger logger) {
+    List<String> emails) {
 
 	List<Mailrecords> recordList = new ArrayList<Mailrecords>();
 	for(String email : emails) {    
@@ -43,10 +44,7 @@ public class MailServiceImpl implements IMailService{
 	  subject = num1 + " + " + num2 + " = " + total;
 	  body = subject;
       
-  	  @SuppressWarnings("resource")
-	  ApplicationContext context = new ClassPathXmlApplicationContext("AppContext-*.xml");
-	  MailServiceImpl ms = (MailServiceImpl) context.getBean("mailSend");
-	  ms.sendMail(FROM, email, subject, body);
+	  this.sendMail(email, subject, body);
       
 	  logger.debug(body + "\n"); 
  
@@ -68,21 +66,12 @@ public class MailServiceImpl implements IMailService{
 	}
   }
   
-  public void setMailSender(JavaMailSender mailSender) {
-    javaMailSender = mailSender;
-  }
-  
-  public JavaMailSender getMailSender() {
-    return javaMailSender;
-  }
-  
-  public void sendMail(String from, String to, String subject, String msg) {
+  public void sendMail(String to, String subject, String msg) {
 	MimeMessage message = javaMailSender.createMimeMessage();
 
 	try {
 	  MimeMessageHelper helper = new MimeMessageHelper(message, true);
 
-	  helper.setFrom(from);
 	  helper.setTo(to);
 	  helper.setSubject(subject);
 	  helper.setText(msg);
@@ -92,12 +81,11 @@ public class MailServiceImpl implements IMailService{
 
 	javaMailSender.send(message);
   }
-
-  @Override
+  
   @Transactional
-  public void createAll(List<Mailrecords> recordsList) throws MailrecordsTransactionException {
+  private void createAll(List<Mailrecords> recordsList) throws MailrecordsTransactionException {
     for(Mailrecords rec : recordsList) {
-    	mailRecordsDao.create(rec);	
+      iMailRecordsDao.save(rec);	
     }
   }
 }

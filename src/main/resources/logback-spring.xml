@@ -25,6 +25,11 @@
 		<appender-ref ref="FILEDEBUG" />
    </logger>
    
+   <logger name="com.example.service" level="debug"
+		additivity="false">
+		<appender-ref ref="FILEDEBUG" />
+   </logger>   
+   
    <root>
      <appender-ref ref="STDOUT" />
    </root>
