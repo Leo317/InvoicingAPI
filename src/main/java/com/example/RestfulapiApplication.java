@@ -7,6 +7,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.orm.hibernate5.HibernateTransactionManager;
 
 import com.example.service.IClientService;
 
@@ -30,4 +31,12 @@ public class RestfulapiApplication implements CommandLineRunner{
 	public SessionFactory sessionFactory(HibernateEntityManagerFactory hemf){    
 	    return hemf.getSessionFactory();    
 	}
+	
+	@Autowired
+    @Bean(name = "transactionManager")
+    public HibernateTransactionManager getTransactionManager(SessionFactory sessionFactory) {
+        HibernateTransactionManager transactionManager = new HibernateTransactionManager(sessionFactory);
+ 
+        return transactionManager;
+    }
 }

@@ -19,6 +19,5 @@ public interface IClientDao {
 	public void orderProducts(Orders order);
 	public Products getProductInfo(String productName);
 	public void updateProductQuantity(Products product);
-				
 	
 }
