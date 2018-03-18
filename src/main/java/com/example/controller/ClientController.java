@@ -32,17 +32,33 @@ public class ClientController {
 		return clientServ.getOnSaleProductsList();
 	}
 	
-	//@PostMapping(value = "/orderProducts")
 	@RequestMapping(value = "/orderProducts", method = RequestMethod.POST, produces = {"application/json"})
 	public Response orderProudcts(@RequestBody Products[] products) {
-		for (int i = 0; i < products.length; i++) {
-			System.out.println("i == " + i);
-			if(!clientServ.getProductExist(products[i].getProductName()))
-				return new AjaxResponse(Status.STATUS400, "Product name : " + products[i].getProductName() + " is not exist or not on sale!!!", null);
-			else
-				System.out.println(products[i].getProductName());
-		}
 		
+		int orderId = clientServ.getOrderId();
+		System.out.println(orderId + "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~``");
+		System.out.println();
+		System.out.println();
+		System.out.println();
+		System.out.println();
+		System.out.println();
+		int price = 0, storeQuantity = 0;
+		
+		for (int i = 0; i < products.length; i++) {
+			if(clientServ.getProductExist(products[i].getProductName())) {
+				storeQuantity = clientServ.getProductQuantity(products[i].getProductName());
+				if (storeQuantity > products[i].getQuantity()) {				
+					price = clientServ.getProductPrice(products[i].getProductName());
+					clientServ.orderProduct(orderId + 1, products[i].getProductName(), products[i].getQuantity(), price, storeQuantity - products[i].getQuantity());
+				} else {
+					return new AjaxResponse(Status.STATUS400, "Product name : " + products[i].getProductName()
+							+ " is not enough!!!", null);
+				}
+			} else {
+				return new AjaxResponse(Status.STATUS400, "Product name : " + products[i].getProductName()
+						+ " is not exist or not on sale!!!", null);
+			}
+		}
 		return new AjaxResponse(Status.SUCCESS, "", null);
 	}
 	
