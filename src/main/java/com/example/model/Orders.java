@@ -3,6 +3,7 @@ package com.example.model;
 import java.io.Serializable;
 import java.sql.Timestamp;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -18,6 +19,7 @@ public class Orders implements Serializable {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Integer id;
 	
+	@Column(name="order_id")
 	private Integer orderId;
 	
 	private String productName;
