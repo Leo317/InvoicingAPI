@@ -15,13 +15,22 @@ import com.example.page.AjaxResponse;
 import com.example.page.Response;
 import com.example.page.Status;
 import com.example.service.ProductFinder;
+import com.example.service.PurchaseHelper;
 
 @RestController
 public class StoreController {
+  @Autowired
+  PurchaseHelper purchaseHelper;
   @RequestMapping(value = "/purchase", method = RequestMethod.POST, produces = {"application/json"})
   public Response purchase(@RequestBody Products[] products) {
+    for(Products product : products) {
+      if(purchaseHelper.productExisted(product)) {
+        purchaseHelper.updateProduct(product);
+      } else {
+    	purchaseHelper.insertProduct(product);  
+      }
+    }
     
-			
 	return new AjaxResponse(Status.SUCCESS, "", null);
   }
   
