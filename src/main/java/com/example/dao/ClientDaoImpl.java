@@ -18,33 +18,33 @@ public class ClientDaoImpl implements IClientDao {
 
 	@Override
 	public void initProduct(Products product) {
-		// TODO Auto-generated method stub
 		this.sessionFactory.getCurrentSession().save(product);
 	}
 	
 	@Override
 	public void initOrder(Orders order) {
-		// TODO Auto-generated method stub
 		this.sessionFactory.getCurrentSession().save(order);
 	}
 	
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<Products> getOnSaleProductsList() {
-		return this.sessionFactory.getCurrentSession().createQuery(" from Products where auction=true ASC ").list();
+		return this.sessionFactory.getCurrentSession().createQuery(" from Products where auction=true order by insert_time ASC ").list();
 	}
 
 	@Override
 	public boolean getProductExist(String productName) {
-        Long count = (Long)this.sessionFactory.openSession().createQuery("select count(*) from Products where product_name='" + productName + "' and auction=true").uniqueResult();
+        Long count = (Long)this.sessionFactory.openSession().createQuery
+        		("select count(*) from Products where product_name='" + productName + "' and auction=true")
+        		.uniqueResult();
         this.sessionFactory.openSession().close();
-        System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" + count);
         return count > 0? true: false;
 	}
 	
 	@Override
 	public int getProductQuantity(String productName) {
-        Query query = this.sessionFactory.openSession().createQuery("select MAX(quantity) from Products where product_name='" + productName + "' and auction=true");
+        Query query = this.sessionFactory.openSession().createQuery
+        		("select MAX(quantity) from Products where product_name='" + productName + "' and auction=true");
         this.sessionFactory.openSession().close();
         return (int)query.list().get(0);
 	}
