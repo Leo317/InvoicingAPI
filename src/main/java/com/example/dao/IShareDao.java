@@ -6,6 +6,6 @@ import com.example.model.Orders;
 
 public interface IShareDao {
 	
-	public int getOrderId();
 	public List<Orders> findAll();
+	public List<Orders> findOne(int id);
 }

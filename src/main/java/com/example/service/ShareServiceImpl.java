@@ -61,4 +61,24 @@ public class ShareServiceImpl implements IShareService {
 		return result;
 	}
 
+	@Override
+	@Transactional
+	public OrdersDTO findOne(int id) {
+		List<Orders> ordersList = shareDao.findOne(id);
+		String tempStr = "";
+		OrdersDTO result = new OrdersDTO();
+		
+		result.setOrderId(id);
+		
+		for (int i = 0; i < ordersList.size(); i++) {
+			tempStr += "Ó†ÙÆ·í—Ãû·Q : " + ordersList.get(i).getProductName()
+					+ ", †Îí—ƒråX : " + ordersList.get(i).getPrice()
+					+ ", Ó†Ù”µÁ¿ : " + ordersList.get(i).getQuantity()
+					+ ", ¿‚Ó‹ : " + ordersList.get(i).getPrice() * ordersList.get(i).getQuantity()
+					+ "\n";
+		}
+		result.setOrderContent(tempStr);
+		return result;
+	}
+
 }

@@ -38,7 +38,7 @@ public class ClientController {
 				return new AjaxResponse(Status.STATUS400, "Product name : " + products[i].getProductName()
 						+ " is not exist or not on sale!!!", null);
 			} else {
-				if (products[i].getQuantity() > clientServ.getProductQuantity(products[i].getProductName()))
+				if (products[i].getQuantity() - clientServ.getProductQuantity(products[i].getProductName()) > 0)
 					return new AjaxResponse(Status.STATUS400, "Product name : " + products[i].getProductName()
 							+ " is not enough!!!", null);
 			}
