@@ -24,7 +24,7 @@ public class StoreController {
   @RequestMapping(value = "/purchase", method = RequestMethod.POST, produces = {"application/json"})
   public Response purchase(@RequestBody Products[] products) {
     for(Products product : products) {
-      if(purchaseHelper.productExisted(product)) {
+      if(purchaseHelper.productExisted(product.getProductId())) {
         purchaseHelper.updateProduct(product);
       } else {
     	purchaseHelper.insertProduct(product);  

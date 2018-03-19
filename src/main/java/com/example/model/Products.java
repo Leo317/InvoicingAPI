@@ -13,13 +13,19 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "Products")
 public class Products implements Serializable {
-	private static final long serialVersionUID = 1L;
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 3210658754758541483L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
+	private Integer id;
+	
+	@Column(name="product_id")
 	private Integer productId;
 	
-	@Column(name="product_name")
 	private String productName;
 
 	private Integer price;
@@ -34,17 +40,16 @@ public class Products implements Serializable {
 	
 	public Products() {
 	}
-	
-	public Products(String productName, Integer price, Integer quantity, boolean auction, Timestamp insertTime, Timestamp updateTime) {
-		this.productName = productName;
-		this.price = price;
-		this.quantity = quantity;
-		this.auction = auction;
-		this.insertTime = insertTime;
-		this.updateTime = updateTime;
+
+	public Integer getId() {
+		return id;
 	}
 
-	public int getProductId() {
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
+	public Integer getProductId() {
 		return productId;
 	}
 
@@ -60,7 +65,7 @@ public class Products implements Serializable {
 		this.productName = productName;
 	}
 
-	public int getPrice() {
+	public Integer getPrice() {
 		return price;
 	}
 
@@ -68,7 +73,7 @@ public class Products implements Serializable {
 		this.price = price;
 	}
 
-	public int getQuantity() {
+	public Integer getQuantity() {
 		return quantity;
 	}
 
@@ -100,8 +105,5 @@ public class Products implements Serializable {
 		this.updateTime = updateTime;
 	}
 
-	public static long getSerialversionuid() {
-		return serialVersionUID;
-	}
 
 }

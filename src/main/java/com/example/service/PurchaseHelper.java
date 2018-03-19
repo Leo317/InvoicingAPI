@@ -1,5 +1,8 @@
 package com.example.service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -13,27 +16,22 @@ public class PurchaseHelper {
   @Autowired
   private IStoreDao iStoreDao;
   
-  public boolean productExisted(Products prod) {
-	int productId = prod.getProductId();
-	if(productId == 0) {
-	  return false;
-	} else {
-	  if(iStoreDao.exists(String.valueOf(productId))) {
-	    return true;  
-	  } else {
-		return false;
-	  }
-	}
+  public boolean productExisted(int productId) {
+	List<Products> prodList = new ArrayList<Products>();
+	prodList = iStoreDao.productExisted(productId);
+    if((prodList != null) && (!prodList.isEmpty())) {
+      return true;	
+    } else {
+      return false;	
+    }
   }
   
   public void insertProduct(Products prod) {
-	iStoreDao.insertProducts(prod.getProductName(), 
-	  prod.getPrice(), prod.getQuantity(), prod.isAuction(), 
-	  prod.getInsertTime(), prod.getUpdateTime());  
+	iStoreDao.save(prod);
   }
   
   public void updateProduct(Products prod) {
-	iStoreDao.updateProducts(prod.getProductName(), 
+	iStoreDao.updateProducts(prod.getProductId(), prod.getProductName(), 
 	  prod.getQuantity(), prod.isAuction());  
   }
 }

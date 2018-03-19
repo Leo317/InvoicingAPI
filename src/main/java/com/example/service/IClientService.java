@@ -6,7 +6,6 @@ import com.example.model.Products;
 
 public interface IClientService {
 	
-	public void init();
 	public List<Products> getOnSaleProductsList();
 	public boolean getProductExist(String productName);
 	public int getProductQuantity(String productName);

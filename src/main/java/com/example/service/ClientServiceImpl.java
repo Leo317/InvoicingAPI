@@ -20,17 +20,6 @@ public class ClientServiceImpl implements IClientService {
 	
 	@Override
 	@Transactional
-	public void init() {
-		// TODO Auto-generated method stub
-		clientDao.initProduct(new Products("aaa", 25, 24, true, new Timestamp(System.currentTimeMillis()), new Timestamp(System.currentTimeMillis())));
-		clientDao.initProduct(new Products("bbb", 70, 5, false, new Timestamp(System.currentTimeMillis()), new Timestamp(System.currentTimeMillis())));
-		clientDao.initProduct(new Products("ccc", 10, 10, true, new Timestamp(System.currentTimeMillis()), new Timestamp(System.currentTimeMillis())));
-		
-		clientDao.initOrder(new Orders(1, "aaa", 3, 25, 75, new Timestamp(System.currentTimeMillis())));
-	}
-	
-	@Override
-	@Transactional
 	public List<Products> getOnSaleProductsList() {
 		return clientDao.getOnSaleProductsList();
 	}

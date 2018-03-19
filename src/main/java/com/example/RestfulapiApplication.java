@@ -23,8 +23,6 @@ public class RestfulapiApplication implements CommandLineRunner{
 
 	@Override
 	public void run(String... args) throws Exception {
-		// clear all record if existed before do the tutorial with new data
-		clientServ.init();
 	}
 	
 	@Bean
