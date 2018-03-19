@@ -10,8 +10,10 @@ import com.example.model.Products;
 
 @Repository
 public interface IStoreDao extends CrudRepository<Products, String> {
-  @Query(value = "select * from products", nativeQuery = true)
+  @Query(value = "select * from products p", nativeQuery = true)
   public List<Products> findAll();
-  @Query(value = "select * from products where products.productName like %?1% order by products.insertTime desc", nativeQuery = true)
-  public List<Products> findByKeyword(String keyword);
+  @Query(value = "select * from products p where p.productName like %?1% "
+  		+ "and p.auction = ?2 order by products.insertTime desc", 
+  		nativeQuery = true)
+  public List<Products> findByCond(String keyword, boolean auction);
 }

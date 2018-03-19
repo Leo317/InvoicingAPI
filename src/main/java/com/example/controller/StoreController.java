@@ -28,10 +28,11 @@ public class StoreController {
   @Autowired
   ProductFinder productFinder;
   @RequestMapping(value = "/list", method = RequestMethod.GET, produces = {"application/json"})
-  public List<Products> list(@RequestParam(value="keyword", defaultValue="") String keyword) {
+  public List<Products> list(@RequestParam(value="keyword", defaultValue="") String keyword,
+		  					 @RequestParam(value="auction", defaultValue="false") boolean auction) {
     if(StringUtils.isEmpty(keyword)) {
       productFinder.findAll();
     }
-	return productFinder.findByKeyword(keyword);
+	return productFinder.findByCond(keyword, auction);
   }
 }

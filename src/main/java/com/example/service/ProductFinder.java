@@ -19,7 +19,7 @@ public class ProductFinder {
 	return iStoreDao.findAll();
   }
 
-  public List<Products> findByKeyword(String keyword) {
-	return iStoreDao.findByKeyword(keyword);
+  public List<Products> findByCond(String keyword, boolean auction) {
+	return iStoreDao.findByCond(keyword, auction);
   }
 }
