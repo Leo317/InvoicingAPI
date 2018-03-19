@@ -12,7 +12,9 @@ import com.example.model.Products;
 import com.example.page.AjaxResponse;
 import com.example.page.Response;
 import com.example.page.Status;
+import com.example.service.CommonTools;
 import com.example.service.IClientService;
+import com.example.view.ProductsDTO;
 
 @RestController
 @RequestMapping("/client")
@@ -28,17 +30,30 @@ public class ClientController {
 	}
 	
 	@RequestMapping(value = "/orderProducts", method = RequestMethod.POST, produces = {"application/json"})
-	public Response orderProudcts(@RequestBody Products[] products) {
+	public Response orderProudcts(@RequestBody ProductsDTO[] productsDTO) {
 		
-		for (int i = 0; i < products.length; i++) {
-			if(!clientServ.getProductExist(products[i].getProductName())) {
-				return new AjaxResponse(Status.STATUS400, "Product name : " + products[i].getProductName()
+		for (int i = 0; i < productsDTO.length; i++) {
+			if(!clientServ.getProductExist(productsDTO[i].getProductName())) {
+				return new AjaxResponse(Status.STATUS400, "Product name : " + productsDTO[i].getProductName()
 						+ " is not exist or not on sale!!!", null);
 			} else {
-				if (products[i].getQuantity() - clientServ.getProductQuantity(products[i].getProductName()) > 0)
-					return new AjaxResponse(Status.STATUS400, "Product name : " + products[i].getProductName()
-							+ " is not enough!!!", null);
+				if (productsDTO[i].getQuantity().indexOf('.') > 0 || CommonTools.isInteger(productsDTO[i].getQuantity()) == false)
+					return new AjaxResponse(Status.STATUS400, "Proudct name : " + productsDTO[i].getProductName() + ", its quantity : " + productsDTO[i].getQuantity() + " is not an integer!!!", null);
+				else {
+					if (Integer.parseInt(productsDTO[i].getQuantity()) - clientServ.getProductQuantity(productsDTO[i].getProductName()) > 0)
+						return new AjaxResponse(Status.STATUS400, "Product name : " + productsDTO[i].getProductName()
+								+ " is not enough!!!", null);
+				}
 			}
+		}
+		
+		Products[] products = new Products[productsDTO.length];
+		for (int i = 0; i < productsDTO.length; i++) {
+			Products temp = new Products();
+			temp.setProductName(productsDTO[i].getProductName());
+			temp.setQuantity(Integer.parseInt(productsDTO[i].getQuantity()));
+			
+			products[i] = temp;
 		}
 		
 		int orderId = clientServ.getOrderId();
