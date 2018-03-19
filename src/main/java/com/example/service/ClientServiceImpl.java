@@ -11,7 +11,6 @@ import org.springframework.transaction.annotation.Transactional;
 import com.example.dao.IClientDao;
 import com.example.model.Orders;
 import com.example.model.Products;
-import com.example.view.OrdersDTO;
 
 @Service("clientService")
 public class ClientServiceImpl implements IClientService {
@@ -62,8 +61,8 @@ public class ClientServiceImpl implements IClientService {
 		boolean exist = false;
 		int resultIndex = 0;
 		ArrayList<Products> result = new ArrayList<Products>();
-		
-		for (int i = 0; i < products.length - 1; i++) {
+
+		for (int i = 0; i < products.length; i++) {
 			for (int j = 0; j < result.size(); j++) {
 				if (products[i].getProductName().equals((result.get(j)).getProductName())) {
 					resultIndex = j;
@@ -74,32 +73,30 @@ public class ClientServiceImpl implements IClientService {
 				}
 			}
 			if (exist) {
-				result.get(i).setQuantity(products[i].getQuantity() + result.get(resultIndex).getQuantity());
+				result.get(resultIndex).setQuantity(products[i].getQuantity() + result.get(resultIndex).getQuantity());
 			} else {
 				result.add(products[i]);
 			}
 		}
-		
-		
-		
-//		for (int i = 0; i < products.length; i++) {
-//			Products product = new Products();
-//			product = clientDao.getProductInfo(products[i].getProductName());
-//			
-//			Orders orderProduct = new Orders();
-//			orderProduct.setOrderId(orderId);
-//			
-//			orderProduct.setProductName(products[i].getProductName());
-//			orderProduct.setQuantity(products[i].getQuantity());
-//			orderProduct.setPrice(product.getPrice());
-//			orderProduct.setTotal(products[i].getQuantity() * product.getPrice());
-//			orderProduct.setInsertTime(new Timestamp(System.currentTimeMillis()));
-//			
-//			clientDao.orderProducts(orderProduct);
-//			
-//			product.setQuantity(product.getQuantity() - products[i].getQuantity());
-//			clientDao.updateProductQuantity(product);
-//		}
+
+		for (int i = 0; i < result.size(); i++) {
+			Products product = new Products();
+			product = clientDao.getProductInfo(result.get(i).getProductName());
+			
+			Orders orderProduct = new Orders();
+			orderProduct.setOrderId(orderId);
+			
+			orderProduct.setProductName(result.get(i).getProductName());
+			orderProduct.setQuantity(result.get(i).getQuantity());
+			orderProduct.setPrice(product.getPrice());
+			orderProduct.setTotal(result.get(i).getQuantity() * product.getPrice());
+			orderProduct.setInsertTime(new Timestamp(System.currentTimeMillis()));
+			
+			clientDao.orderProducts(orderProduct);
+			
+			product.setQuantity(product.getQuantity() - result.get(i).getQuantity());
+			clientDao.updateProductQuantity(product);
+		}
 	}
 	
 }
