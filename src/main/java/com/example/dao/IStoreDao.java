@@ -18,6 +18,7 @@ public interface IStoreDao extends CrudRepository<Products, String> {
   		+ "and p.auction = ?2 order by p.insert_time desc", 
   		nativeQuery = true)
   public List<Products> findByCond(String keyword, boolean auction);
+  @Modifying
   @Query(value = "insert into products (product_name, price, quantity, auction, "
   		+ "insert_time, update_time) VALUES (?1, ?2, ?3, ?4, ?5, ?6)", 
   		nativeQuery = true)
