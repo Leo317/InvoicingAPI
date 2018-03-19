@@ -38,10 +38,13 @@ public class StoreController {
   ProductFinder productFinder;
   @RequestMapping(value = "/list", method = RequestMethod.GET, produces = {"application/json"})
   public List<Products> list(@RequestParam(value="keyword", defaultValue="") String keyword,
-		  					 @RequestParam(value="auction", defaultValue="false") boolean auction) {
-    if(StringUtils.isEmpty(keyword)) {
+		  					 @RequestParam(value="auction", defaultValue="") String auctionStr) {
+    if(StringUtils.isEmpty(keyword) && 
+       StringUtils.isEmpty(auctionStr)) {
       return productFinder.findAll();
+    } else {
+      boolean auction = Boolean.parseBoolean(auctionStr);
+      return productFinder.findByCond(keyword, auction);    	
     }
-	return productFinder.findByCond(keyword, auction);
   }
 }
