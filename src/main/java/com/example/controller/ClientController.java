@@ -25,15 +25,17 @@ public class ClientController {
 	private static final Logger logger = LoggerFactory.getLogger(ClientController.class);
 
 	@RequestMapping(value = "/getOnSaleProductsList", method = RequestMethod.GET, produces = {"application/json"})
-	public List<Products> findOnSaleProducts() {
-		logger.info("Controller getOnSaleProductsList");
-		return clientServ.getOnSaleProductsList();
+	public Response findOnSaleProducts() {
+		return new AjaxResponse(Status.SUCCESS, "", clientServ.getOnSaleProductsList());
 	}
 	
 	@RequestMapping(value = "/orderProducts", method = RequestMethod.POST, produces = {"application/json"})
 	public Response orderProudcts(@RequestBody Products[] products) {
 		
 		for (int i = 0; i < products.length; i++) {
+			System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~");
+			System.out.println(products[i].getQuantity());
+			System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~");
 			if(!clientServ.getProductExist(products[i].getProductName())) {
 				return new AjaxResponse(Status.STATUS400, "Product name : " + products[i].getProductName()
 						+ " is not exist or not on sale!!!", null);
