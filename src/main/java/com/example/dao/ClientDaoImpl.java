@@ -31,7 +31,7 @@ public class ClientDaoImpl implements IClientDao {
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<Products> getOnSaleProductsList() {
-		return this.sessionFactory.getCurrentSession().createQuery(" from Products where auction=true ").list();
+		return this.sessionFactory.getCurrentSession().createQuery(" from Products where auction=true ASC ").list();
 	}
 
 	@Override
