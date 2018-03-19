@@ -1,7 +1,5 @@
 package com.example.controller;
 
-import java.util.List;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,9 +31,6 @@ public class ClientController {
 	public Response orderProudcts(@RequestBody Products[] products) {
 		
 		for (int i = 0; i < products.length; i++) {
-			System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~");
-			System.out.println(products[i].getQuantity());
-			System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~");
 			if(!clientServ.getProductExist(products[i].getProductName())) {
 				return new AjaxResponse(Status.STATUS400, "Product name : " + products[i].getProductName()
 						+ " is not exist or not on sale!!!", null);
