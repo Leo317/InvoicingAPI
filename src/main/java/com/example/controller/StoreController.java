@@ -20,7 +20,7 @@ import com.example.service.ProductFinder;
 public class StoreController {
   @RequestMapping(value = "/purchase", method = RequestMethod.POST, produces = {"application/json"})
   public Response purchase(@RequestBody Products[] products) {
-
+    
 			
 	return new AjaxResponse(Status.SUCCESS, "", null);
   }
