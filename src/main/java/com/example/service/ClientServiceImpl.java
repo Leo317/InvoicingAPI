@@ -1,6 +1,7 @@
 package com.example.service;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.example.dao.IClientDao;
 import com.example.model.Orders;
 import com.example.model.Products;
+import com.example.view.OrdersDTO;
 
 @Service("clientService")
 public class ClientServiceImpl implements IClientService {
@@ -31,7 +33,6 @@ public class ClientServiceImpl implements IClientService {
 	@Override
 	@Transactional
 	public List<Products> getOnSaleProductsList() {
-		System.out.println("ClientServiceImpl getOnSaleProductsList");
 		return clientDao.getOnSaleProductsList();
 	}
 	
@@ -58,25 +59,47 @@ public class ClientServiceImpl implements IClientService {
 	@Override
 	@Transactional
 	public void orderProduct(int orderId, Products[] products) {
+		boolean exist = false;
+		int resultIndex = 0;
+		ArrayList<Products> result = new ArrayList<Products>();
 		
-		for (int i = 0; i < products.length; i++) {
-			Products product = new Products();
-			product = clientDao.getProductInfo(products[i].getProductName());
-			
-			Orders orderProduct = new Orders();
-			orderProduct.setOrderId(orderId);
-			
-			orderProduct.setProductName(products[i].getProductName());
-			orderProduct.setQuantity(products[i].getQuantity());
-			orderProduct.setPrice(product.getPrice());
-			orderProduct.setTotal(products[i].getQuantity() * product.getPrice());
-			orderProduct.setInsertTime(new Timestamp(System.currentTimeMillis()));
-			
-			clientDao.orderProducts(orderProduct);
-			
-			product.setQuantity(product.getQuantity() - products[i].getQuantity());
-			clientDao.updateProductQuantity(product);
+		for (int i = 0; i < products.length - 1; i++) {
+			for (int j = 0; j < result.size(); j++) {
+				if (products[i].getProductName().equals((result.get(j)).getProductName())) {
+					resultIndex = j;
+					exist = true;
+					break;
+				} else {
+					exist = false;
+				}
+			}
+			if (exist) {
+				result.get(i).setQuantity(products[i].getQuantity() + result.get(resultIndex).getQuantity());
+			} else {
+				result.add(products[i]);
+			}
 		}
+		
+		
+		
+//		for (int i = 0; i < products.length; i++) {
+//			Products product = new Products();
+//			product = clientDao.getProductInfo(products[i].getProductName());
+//			
+//			Orders orderProduct = new Orders();
+//			orderProduct.setOrderId(orderId);
+//			
+//			orderProduct.setProductName(products[i].getProductName());
+//			orderProduct.setQuantity(products[i].getQuantity());
+//			orderProduct.setPrice(product.getPrice());
+//			orderProduct.setTotal(products[i].getQuantity() * product.getPrice());
+//			orderProduct.setInsertTime(new Timestamp(System.currentTimeMillis()));
+//			
+//			clientDao.orderProducts(orderProduct);
+//			
+//			product.setQuantity(product.getQuantity() - products[i].getQuantity());
+//			clientDao.updateProductQuantity(product);
+//		}
 	}
 	
 }
