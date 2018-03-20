@@ -20,12 +20,17 @@
      </encoder>
    </appender>
    
-   <logger name="com.example.controller" level="debug"
+   <logger name="com.example" level="error"
 		additivity="false">
 		<appender-ref ref="FILEDEBUG" />
    </logger>
    
-   <logger name="com.example.service" level="debug"
+   <logger name="com.example.controller" level="error"
+		additivity="false">
+		<appender-ref ref="FILEDEBUG" />
+   </logger>
+   
+   <logger name="com.example.service" level="error"
 		additivity="false">
 		<appender-ref ref="FILEDEBUG" />
    </logger>   
