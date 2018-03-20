@@ -1,6 +1,11 @@
 package com.example.controller;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
@@ -23,7 +28,14 @@ public class StoreController {
   PurchaseHelper purchaseHelper;
   @RequestMapping(value = "/purchase", method = RequestMethod.POST, produces = {"application/json"})
   public Response purchase(@RequestBody Products[] products) {
-    for(Products product : products) {
+	List<Products> list = new ArrayList<Products>(Arrays.asList(products));
+	Collection<Products>  prodCollection =  list.stream().collect(
+	  Collectors.collectingAndThen(Collectors.toMap(Products::getProductId, 
+	    Function.identity(), (left, right) -> {
+          left.setQuantity(left.getQuantity() + right.getQuantity());
+            return left;
+    }), m -> new ArrayList<>(m.values())));
+    for(Products product : prodCollection) {
       if(purchaseHelper.productExisted(product.getProductId())) {
         purchaseHelper.updateProduct(product);
       } else {
