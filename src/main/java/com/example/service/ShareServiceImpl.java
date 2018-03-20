@@ -69,13 +69,16 @@ public class ShareServiceImpl implements IShareService {
 		OrdersDTO result = new OrdersDTO();
 		
 		result.setOrderId(id);
-		
-		for (int i = 0; i < ordersList.size(); i++) {
-			tempStr += "訂購品項名稱 : " + ordersList.get(i).getProductName()
-					+ ", 單項價錢 : " + ordersList.get(i).getPrice()
-					+ ", 訂購數量 : " + ordersList.get(i).getQuantity()
-					+ ", 總計 : " + ordersList.get(i).getPrice() * ordersList.get(i).getQuantity()
-					+ "\n";
+		if (ordersList.size() > 0) {
+			for (int i = 0; i < ordersList.size(); i++) {
+				tempStr += "訂購品項名稱 : " + ordersList.get(i).getProductName()
+						+ ", 單項價錢 : " + ordersList.get(i).getPrice()
+						+ ", 訂購數量 : " + ordersList.get(i).getQuantity()
+						+ ", 總計 : " + ordersList.get(i).getPrice() * ordersList.get(i).getQuantity()
+						+ "\n";
+			}
+		} else {
+			tempStr = "此訂單編號 : " + id + ", 目前無訂購的商品內容 !!! ";
 		}
 		result.setOrderContent(tempStr);
 		return result;
