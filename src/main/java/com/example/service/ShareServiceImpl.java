@@ -41,19 +41,20 @@ public class ShareServiceImpl implements IShareService {
 			}
 			if (exist) {
 				String tempStr = result.get(resultIndex).getOrderContent();
-				tempStr += "訂購品項名稱 : " + ordersList.get(i).getProductName()
-						+ ", 單項價錢 : " + ordersList.get(i).getPrice()
-						+ ", 訂購數量 : " + ordersList.get(i).getQuantity()
-						+ ", 總計 : " + ordersList.get(i).getPrice() * ordersList.get(i).getQuantity()
+				tempStr += "order product's name : " + ordersList.get(i).getProductName()
+						+ ", product's price : " + ordersList.get(i).getPrice()
+						+ ", product's quantity : " + ordersList.get(i).getQuantity()
+						+ ", total : " + ordersList.get(i).getPrice() * ordersList.get(i).getQuantity()
 						+ "\n";
 				result.get(resultIndex).setOrderContent(tempStr);
 			} else {
 				OrdersDTO temp = new OrdersDTO();
 				temp.setOrderId(ordersList.get(i).getOrderId());
-				temp.setOrderContent("訂購品項名稱 : " + ordersList.get(i).getProductName()
-						+ ", 單項價錢 : " + ordersList.get(i).getPrice()
-						+ ", 訂購數量 : " + ordersList.get(i).getQuantity()
-						+ ", 總計 : " + ordersList.get(i).getPrice() * ordersList.get(i).getQuantity()
+				temp.setOrderContent("Order id : " + ordersList.get(i).getOrderId()
+						+ ", order product's name : " + ordersList.get(i).getProductName()
+						+ ", product's price : " + ordersList.get(i).getPrice()
+						+ ", product's quantity : " + ordersList.get(i).getQuantity()
+						+ ", total : " + ordersList.get(i).getPrice() * ordersList.get(i).getQuantity()
 						+ "\n");
 				result.add(temp);
 			}
@@ -71,14 +72,15 @@ public class ShareServiceImpl implements IShareService {
 		result.setOrderId(id);
 		if (ordersList.size() > 0) {
 			for (int i = 0; i < ordersList.size(); i++) {
-				tempStr += "訂購品項名稱 : " + ordersList.get(i).getProductName()
-						+ ", 單項價錢 : " + ordersList.get(i).getPrice()
-						+ ", 訂購數量 : " + ordersList.get(i).getQuantity()
-						+ ", 總計 : " + ordersList.get(i).getPrice() * ordersList.get(i).getQuantity()
+				tempStr += "Order id : " + id
+						+ ", order product's name : " + ordersList.get(i).getProductName()
+						+ ", product's price : " + ordersList.get(i).getPrice()
+						+ ", product's quantity : " + ordersList.get(i).getQuantity()
+						+ ", total : " + ordersList.get(i).getPrice() * ordersList.get(i).getQuantity()
 						+ "\n";
 			}
 		} else {
-			tempStr = "此訂單編號 : " + id + ", 目前無訂購的商品內容 !!! ";
+			tempStr = "This order id : " + id + ", has no order content !!! ";
 		}
 		result.setOrderContent(tempStr);
 		return result;
