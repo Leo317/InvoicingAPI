@@ -31,7 +31,7 @@ public class ClientController {
 	
 	@RequestMapping(value = "/orderProducts", method = RequestMethod.POST, produces = {"application/json"})
 	public Response orderProudcts(@RequestBody ProductsDTO[] productsDTO) {
-		
+
 		for (int i = 0; i < productsDTO.length; i++) {
 			if(!clientServ.getProductExist(productsDTO[i].getProductName())) {
 				return new AjaxResponse(Status.STATUS400, "Product name : " + productsDTO[i].getProductName()
@@ -55,7 +55,7 @@ public class ClientController {
 			
 			products[i] = temp;
 		}
-		
+
 		int orderId = clientServ.getOrderId();
 		clientServ.orderProduct(orderId + 1, products);
 		
