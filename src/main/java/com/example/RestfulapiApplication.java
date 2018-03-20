@@ -13,7 +13,9 @@ import com.example.service.IClientService;
 
 @SpringBootApplication
 public class RestfulapiApplication implements CommandLineRunner{
-
+	// "客戶/共用端進銷存API"文件 by Leo
+	// https://hackmd.io/xcwOtLhUToe-GDc0I8KvDw
+	
 	@Autowired
 	IClientService clientServ;
 	
