@@ -53,7 +53,7 @@ public class ClientDaoImpl implements IClientDao {
 	public int getOrderId() {
         Query query = this.sessionFactory.openSession().createQuery("select max(orderId) from Orders ");
         this.sessionFactory.openSession().close();
-        return (int)query.list().get(0);
+        return ((query.list().toString().equals("[null]"))) ?0 :(int)query.list().get(0);
 	}
 	
 	@Override

@@ -50,7 +50,7 @@ public class ClientServiceImpl implements IClientService {
 		boolean exist = false;
 		int resultIndex = 0;
 		ArrayList<Products> result = new ArrayList<Products>();
-
+		
 		for (int i = 0; i < products.length; i++) {
 			for (int j = 0; j < result.size(); j++) {
 				if (products[i].getProductName().equals((result.get(j)).getProductName())) {
