@@ -36,7 +36,6 @@ public class RestfulapiApplication implements CommandLineRunner{
     @Bean(name = "transactionManager")
     public HibernateTransactionManager getTransactionManager(SessionFactory sessionFactory) {
         HibernateTransactionManager transactionManager = new HibernateTransactionManager(sessionFactory);
- 
         return transactionManager;
     }
 }
