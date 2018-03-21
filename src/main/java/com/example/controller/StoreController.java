@@ -62,7 +62,7 @@ public class StoreController {
           + " is invalid.", null);	    	  
       }
       
-      if(!purchaseHelper.productNameLengthCheck(productName)) {
+      if(!CommonTools.productNameLengthCheck(productName)) {
         return new AjaxResponse(Status.STATUS400, "The product name: " 
           + productName
     	  + " is out of length.", null);	    	  
