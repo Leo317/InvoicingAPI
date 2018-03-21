@@ -2,10 +2,9 @@ package com.example.controller;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
-import java.util.function.Function;
-import java.util.stream.Collectors;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
@@ -29,13 +28,12 @@ public class StoreController {
   @RequestMapping(value = "/purchase", method = RequestMethod.POST, produces = {"application/json"})
   public Response purchase(@RequestBody Products[] products) {
 	List<Products> list = new ArrayList<Products>(Arrays.asList(products));
-	Collection<Products>  prodCollection =  list.stream().collect(
-	  Collectors.collectingAndThen(Collectors.toMap(Products::getProductId, 
-	    Function.identity(), (left, right) -> {
-          left.setQuantity(left.getQuantity() + right.getQuantity());
-            return left;
-    }), m -> new ArrayList<>(m.values())));
-    for(Products product : prodCollection) {
+	Set<Products> set = new HashSet<Products>(list);
+	if(set.size() < list.size()) {
+	  return new AjaxResponse(Status.STATUS400, "The products you input "
+	    + "has duplicate ones based on the same productId.", null);	
+	}
+    for(Products product : list) {
       if(purchaseHelper.productExisted(product.getProductId())) {
         purchaseHelper.updateProduct(product);
       } else {

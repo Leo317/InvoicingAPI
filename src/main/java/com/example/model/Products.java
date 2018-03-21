@@ -104,6 +104,18 @@ public class Products implements Serializable {
 	public void setUpdateTime(Timestamp updateTime) {
 		this.updateTime = updateTime;
 	}
-
-
+	
+    @Override
+    public boolean equals(Object that) {
+      if(that instanceof Products) {
+        Products p = (Products) that;
+        return this.productId == p.productId;
+      }
+      return false;
+    }
+    
+    @Override
+    public int hashCode() {
+        return 41 * (41 + productId);
+    }
 }
