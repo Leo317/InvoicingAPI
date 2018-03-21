@@ -7,5 +7,5 @@ import com.example.view.OrdersDTO;
 public interface IShareService {
 	
 	public List<OrdersDTO> findAll();
-	public OrdersDTO findOne(int id);
+	public List<OrdersDTO> findOne(int id);
 }

@@ -1,8 +1,10 @@
 package com.example.view;
 
+import java.util.List;
+
 public class OrdersDTO {
 	private int orderId;
-	private String orderContent;
+	private List<CommodityDTO> commodity;
 
 	public OrdersDTO() {
 		
@@ -16,12 +18,12 @@ public class OrdersDTO {
 		this.orderId = orderId;
 	}
 
-	public String getOrderContent() {
-		return orderContent;
+	public List<CommodityDTO> getCommodity() {
+		return commodity;
 	}
 
-	public void setOrderContent(String orderContent) {
-		this.orderContent = orderContent;
+	public void setCommodity(List<CommodityDTO> commodity) {
+		this.commodity = commodity;
 	}
 
 }
