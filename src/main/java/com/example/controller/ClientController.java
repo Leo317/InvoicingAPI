@@ -32,6 +32,11 @@ public class ClientController {
 	@RequestMapping(value = "/orderProducts", method = RequestMethod.POST, produces = {"application/json"})
 	public Response orderProudcts(@RequestBody ProductsDTO[] productsDTO) {
 		for (int i = 0; i < productsDTO.length; i++) {
+			if(!CommonTools.productNameLengthCheck(productsDTO[i].getProductName())) {
+		        return new AjaxResponse(Status.STATUS400, "The product name: " 
+		          + productsDTO[i].getProductName()
+		    	  + " is out of length.", null);	    	  
+		      }
 			if(!clientServ.getProductExist(productsDTO[i].getProductName())) {
 				return new AjaxResponse(Status.STATUS400, "Product name : " + productsDTO[i].getProductName()
 						+ " is not exist or not on sale!!!", null);
