@@ -26,11 +26,12 @@ public interface IStoreDao extends CrudRepository<Products, String> {
   @Transactional
   @Modifying(clearAutomatically = true)
   @Query(value = "update products set product_name = :productName, "
-  		+ "quantity = :quantity, auction = :auction where "
+  		+ "price = :price, quantity = :quantity, auction = :auction where "
   		+ "product_id = :productId", 
 	  	nativeQuery = true)
   public void updateProducts(@Param("productId") int productId, 
 		  					 @Param("productName") String productName, 
-		  					 @Param("quantity") int quantity, 
+		  					 @Param("price") int price,
+		  					 @Param("quantity") int quantity,
 		  					 @Param("auction") boolean auction);
 }

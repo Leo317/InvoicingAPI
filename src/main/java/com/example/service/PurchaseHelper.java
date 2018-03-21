@@ -31,7 +31,9 @@ public class PurchaseHelper {
   }
   
   public void updateProduct(Products prod) {
-	iStoreDao.updateProducts(prod.getProductId(), prod.getProductName(), 
-	  prod.getQuantity(), prod.isAuction());  
+	iStoreDao.updateProducts(prod.getProductId(), 
+	  prod.getProductName(),
+	  prod.getPrice(), prod.getQuantity(), 
+	  prod.isAuction());  
   }
 }
