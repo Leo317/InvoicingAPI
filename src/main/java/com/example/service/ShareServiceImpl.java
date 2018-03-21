@@ -39,6 +39,10 @@ public class ShareServiceImpl implements IShareService {
 					break;
 				}
 			}
+			
+			ordersList.get(i).setPrice(shareDao.getProductPrice(ordersList.get(i).getProductName()));
+			shareDao.updateProductPrice(ordersList.get(i).getProductName(), shareDao.getProductPrice(ordersList.get(i).getProductName()));
+			
 			if (exist) {
 				String tempStr = result.get(resultIndex).getOrderContent();
 				tempStr += "order product's name : " + ordersList.get(i).getProductName()
