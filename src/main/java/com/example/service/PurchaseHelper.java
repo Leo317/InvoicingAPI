@@ -1,5 +1,6 @@
 package com.example.service;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,13 +28,25 @@ public class PurchaseHelper {
   }
   
   public void insertProduct(Products prod) {
+	prod.setCreateTime(
+	  new Timestamp(System.currentTimeMillis()));
+	prod.setUpdateTime(
+	  new Timestamp(System.currentTimeMillis()));
 	iStoreDao.save(prod);
   }
   
   public void updateProduct(Products prod) {
-	iStoreDao.updateProducts(prod.getProductId(), 
+	iStoreDao.updateProducts(
+	  prod.getProductId(), 
 	  prod.getProductName(),
-	  prod.getPrice(), prod.getQuantity(), 
-	  prod.isAuction());  
+	  prod.getPrice(), 
+	  prod.getQuantity(), 
+	  prod.isAuction(),
+	  new Timestamp(System.currentTimeMillis()));  
+  }
+
+  public boolean productNameLengthCheck(String productName) {
+	// TODO Auto-generated method stub
+	return false;
   }
 }

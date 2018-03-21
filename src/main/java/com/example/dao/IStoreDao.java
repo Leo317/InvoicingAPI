@@ -1,5 +1,6 @@
 package com.example.dao;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.Modifying;
@@ -26,12 +27,15 @@ public interface IStoreDao extends CrudRepository<Products, String> {
   @Transactional
   @Modifying(clearAutomatically = true)
   @Query(value = "update products set product_name = :productName, "
-  		+ "price = :price, quantity = :quantity, auction = :auction where "
-  		+ "product_id = :productId", 
+  		+ "price = :price, quantity = :quantity, "
+  		+ "auction = :auction, "
+  		+ "updateTime = :updateTime "
+  		+ "where product_id = :productId", 
 	  	nativeQuery = true)
   public void updateProducts(@Param("productId") int productId, 
 		  					 @Param("productName") String productName, 
 		  					 @Param("price") int price,
 		  					 @Param("quantity") int quantity,
-		  					 @Param("auction") boolean auction);
+		  					 @Param("auction") boolean auction,
+		  					 @Param("updateTime") Timestamp updateTime);
 }

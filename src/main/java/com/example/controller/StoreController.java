@@ -18,6 +18,7 @@ import com.example.model.Products;
 import com.example.page.AjaxResponse;
 import com.example.page.Response;
 import com.example.page.Status;
+import com.example.service.CommonTools;
 import com.example.service.ProductFinder;
 import com.example.service.PurchaseHelper;
 
@@ -34,6 +35,39 @@ public class StoreController {
 	    + "has duplicate ones based on the same productId.", null);	
 	}
     for(Products product : list) {
+    	
+      String productId = String.valueOf(
+        product.getProductId());
+      String productName = product.getProductName();
+      String price = String.valueOf(
+    	product.getPrice());
+      String quantity = String.valueOf(
+        product.getQuantity());
+      
+      if(!CommonTools.isInteger(productId)) {
+        return new AjaxResponse(Status.STATUS400, "The product id: " 
+          + productId
+          + " is invalid.", null);	    	  
+      }
+      
+      if(!CommonTools.isInteger(price)) {
+        return new AjaxResponse(Status.STATUS400, "The product price: " 
+          + price
+          + " is invalid.", null);	    	  
+      }
+      
+      if(!CommonTools.isInteger(quantity)) {
+        return new AjaxResponse(Status.STATUS400, "The product quantity: " 
+          + quantity
+          + " is invalid.", null);	    	  
+      }
+      
+      if(!purchaseHelper.productNameLengthCheck(productName)) {
+        return new AjaxResponse(Status.STATUS400, "The product name: " 
+          + productName
+    	  + " is out of length.", null);	    	  
+      }
+      
       if(purchaseHelper.productExisted(product.getProductId())) {
         purchaseHelper.updateProduct(product);
       } else {

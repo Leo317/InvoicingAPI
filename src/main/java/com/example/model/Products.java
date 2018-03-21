@@ -34,7 +34,7 @@ public class Products implements Serializable {
 	
 	private boolean auction;
 
-	private Timestamp insertTime;
+	private Timestamp createTime;
 	
 	private Timestamp updateTime;
 	
@@ -89,12 +89,12 @@ public class Products implements Serializable {
 		this.auction = auction;
 	}
 
-	public Timestamp getInsertTime() {
-		return insertTime;
+	public Timestamp getCreateTime() {
+		return createTime;
 	}
 
-	public void setInsertTime(Timestamp insertTime) {
-		this.insertTime = insertTime;
+	public void setCreateTime(Timestamp createTime) {
+		this.createTime = createTime;
 	}
 
 	public Timestamp getUpdateTime() {
