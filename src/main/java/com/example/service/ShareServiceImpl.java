@@ -40,15 +40,14 @@ public class ShareServiceImpl implements IShareService {
 				}
 			}
 			
-			ordersList.get(i).setPrice(shareDao.getProductPrice(ordersList.get(i).getProductName()));
 			shareDao.updateProductPrice(ordersList.get(i).getProductName(), shareDao.getProductPrice(ordersList.get(i).getProductName()));
 			
 			if (exist) {
 				String tempStr = result.get(resultIndex).getOrderContent();
 				tempStr += "order product's name : " + ordersList.get(i).getProductName()
-						+ ", product's price : " + ordersList.get(i).getPrice()
+						+ ", product's price : " + shareDao.getProductPrice(ordersList.get(i).getProductName())
 						+ ", product's quantity : " + ordersList.get(i).getQuantity()
-						+ ", total : " + ordersList.get(i).getPrice() * ordersList.get(i).getQuantity()
+						+ ", total : " + shareDao.getProductPrice(ordersList.get(i).getProductName()) * ordersList.get(i).getQuantity()
 						+ "\n";
 				result.get(resultIndex).setOrderContent(tempStr);
 			} else {
@@ -56,9 +55,9 @@ public class ShareServiceImpl implements IShareService {
 				temp.setOrderId(ordersList.get(i).getOrderId());
 				temp.setOrderContent("Order id : " + ordersList.get(i).getOrderId()
 						+ ", order product's name : " + ordersList.get(i).getProductName()
-						+ ", product's price : " + ordersList.get(i).getPrice()
+						+ ", product's price : " + shareDao.getProductPrice(ordersList.get(i).getProductName())
 						+ ", product's quantity : " + ordersList.get(i).getQuantity()
-						+ ", total : " + ordersList.get(i).getPrice() * ordersList.get(i).getQuantity()
+						+ ", total : " + shareDao.getProductPrice(ordersList.get(i).getProductName()) * ordersList.get(i).getQuantity()
 						+ "\n");
 				result.add(temp);
 			}
@@ -78,9 +77,9 @@ public class ShareServiceImpl implements IShareService {
 			for (int i = 0; i < ordersList.size(); i++) {
 				tempStr += "Order id : " + id
 						+ ", order product's name : " + ordersList.get(i).getProductName()
-						+ ", product's price : " + ordersList.get(i).getPrice()
+						+ ", product's price : " + shareDao.getProductPrice(ordersList.get(i).getProductName())
 						+ ", product's quantity : " + ordersList.get(i).getQuantity()
-						+ ", total : " + ordersList.get(i).getPrice() * ordersList.get(i).getQuantity()
+						+ ", total : " + shareDao.getProductPrice(ordersList.get(i).getProductName()) * ordersList.get(i).getQuantity()
 						+ "\n";
 			}
 		} else {

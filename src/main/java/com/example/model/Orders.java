@@ -28,23 +28,17 @@ public class Orders implements Serializable {
 	private String productName;
 
 	private Integer quantity;
-
-	private Integer price;
-	
-	private Integer total;
 	
 	private Timestamp insertTime;
 	
 	public Orders() {
 	}
 
-	public Orders(Integer orderId, Integer productId, String productName, Integer quantity, Integer price, Integer total, Timestamp insertTime) {
+	public Orders(Integer orderId, Integer productId, String productName, Integer quantity, Timestamp insertTime) {
 		this.orderId = orderId;
 		this.productId = productId;
 		this.productName = productName;
 		this.quantity = quantity;
-		this.price = price;
-		this.total = total;
 		this.insertTime = insertTime;
 	}
 
@@ -86,22 +80,6 @@ public class Orders implements Serializable {
 
 	public void setQuantity(Integer quantity) {
 		this.quantity = quantity;
-	}
-
-	public Integer getPrice() {
-		return price;
-	}
-
-	public void setPrice(Integer price) {
-		this.price = price;
-	}
-
-	public Integer getTotal() {
-		return total;
-	}
-
-	public void setTotal(Integer total) {
-		this.total = total;
 	}
 
 	public Timestamp getInsertTime() {
