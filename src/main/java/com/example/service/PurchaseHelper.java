@@ -17,6 +17,8 @@ public class PurchaseHelper {
   @Autowired
   private IStoreDao iStoreDao;
   
+  private static final int LENGTH_PRODUCTNAME = 255;
+  
   public boolean productExisted(int productId) {
 	List<Products> prodList = new ArrayList<Products>();
 	prodList = iStoreDao.productExisted(productId);
@@ -46,7 +48,10 @@ public class PurchaseHelper {
   }
 
   public boolean productNameLengthCheck(String productName) {
-	// TODO Auto-generated method stub
-	return false;
+	if(productName.length() > LENGTH_PRODUCTNAME) {
+	  return false;
+	} else {
+	  return true;
+	}
   }
 }

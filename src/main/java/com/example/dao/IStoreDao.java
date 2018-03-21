@@ -14,10 +14,11 @@ import com.example.model.Products;
 
 @Repository
 public interface IStoreDao extends CrudRepository<Products, String> {
-  @Query(value = "select * from products p", nativeQuery = true)
+  @Query(value = "select * from products p order by p.create_time desc", 
+		 nativeQuery = true)
   public List<Products> findAll();
   @Query(value = "select * from products p where p.product_name like %?1% "
-  		+ "and p.auction = ?2 order by p.insert_time desc", 
+  		+ "and p.auction = ?2 order by p.create_time desc", 
   		nativeQuery = true)
   public List<Products> findByCond(String keyword, boolean auction);
   
@@ -29,7 +30,7 @@ public interface IStoreDao extends CrudRepository<Products, String> {
   @Query(value = "update products set product_name = :productName, "
   		+ "price = :price, quantity = :quantity, "
   		+ "auction = :auction, "
-  		+ "updateTime = :updateTime "
+  		+ "update_time = :updateTime "
   		+ "where product_id = :productId", 
 	  	nativeQuery = true)
   public void updateProducts(@Param("productId") int productId, 
