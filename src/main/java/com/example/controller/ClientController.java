@@ -24,9 +24,9 @@ public class ClientController {
 	
 	private static final Logger logger = LoggerFactory.getLogger(ClientController.class);
 
-	@RequestMapping(value = "/getOnSaleProductsList", method = RequestMethod.GET, produces = {"application/json"})
-	public Response findOnSaleProducts() {
-		return new AjaxResponse(Status.SUCCESS, "", clientServ.getOnSaleProductsList());
+	@RequestMapping(value = "/getOrderableProductsList", method = RequestMethod.GET, produces = {"application/json"})
+	public Response findOrderableProducts() {
+		return new AjaxResponse(Status.SUCCESS, "", clientServ.getOrderableProductsList());
 	}
 	
 	@RequestMapping(value = "/orderProducts", method = RequestMethod.POST, produces = {"application/json"})

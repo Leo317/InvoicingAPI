@@ -10,7 +10,7 @@ public interface IClientDao {
 	public void initProduct(Products product);
 	public void initOrder(Orders order);
 	
-	public List<Products> getOnSaleProductsList();
+	public List<Products> getOrderableProductsList();
 	public boolean getProductExist(String productName);
 	public int getProductQuantity(String productName);
 	public int getOrderId();

@@ -28,14 +28,15 @@ public class ClientDaoImpl implements IClientDao {
 	
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<Products> getOnSaleProductsList() {
+	public List<Products> getOrderableProductsList() {
 		return this.sessionFactory.getCurrentSession().createQuery(" from Products where auction=true order by insert_time ASC ").list();
 	}
 
 	@Override
 	public boolean getProductExist(String productName) {
         Long count = (Long)this.sessionFactory.openSession().createQuery
-        		("select count(*) from Products where product_name='" + productName + "' and auction=true")
+        		("select count(*) from Products where product_name=:productName and auction=true")
+        		.setParameter("productName", productName)
         		.uniqueResult();
         this.sessionFactory.openSession().close();
         return count > 0? true: false;
@@ -44,7 +45,8 @@ public class ClientDaoImpl implements IClientDao {
 	@Override
 	public int getProductQuantity(String productName) {
         Query query = this.sessionFactory.openSession().createQuery
-        		("select MAX(quantity) from Products where product_name='" + productName + "' and auction=true");
+        		("select MAX(quantity) from Products where "
+        				+ "product_name=:productName and auction=true").setParameter("productName", productName);
         this.sessionFactory.openSession().close();
         return (int)query.list().get(0);
 	}
@@ -58,7 +60,8 @@ public class ClientDaoImpl implements IClientDao {
 	
 	@Override
 	public int getProductPrice(String productName) {
-        Query query = this.sessionFactory.openSession().createQuery("select MAX(price) from Products where product_name='" + productName + "'");
+        Query query = this.sessionFactory.openSession().createQuery("select MAX(price) from Products "
+        		+ "where product_name=:productName").setParameter("productName", productName);
         this.sessionFactory.openSession().close();
         return (int)query.list().get(0);
 	}
