@@ -81,14 +81,28 @@ public class StoreController {
   @Autowired
   ProductFinder productFinder;
   @RequestMapping(value = "/list", method = RequestMethod.GET, produces = {"application/json"})
-  public List<Products> list(@RequestParam(value="keyword", defaultValue="") String keyword,
+  public Response list(@RequestParam(value="keyword", defaultValue="") String keyword,
 		  					 @RequestParam(value="auction", defaultValue="") String auctionStr) {
     if(StringUtils.isEmpty(keyword) && 
        StringUtils.isEmpty(auctionStr)) {
-      return productFinder.findAll();
+      return new AjaxResponse(Status.SUCCESS, "", productFinder.findAll());
     } else {
-      boolean auction = Boolean.parseBoolean(auctionStr);
-      return productFinder.findByCond(keyword, auction);    	
+      if(StringUtils.isEmpty(auctionStr)) {
+        List<Products> result = new ArrayList<Products>();
+        result = productFinder.findByCond(keyword, true);
+        result.addAll(productFinder.findByCond(keyword, false));
+        return new AjaxResponse(Status.SUCCESS, "", result);
+      } else {
+    	if((auctionStr.compareTo("true") != 0) &&
+    	   (auctionStr.compareTo("false") != 0)) {
+          return new AjaxResponse(Status.STATUS400, "The auction parameter: " 
+                                  + auctionStr
+                                  + " is invalid. It should be \"true\" or \"false\"", 
+                                  null);   		
+    	}
+        boolean auction = Boolean.parseBoolean(auctionStr);
+        return new AjaxResponse(Status.SUCCESS, "", productFinder.findByCond(keyword, auction));
+      }
     }
   }
 }
