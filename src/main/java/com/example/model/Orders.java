@@ -22,6 +22,9 @@ public class Orders implements Serializable {
 	@Column(name="order_id")
 	private Integer orderId;
 	
+	@Column(name="product_id")
+	private Integer productId;
+	
 	private String productName;
 
 	private Integer quantity;
@@ -35,8 +38,9 @@ public class Orders implements Serializable {
 	public Orders() {
 	}
 
-	public Orders(Integer orderId, String productName, Integer quantity, Integer price, Integer total, Timestamp insertTime) {
+	public Orders(Integer orderId, Integer productId, String productName, Integer quantity, Integer price, Integer total, Timestamp insertTime) {
 		this.orderId = orderId;
+		this.productId = productId;
 		this.productName = productName;
 		this.quantity = quantity;
 		this.price = price;
@@ -58,6 +62,14 @@ public class Orders implements Serializable {
 
 	public void setOrderId(Integer orderId) {
 		this.orderId = orderId;
+	}
+	
+	public Integer getProductId() {
+		return productId;
+	}
+
+	public void setProductId(Integer productId) {
+		this.productId = productId;
 	}
 
 	public String getProductName() {

@@ -20,8 +20,8 @@ public class ClientServiceImpl implements IClientService {
 	
 	@Override
 	@Transactional
-	public List<Products> getOnSaleProductsList() {
-		return clientDao.getOnSaleProductsList();
+	public List<Products> getOrderableProductsList() {
+		return clientDao.getOrderableProductsList();
 	}
 	
 	@Override
