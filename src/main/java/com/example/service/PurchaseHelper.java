@@ -17,8 +17,6 @@ public class PurchaseHelper {
   @Autowired
   private IStoreDao iStoreDao;
   
-  private static final int LENGTH_PRODUCTNAME = 255;
-  
   public boolean productExisted(int productId) {
 	List<Products> prodList = new ArrayList<Products>();
 	prodList = iStoreDao.productExisted(productId);
@@ -45,13 +43,5 @@ public class PurchaseHelper {
 	  prod.getQuantity(), 
 	  prod.isAuction(),
 	  new Timestamp(System.currentTimeMillis()));  
-  }
-
-  public boolean productNameLengthCheck(String productName) {
-	if(productName.length() > LENGTH_PRODUCTNAME) {
-	  return false;
-	} else {
-	  return true;
-	}
   }
 }
