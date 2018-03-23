@@ -42,19 +42,6 @@ import com.example.view.ProductsDTO;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 public class ClientControllerTest {
-//	//text Double
-//		@Mock
-//		IClientService clientServ;
-//
-//		// 要被測試的，也就是SUT(Controller層)
-//		@InjectMocks
-//		private ClientController toDoController;
-//		
-//		@Before
-//		public void setup(){
-//			MockitoAnnotations.initMocks(this);
-//		}
-		
 	private MockMvc mockMvc;
 
     @Mock
@@ -74,9 +61,6 @@ public class ClientControllerTest {
     
     @Test
     public void testFindOrderableProducts() throws Exception {
-//    	List<User> users = Arrays.asList(
-//                new User(1, "Daenerys Targaryen"),
-//                new User(2, "John Snow"));
     	
     	List<Products> test = Arrays.asList(
     			new Products(5, 55, "test1", 30, 5, true),
@@ -89,10 +73,30 @@ public class ClientControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.message", Matchers.is("")))
                 .andExpect(jsonPath("$.status", Matchers.is("SUCCESS")))
-//                .andExpect(jsonPath("$.result", Matchers.is(test)))
+                
+                .andExpect(jsonPath("$.result[0].id", is(5)))
+                .andExpect(jsonPath("$.result[0].productId", is(55)))
+                .andExpect(jsonPath("$.result[0].productName", is("test1")))
+                .andExpect(jsonPath("$.result[0].price", is(30)))
+                .andExpect(jsonPath("$.result[0].quantity", is(5)))
+                .andExpect(jsonPath("$.result[0].auction", is(true)))
+                
+                .andExpect(jsonPath("$.result[1].id", is(3)))
+                .andExpect(jsonPath("$.result[1].productId", is(33)))
+                .andExpect(jsonPath("$.result[1].productName", is("test2")))
+                .andExpect(jsonPath("$.result[1].price", is(10)))
+                .andExpect(jsonPath("$.result[1].quantity", is(3)))
+                .andExpect(jsonPath("$.result[1].auction", is(true)))
+                
                 .andExpect(jsonPath("$.*", Matchers.hasSize(3)))
                 ;
         
         verify(clientServ).getOrderableProductsList();
     }
+    
+    @Test
+    public void testOrderProudctss() throws Exception {
+    	
+    }
+    
 }
