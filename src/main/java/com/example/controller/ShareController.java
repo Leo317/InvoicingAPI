@@ -1,5 +1,6 @@
 package com.example.controller;
 
+import org.apache.commons.lang3.math.NumberUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +26,7 @@ public class ShareController {
 	@RequestMapping(value = "/getOrderList", method = RequestMethod.GET, produces = {"application/json"})
 	public Response findOne(@RequestParam(value = "id", required = true, defaultValue = "0") String id) {
 		// http://127.0.0.1:8080/share/getOrderList?id=1.aaa
-		if (id.indexOf('.') > 0 || CommonTools.isInteger(id) == false)
+		if (!NumberUtils.isDigits(id))
 			return new AjaxResponse(Status.STATUS400, "Order id : " + id + " is not an integer!!!", null);
 		else {
 			if (id.equals("0"))
