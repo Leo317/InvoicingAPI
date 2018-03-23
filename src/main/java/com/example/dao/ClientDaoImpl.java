@@ -29,7 +29,7 @@ public class ClientDaoImpl implements IClientDao {
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<Products> getOrderableProductsList() {
-		return this.sessionFactory.getCurrentSession().createQuery(" from Products where auction=true order by insert_time ASC ").list();
+		return this.sessionFactory.getCurrentSession().createQuery(" from Products where auction=true order by create_time ASC ").list();
 	}
 
 	@Override

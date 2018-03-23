@@ -26,16 +26,16 @@ public class Orders implements Serializable {
 
 	private Integer quantity;
 	
-	private Timestamp insertTime;
+	private Timestamp createTime;
 	
 	public Orders() {
 	}
 
-	public Orders(Integer orderId, String productName, Integer quantity, Timestamp insertTime) {
+	public Orders(Integer orderId, String productName, Integer quantity, Timestamp createTime) {
 		this.orderId = orderId;
 		this.productName = productName;
 		this.quantity = quantity;
-		this.insertTime = insertTime;
+		this.createTime = createTime;
 	}
 
 	public Integer getId() {
@@ -70,12 +70,12 @@ public class Orders implements Serializable {
 		this.quantity = quantity;
 	}
 
-	public Timestamp getInsertTime() {
-		return insertTime;
+	public Timestamp getCreateTime() {
+		return createTime;
 	}
 
-	public void setInsertTime(Timestamp insertTime) {
-		this.insertTime = insertTime;
+	public void setCreateTime(Timestamp createTime) {
+		this.createTime = createTime;
 	}
 
 	public static long getSerialversionuid() {

@@ -76,7 +76,7 @@ public class ClientServiceImpl implements IClientService {
 			orderProduct.setOrderId(orderId);
 			orderProduct.setProductName(result.get(i).getProductName());
 			orderProduct.setQuantity(result.get(i).getQuantity());
-			orderProduct.setInsertTime(new Timestamp(System.currentTimeMillis()));
+			orderProduct.setCreateTime(new Timestamp(System.currentTimeMillis()));
 			
 			clientDao.orderProducts(orderProduct);
 			

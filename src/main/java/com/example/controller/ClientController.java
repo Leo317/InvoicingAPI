@@ -39,13 +39,13 @@ public class ClientController {
 				StringBuilder str = new StringBuilder();
 				str.append("The product name : ");
 				str.append(productsDTO.getProductName());
-				if (StringUtils.isNotBlank(productsDTO.getProductName())) {
-					str.append(" is out of length.");
+				if (StringUtils.isBlank(productsDTO.getProductName())) {
+					str.append(" is error input.");
 
 					return new AjaxResponse(Status.STATUS400, str.toString(), null);
 				}
 
-				if (NumberUtils.isDigits(productsDTO.getQuantity())) {
+				if (!NumberUtils.isDigits(productsDTO.getQuantity())) {
 					str.append(", its quantity : ");
 					str.append(productsDTO.getQuantity());
 					str.append(" is not an integer!!!");

@@ -17,6 +17,13 @@ public class CommodityDTO {
 		
 	}
 
+	public CommodityDTO(String productName, int price, int quantity, int total) {
+		this.productName = productName;
+		this.price = price;
+		this.quantity = quantity;
+		this.total = total;
+	}
+
 	public String getProductName() {
 		return productName;
 	}

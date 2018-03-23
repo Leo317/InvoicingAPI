@@ -4,8 +4,12 @@ public class ProductsDTO {
 	private String productName;
 	private String quantity;
 
+	public ProductsDTO(String productName, String quantity) {
+		this.productName = productName;
+		this.quantity = quantity;
+	}
+
 	public ProductsDTO() {
-		
 	}
 
 	public String getProductName() {

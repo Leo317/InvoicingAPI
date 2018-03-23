@@ -10,6 +10,11 @@ public class OrdersDTO {
 		
 	}
 
+	public OrdersDTO(int orderId, List<CommodityDTO> commodity) {
+		this.orderId = orderId;
+		this.commodity = commodity;
+	}
+
 	public int getOrderId() {
 		return orderId;
 	}

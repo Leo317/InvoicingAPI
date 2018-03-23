@@ -18,7 +18,7 @@ public class ShareDaoImpl implements IShareDao {
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<Orders> findAll() {
-		return this.sessionFactory.getCurrentSession().createQuery(" from Orders order by insert_time ASC ").list();
+		return this.sessionFactory.getCurrentSession().createQuery(" from Orders order by create_time ASC ").list();
 	}
 	
 	@Override
