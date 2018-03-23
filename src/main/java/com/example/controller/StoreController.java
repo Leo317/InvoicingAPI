@@ -88,10 +88,9 @@ public class StoreController {
       return new AjaxResponse(Status.SUCCESS, "", productFinder.findAll());
     } else {
       if(StringUtils.isEmpty(auctionStr)) {
-        List<Products> result = new ArrayList<Products>();
-        result = productFinder.findByCond(keyword, true);
-        result.addAll(productFinder.findByCond(keyword, false));
-        return new AjaxResponse(Status.SUCCESS, "", result);
+        return new AjaxResponse(Status.SUCCESS, "", 
+          productFinder.findByCond(keyword, true).addAll(
+            productFinder.findByCond(keyword, false)));
       } else {
     	if((auctionStr.compareTo("true") != 0) &&
     	   (auctionStr.compareTo("false") != 0)) {

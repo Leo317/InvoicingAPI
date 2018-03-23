@@ -37,9 +37,6 @@ public class Products implements Serializable {
 	private Timestamp createTime;
 	
 	private Timestamp updateTime;
-	
-	public Products() {
-	}
 
 	public Integer getId() {
 		return id;
