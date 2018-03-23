@@ -38,6 +38,18 @@ public class Products implements Serializable {
 	
 	private Timestamp updateTime;
 
+	public Products(int id, int productId, String productName, int price, int quantity, boolean auction) {
+		this.id = id;
+		this.productId = productId;
+		this.productName = productName;
+		this.price = price;
+		this.quantity = quantity;
+		this.auction = auction;
+	}
+
+	public Products() {
+	}
+
 	public Integer getId() {
 		return id;
 	}

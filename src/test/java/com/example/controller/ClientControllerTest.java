@@ -17,6 +17,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.persistence.Column;
+
 import org.hamcrest.Matchers;
 import org.junit.Before;
 import org.junit.Test;
@@ -72,15 +74,25 @@ public class ClientControllerTest {
     
     @Test
     public void testFindOrderableProducts() throws Exception {
+//    	List<User> users = Arrays.asList(
+//                new User(1, "Daenerys Targaryen"),
+//                new User(2, "John Snow"));
     	
-//    	when(userController.findOrderableProducts()).thenReturn
-//    				(AjaxResponse(Status.SUCCESS, "", clientServ.getOrderableProductsList()));
-
+    	List<Products> test = Arrays.asList(
+    			new Products(5, 55, "test1", 30, 5, true),
+    			new Products(3, 33, "test2", 10, 3, true));
+    	
+    	when(clientServ.getOrderableProductsList()).thenReturn(test);
+    	
         mockMvc.perform(get("/client/getOrderableProductsList")
         		.accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.message", Matchers.is("")));
-
+                .andExpect(jsonPath("$.message", Matchers.is("")))
+                .andExpect(jsonPath("$.status", Matchers.is("SUCCESS")))
+                .andExpect(jsonPath("$.result", Matchers.is(test.toString())))
+                .andExpect(jsonPath("$.*", Matchers.hasSize(3)))
+                ;
+        
         verify(clientServ).getOrderableProductsList();
     }
 }
