@@ -1,6 +1,9 @@
 package com.example.controller;
 
 import static org.hamcrest.CoreMatchers.is;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -10,6 +13,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import org.apache.commons.lang3.math.NumberUtils;
 import org.hamcrest.Matchers;
 import org.junit.Before;
 import org.junit.Test;
@@ -48,6 +52,7 @@ public class ShareControllerTest {
     
     @Test
     public void testFindOne() throws Exception {
+    	
     	List<CommodityDTO> temp1 = new ArrayList<CommodityDTO>();
     	CommodityDTO cto1 = new CommodityDTO("test1", 35, 3, 105);
     	temp1.add(cto1);
@@ -90,7 +95,8 @@ public class ShareControllerTest {
                 
                 .andExpect(jsonPath("$.*", Matchers.hasSize(3)))
                 ;
-    	
+        verify(shareServ, times(1)).findAll();
+        verifyNoMoreInteractions(shareServ);
         
         
         
@@ -105,19 +111,22 @@ public class ShareControllerTest {
     	when(shareServ.findOne(1)).thenReturn(one);
     	
     	mockMvc
-        .perform(get("/share/getOrderList?id=1")
-                .accept(MediaType.APPLICATION_JSON))
-        .andExpect(status().isOk())
-        .andExpect(jsonPath("$.message", Matchers.is("")))
-        .andExpect(jsonPath("$.status", Matchers.is("SUCCESS")))
-        
-        .andExpect(jsonPath("$.result[0].orderId", is(1)))
-        .andExpect(jsonPath("$.result[0].commodity[0].productName", is("777")))
-        .andExpect(jsonPath("$.result[0].commodity[0].price", is(1)))
-        .andExpect(jsonPath("$.result[0].commodity[0].quantity", is(1)))
-        .andExpect(jsonPath("$.result[0].commodity[0].total", is(1)))
-        
-        .andExpect(jsonPath("$.*", Matchers.hasSize(3)))
-        ;
+	        .perform(get("/share/getOrderList?id=1")
+	                .accept(MediaType.APPLICATION_JSON))
+	        .andExpect(status().isOk())
+	        .andExpect(jsonPath("$.message", Matchers.is("")))
+	        .andExpect(jsonPath("$.status", Matchers.is("SUCCESS")))
+	        
+	        .andExpect(jsonPath("$.result[0].orderId", is(1)))
+	        .andExpect(jsonPath("$.result[0].commodity[0].productName", is("777")))
+	        .andExpect(jsonPath("$.result[0].commodity[0].price", is(1)))
+	        .andExpect(jsonPath("$.result[0].commodity[0].quantity", is(1)))
+	        .andExpect(jsonPath("$.result[0].commodity[0].total", is(1)))
+	        
+	        .andExpect(jsonPath("$.*", Matchers.hasSize(3)))
+	        ;
+    	
+    	verify(shareServ, times(1)).findOne(1);
+        verifyNoMoreInteractions(shareServ);
     }
 }

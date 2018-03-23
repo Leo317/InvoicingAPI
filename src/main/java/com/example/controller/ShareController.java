@@ -26,9 +26,9 @@ public class ShareController {
 	@RequestMapping(value = "/getOrderList", method = RequestMethod.GET, produces = {"application/json"})
 	public Response findOne(@RequestParam(value = "id", required = true, defaultValue = "0") String id) {
 		// http://127.0.0.1:8080/share/getOrderList?id=1.aaa
-		if (!NumberUtils.isDigits(id))
+		if (!NumberUtils.isDigits(id)) {
 			return new AjaxResponse(Status.STATUS400, "Order id : " + id + " is not an integer!!!", null);
-		else {
+		} else {
 			if (id.equals("0"))
 				return new AjaxResponse(Status.SUCCESS, "", shareServ.findAll());
 			else
