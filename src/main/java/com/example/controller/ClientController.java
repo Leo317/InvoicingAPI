@@ -5,6 +5,7 @@ import org.apache.commons.lang3.math.NumberUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -26,7 +27,7 @@ public class ClientController {
 
 	private static final Logger logger = LoggerFactory.getLogger(ClientController.class);
 
-	@RequestMapping(value = "/getOrderableProductsList", method = RequestMethod.GET, produces = { "application/json" })
+	@RequestMapping(value = "/getOrderableProductsList", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	public Response findOrderableProducts() {
 		return new AjaxResponse(Status.SUCCESS, "", clientServ.getOrderableProductsList());
 	}
