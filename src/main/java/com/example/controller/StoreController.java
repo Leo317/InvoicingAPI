@@ -2,9 +2,12 @@ package com.example.controller;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
@@ -87,10 +90,9 @@ public class StoreController {
        StringUtils.isEmpty(auctionStr)) {
       return new AjaxResponse(Status.SUCCESS, "", productFinder.findAll());
     } else {
-      if(StringUtils.isEmpty(auctionStr)) {
+      if(StringUtils.isEmpty(auctionStr)) {    
         return new AjaxResponse(Status.SUCCESS, "", 
-          productFinder.findByCond(keyword, true).addAll(
-            productFinder.findByCond(keyword, false)));
+          productFinder.findByKeyword(keyword));
       } else {
     	if((auctionStr.compareTo("true") != 0) &&
     	   (auctionStr.compareTo("false") != 0)) {

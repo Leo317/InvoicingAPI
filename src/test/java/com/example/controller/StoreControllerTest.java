@@ -84,5 +84,31 @@ public class StoreControllerTest {
 
         verify(productFinder, times(1)).findAll();
         verifyNoMoreInteractions(productFinder);
+        
+        String keyword = "a";  
+        
+        when(productFinder.findByKeyword(keyword))
+          .thenReturn(productList);
+        
+        mockMvc.perform(get("/list?keyword=a"))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.message", Matchers.is("")))
+        .andExpect(jsonPath("$.status", Matchers.is("SUCCESS")))
+        .andExpect(content()
+          .contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+        .andExpect(jsonPath("$.*", Matchers.hasSize(3)))
+        .andExpect(jsonPath("$.result[0].productId", is(1)))
+        .andExpect(jsonPath("$.result[0].productName", is("Sausage")))
+        .andExpect(jsonPath("$.result[0].price", is(42)))
+        .andExpect(jsonPath("$.result[0].quantity", is(210)))
+        .andExpect(jsonPath("$.result[0].auction", is(false)))
+        .andExpect(jsonPath("$.result[1].productId", is(2)))
+        .andExpect(jsonPath("$.result[1].productName", is("Potato Snack")))
+        .andExpect(jsonPath("$.result[1].price", is(110)))
+        .andExpect(jsonPath("$.result[1].quantity", is(23)))
+        .andExpect(jsonPath("$.result[1].auction", is(true)));
+
+        verify(productFinder, times(1)).findByKeyword(keyword);
+        verifyNoMoreInteractions(productFinder);
     }
 }
