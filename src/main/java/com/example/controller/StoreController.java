@@ -2,15 +2,12 @@ package com.example.controller;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -96,9 +93,10 @@ public class StoreController {
       } else {
     	if((auctionStr.compareTo("true") != 0) &&
     	   (auctionStr.compareTo("false") != 0)) {
-          return new AjaxResponse(Status.STATUS400, "The auction parameter: " 
-                                  + auctionStr
-                                  + " is invalid. It should be \"true\" or \"false\"", 
+    		String[] strArray = 
+    		  { "The auction parameter: ", auctionStr, " is invalid. It should be \"true\" or \"false\"" };
+          return new AjaxResponse(Status.STATUS400, 
+        		                  StringUtils.join(strArray), 
                                   null);   		
     	}
         boolean auction = Boolean.parseBoolean(auctionStr);

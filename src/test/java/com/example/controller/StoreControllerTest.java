@@ -1,6 +1,7 @@
 package com.example.controller;
 
 import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.nullValue;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
@@ -13,6 +14,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import java.util.Arrays;
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.hamcrest.Matchers;
 import org.junit.Before;
 import org.junit.Test;
@@ -111,7 +113,19 @@ public class StoreControllerTest {
         verify(productFinder, times(1)).findByKeyword(keyword);
         verifyNoMoreInteractions(productFinder);
         
-        String auctionStr = "false";
+        String auctionStr = "tyu";
+		String[] strArray = 
+  		  { "The auction parameter: ", auctionStr, " is invalid. It should be \"true\" or \"false\"" };
+        
+        mockMvc.perform(get("/list?keyword=a&auction=tyu"))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.message", Matchers.is(StringUtils.join(strArray))))
+        .andExpect(jsonPath("$.status", Matchers.is("STATUS400")))
+        .andExpect(content()
+          .contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+        .andExpect(jsonPath("$.result", Matchers.is(nullValue())));
+        
+        auctionStr = "false";
         boolean auction = Boolean.parseBoolean(auctionStr);
     	List<Products> productPartList = Arrays.asList(
     	    	  new Products(1, 1, "Sausage", 42, 210, false));
