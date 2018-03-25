@@ -110,5 +110,29 @@ public class StoreControllerTest {
 
         verify(productFinder, times(1)).findByKeyword(keyword);
         verifyNoMoreInteractions(productFinder);
+        
+        String auctionStr = "false";
+        boolean auction = Boolean.parseBoolean(auctionStr);
+    	List<Products> productPartList = Arrays.asList(
+    	    	  new Products(1, 1, "Sausage", 42, 210, false));
+        
+        when(productFinder.findByCond(keyword, auction))
+          .thenReturn(productPartList);
+        
+        mockMvc.perform(get("/list?keyword=a&auction=false"))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.message", Matchers.is("")))
+        .andExpect(jsonPath("$.status", Matchers.is("SUCCESS")))
+        .andExpect(content()
+          .contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+        .andExpect(jsonPath("$.*", Matchers.hasSize(3)))
+        .andExpect(jsonPath("$.result[0].productId", is(1)))
+        .andExpect(jsonPath("$.result[0].productName", is("Sausage")))
+        .andExpect(jsonPath("$.result[0].price", is(42)))
+        .andExpect(jsonPath("$.result[0].quantity", is(210)))
+        .andExpect(jsonPath("$.result[0].auction", is(false)));
+        
+        verify(productFinder, times(1)).findByCond(keyword, auction);
+        verifyNoMoreInteractions(productFinder);
     }
 }
