@@ -70,21 +70,22 @@ public class ClientServiceImpl implements IClientService {
 			}
 		}
 		
-		for (int i = 0; i < result.size(); i++) {
+		for (Products index : result) {
 			Products product = new Products();
-			product = clientDao.getProductInfo(result.get(i).getProductName());
+			product = clientDao.getProductInfo(index.getProductName());
 			
 			Orders orderProduct = new Orders();
 			orderProduct.setOrderId(orderId);
-			orderProduct.setProductName(result.get(i).getProductName());
-			orderProduct.setQuantity(result.get(i).getQuantity());
+			orderProduct.setProductName(index.getProductName());
+			orderProduct.setQuantity(index.getQuantity());
 			orderProduct.setCreateTime(new Timestamp(System.currentTimeMillis()));
 			
 			clientDao.orderProducts(orderProduct);
 			
-			product.setQuantity(product.getQuantity() - result.get(i).getQuantity());
+			product.setQuantity(product.getQuantity() - index.getQuantity());
 			clientDao.updateProductQuantity(product);
 		}
+		
 	}
 	
 }
