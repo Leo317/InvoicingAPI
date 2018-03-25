@@ -46,28 +46,30 @@ public class ClientServiceImpl implements IClientService {
 	
 	@Override
 	@Transactional
-	public void orderProduct(int orderId, Products[] products) {
+	public void orderProduct(int orderId, List<Products> products) {
 		boolean exist = false;
 		int resultIndex = 0;
-		ArrayList<Products> result = new ArrayList<Products>();
+		ArrayList<Products> result = new ArrayList<>();
 		
-		for (int i = 0; i < products.length; i++) {
-			for (int j = 0; j < result.size(); j++) {
-				if (products[i].getProductName().equals((result.get(j)).getProductName())) {
-					resultIndex = j;
-					exist = true;
-					break;
-				} else {
-					exist = false;
+		for (Products temp : products) {
+			exist = false;
+			resultIndex = 0;
+			if (result.isEmpty()) {
+				result.add(temp);
+			} else {
+				for (Products index : result) {
+					if (index.getProductName().equals(temp.getProductName())) {
+						result.get(resultIndex).setQuantity(index.getQuantity() + temp.getQuantity());
+						exist = true;
+					}
+					resultIndex++;
+				}
+				if (!exist) {
+					result.add(temp);
 				}
 			}
-			if (exist) {
-				result.get(resultIndex).setQuantity(products[i].getQuantity() + result.get(resultIndex).getQuantity());
-			} else {
-				result.add(products[i]);
-			}
 		}
-
+		
 		for (int i = 0; i < result.size(); i++) {
 			Products product = new Products();
 			product = clientDao.getProductInfo(result.get(i).getProductName());

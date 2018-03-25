@@ -1,5 +1,6 @@
 package com.example.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
@@ -17,7 +18,6 @@ import com.example.model.Products;
 import com.example.page.AjaxResponse;
 import com.example.page.Response;
 import com.example.page.Status;
-import com.example.service.CommonTools;
 import com.example.service.IClientService;
 import com.example.view.ProductsDTO;
 
@@ -57,15 +57,13 @@ public class ClientController {
 					return new AjaxResponse(Status.STATUS400, str.toString(), null);
 				}
 				
-				Products[] products = new Products[productsDTOs.size()];
-				int index = 0;
+				List<Products> products = new ArrayList<>();
 				
 				for (ProductsDTO productsDTO : productsDTOs) {
 					Products temp = new Products();
 					temp.setProductName(productsDTO.getProductName());
 					temp.setQuantity(Integer.parseInt(productsDTO.getQuantity()));
-					products[index] = temp;
-					index++;
+					products.add(temp);
 				}
 				
 				int orderId = clientServ.getOrderId();

@@ -12,6 +12,6 @@ public interface IClientService {
 	public int getOrderId();
 	public int getProductPrice(String productName);
 	
-	public void orderProduct(int orderId, Products[] products);
+	public void orderProduct(int orderId, List<Products> products);
 	
 }
