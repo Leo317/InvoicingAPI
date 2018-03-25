@@ -1,5 +1,7 @@
 package com.example.controller;
 
+import java.util.List;
+
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.slf4j.Logger;
@@ -33,53 +35,46 @@ public class ClientController {
 	}
 
 	@RequestMapping(value = "/orderProducts", method = RequestMethod.POST, produces = { "application/json" })
-	public Response orderProudcts(@RequestBody ProductsDTO[] productsDTOs) {
-		if (productsDTOs != null && productsDTOs.length > 0) {
-			for (ProductsDTO productsDTO : productsDTOs) {
+	public Response orderProudcts(@RequestBody List<ProductsDTO> productsDTOs) {
+		if (productsDTOs != null && !productsDTOs.isEmpty()) {
+			for (ProductsDTO productsDTOInput : productsDTOs) {
 				StringBuilder str = new StringBuilder();
 				str.append("The product name : ");
-				str.append(productsDTO.getProductName());
-				if (StringUtils.isBlank(productsDTO.getProductName())) {
+				str.append(productsDTOInput.getProductName());
+				if (StringUtils.isBlank(productsDTOInput.getProductName())) {
 					str.append(" is error input.");
-
 					return new AjaxResponse(Status.STATUS400, str.toString(), null);
 				}
-
-				if (!NumberUtils.isDigits(productsDTO.getQuantity())) {
+				if (!NumberUtils.isDigits(productsDTOInput.getQuantity())) {
 					str.append(", its quantity : ");
-					str.append(productsDTO.getQuantity());
+					str.append(productsDTOInput.getQuantity());
 					str.append(" is not an integer!!!");
-
 					return new AjaxResponse(Status.STATUS400, str.toString(), null);
 				}
-
-				if (Integer.parseInt(productsDTO.getQuantity())
-						- clientServ.getProductQuantity(productsDTO.getProductName()) > 0) {
+				if (Integer.parseInt(productsDTOInput.getQuantity())
+						- clientServ.getProductQuantity(productsDTOInput.getProductName()) > 0) {
 					str.append(" is not enough!!!");
-
 					return new AjaxResponse(Status.STATUS400, str.toString(), null);
 				}
+				
+				Products[] products = new Products[productsDTOs.size()];
+				int index = 0;
+				
+				for (ProductsDTO productsDTO : productsDTOs) {
+					Products temp = new Products();
+					temp.setProductName(productsDTO.getProductName());
+					temp.setQuantity(Integer.parseInt(productsDTO.getQuantity()));
+					products[index] = temp;
+					index++;
+				}
+				
+				int orderId = clientServ.getOrderId();
+				clientServ.orderProduct(orderId + 1, products);
+				
+				return new AjaxResponse(Status.SUCCESS, "", null);
 			}
-			
-			Products[] products = new Products[productsDTOs.length];
-			int index = 0;
-			
-			for (ProductsDTO productsDTO : productsDTOs) {
-				Products temp = new Products();
-				temp.setProductName(productsDTO.getProductName());
-				temp.setQuantity(Integer.parseInt(productsDTO.getQuantity()));
-				products[index] = temp;
-				index++;
-			}
-			
-			int orderId = clientServ.getOrderId();
-			clientServ.orderProduct(orderId + 1, products);
-
-			return new AjaxResponse(Status.SUCCESS, "", null);
-		} else {
-			return new AjaxResponse(Status.ERROR, "paramter is null", null);
 		}
-		
+		return new AjaxResponse(Status.ERROR, "paramter is null", null);
 	}
 
 	@RequestMapping("/")
