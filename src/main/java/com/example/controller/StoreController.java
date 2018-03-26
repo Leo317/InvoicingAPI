@@ -1,12 +1,13 @@
 package com.example.controller;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,10 +27,14 @@ import com.example.service.PurchaseHelper;
 public class StoreController {
   @Autowired
   PurchaseHelper purchaseHelper;
+  
+  private static final Logger logger = LoggerFactory.getLogger(StoreController.class);
+  private static final String INVALID_MESSAGE = " is invalid.";
+  
   @RequestMapping(value = "/purchase", method = RequestMethod.POST, produces = {"application/json"})
   public Response purchase(@RequestBody Products[] products) {
-	List<Products> list = new ArrayList<Products>(Arrays.asList(products));
-	Set<Products> set = new HashSet<Products>(list);
+	List<Products> list = Arrays.asList(products);
+	Set<Products> set = new HashSet<>(list);
 	if(set.size() < list.size()) {
 	  return new AjaxResponse(Status.STATUS400, "The products you input "
 	    + "has duplicate ones based on the same productId.", null);	
@@ -43,35 +48,55 @@ public class StoreController {
     	product.getPrice());
       String quantity = String.valueOf(
         product.getQuantity());
+	  String[] auctionStrArray = 
+	    { "The product id: ", productId, INVALID_MESSAGE };
+	  String[] priceStrArray = 
+		{ "The product price: ", price, INVALID_MESSAGE };
+	  String[] quantityStrArray = 
+		{ "The product quantity: ", quantity, INVALID_MESSAGE };
+	  String[] productNameStrArray = 
+		{ "The product name: ", productName, INVALID_MESSAGE };
       
       if(!CommonTools.isInteger(productId)) {
-        return new AjaxResponse(Status.STATUS400, "The product id: " 
-          + productId
-          + " is invalid.", null);	    	  
+        return new AjaxResponse(Status.STATUS400, 
+          StringUtils.join(auctionStrArray), null);	    	  
       }
       
       if(!CommonTools.isInteger(price)) {
-        return new AjaxResponse(Status.STATUS400, "The product price: " 
-          + price
-          + " is invalid.", null);	    	  
+        return new AjaxResponse(Status.STATUS400, 
+          StringUtils.join(priceStrArray), null);	    	  
       }
       
       if(!CommonTools.isInteger(quantity)) {
-        return new AjaxResponse(Status.STATUS400, "The product quantity: " 
-          + quantity
-          + " is invalid.", null);	    	  
+        return new AjaxResponse(Status.STATUS400, 
+          StringUtils.join(quantityStrArray), null);	    	  
       }
       
       if(!CommonTools.productNameLengthCheck(productName)) {
-        return new AjaxResponse(Status.STATUS400, "The product name: " 
-          + productName
-    	  + " is out of length.", null);	    	  
+        return new AjaxResponse(Status.STATUS400, 
+          StringUtils.join(productNameStrArray), null);	    	  
       }
       
+	  String[] productExistedTrueStrArray = 
+		{ "productExisted true pass, productId: ", productId };
+	  String productExistedTrueMessage = 
+		StringUtils.join(productExistedTrueStrArray);
+	  String[] productExistedFalseStrArray = 
+		{ "productExisted false pass, productId: ", productId };
+	  String productExistedFalseMessage = 
+		StringUtils.join(productExistedFalseStrArray);
+
+	  String updateProductMessage = "updateProduct success.";
+	  String insertProductMessage = "insertProduct success."; 
+
       if(purchaseHelper.productExisted(product.getProductId())) {
+    	logger.debug(productExistedTrueMessage);
         purchaseHelper.updateProduct(product);
+        logger.debug(updateProductMessage);
       } else {
-    	purchaseHelper.insertProduct(product);  
+    	logger.debug(productExistedFalseMessage);
+    	purchaseHelper.insertProduct(product);
+    	logger.debug(insertProductMessage);
       }
     }
     
