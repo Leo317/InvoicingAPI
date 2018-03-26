@@ -198,6 +198,7 @@ public class ClientControllerTest {
                .andExpect(jsonPath("$.*", Matchers.hasSize(3)))
                ;
 // ===== test normal case end (the same product name order) =====
+
     }
 
     public static String asJsonString(final Object obj) {

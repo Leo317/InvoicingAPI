@@ -36,7 +36,7 @@ public class ClientController {
 
 	@RequestMapping(value = "/orderProducts", method = RequestMethod.POST, produces = { "application/json" })
 	public Response orderProudcts(@RequestBody List<ProductsDTO> productsDTOs) {
-		if (productsDTOs != null && !productsDTOs.isEmpty()) {
+		if (!productsDTOs.isEmpty()) {
 			for (ProductsDTO productsDTOInput : productsDTOs) {
 				StringBuilder str = new StringBuilder();
 				str.append("The product name : ");
