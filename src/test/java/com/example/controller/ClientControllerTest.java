@@ -78,11 +78,11 @@ public class ClientControllerTest {
     @Test
     public void testOrderProudcts() throws Exception {
 // ===== test productsDTOs is null start =====
-    	List<Products> temp4 = new ArrayList<>();
+    	List<Products> temp = new ArrayList<>();
  
         mockMvc.perform(post("/client/orderProducts")
                .contentType(MediaType.APPLICATION_JSON_UTF8)
-               .content(asJsonString(temp4))
+               .content(asJsonString(temp))
                .accept(MediaType.APPLICATION_JSON))
                .andExpect(status().isOk())
                .andExpect(content().contentType
@@ -93,15 +93,15 @@ public class ClientControllerTest {
 // ===== test productsDTOs is null end =====
 
 // ===== test quantity value is not Integer start =====
-    	List<ProductsDTO> temp6 = new ArrayList<>();
-    	ProductsDTO products6 = new ProductsDTO();
-    	products6.setProductName("test1");
-    	products6.setQuantity("5.");
-        temp6.add(products6);
+    	List<ProductsDTO> temp1 = new ArrayList<>();
+    	ProductsDTO products1 = new ProductsDTO();
+    	products1.setProductName("test1");
+    	products1.setQuantity("5.");
+        temp1.add(products1);
  
         mockMvc.perform(post("/client/orderProducts")
                .contentType(MediaType.APPLICATION_JSON_UTF8)
-               .content(asJsonString(temp6))
+               .content(asJsonString(temp1))
                .accept(MediaType.APPLICATION_JSON))
                .andExpect(status().isOk())
                .andExpect(content().contentType
@@ -112,28 +112,9 @@ public class ClientControllerTest {
 // ===== test quantity value is not Integer end =====
         
 // ===== test product name is null start =====
-    	List<Products> temp3 = new ArrayList<>();
-    	Products products3 = new Products();
-    	products3.setProductName(null);
-    	products3.setQuantity(5);
-        temp3.add(products3);
- 
-        mockMvc.perform(post("/client/orderProducts")
-               .contentType(MediaType.APPLICATION_JSON_UTF8)
-               .content(asJsonString(temp3))
-               .accept(MediaType.APPLICATION_JSON))
-               .andExpect(status().isOk())
-               .andExpect(content().contentType
-                    (MediaType.APPLICATION_JSON_UTF8_VALUE))
-               .andExpect(jsonPath("$.status", Matchers.is("STATUS400")))
-               .andExpect(jsonPath("$.*", Matchers.hasSize(3)))
-               ;
-// ===== test product name is null end =====
-    	
-// ===== test product name's length is too longer start =====
     	List<Products> temp2 = new ArrayList<>();
     	Products products2 = new Products();
-    	products2.setProductName("test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1");
+    	products2.setProductName(null);
     	products2.setQuantity(5);
         temp2.add(products2);
  
@@ -147,18 +128,37 @@ public class ClientControllerTest {
                .andExpect(jsonPath("$.status", Matchers.is("STATUS400")))
                .andExpect(jsonPath("$.*", Matchers.hasSize(3)))
                ;
-// ===== test product name's length is too longer end =====
-        
-// ===== test over quantity start =====
-        List<Products> temp5 = new ArrayList<>();
-    	Products products5 = new Products();
-    	products5.setProductName("test1");
-    	products5.setQuantity(99999999);
-        temp5.add(products5);
+// ===== test product name is null end =====
+    	
+// ===== test product name's length is too longer start =====
+    	List<Products> temp3 = new ArrayList<>();
+    	Products products3 = new Products();
+    	products3.setProductName("test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1");
+    	products3.setQuantity(5);
+        temp3.add(products3);
  
         mockMvc.perform(post("/client/orderProducts")
                .contentType(MediaType.APPLICATION_JSON_UTF8)
-               .content(asJsonString(temp5))
+               .content(asJsonString(temp3))
+               .accept(MediaType.APPLICATION_JSON))
+               .andExpect(status().isOk())
+               .andExpect(content().contentType
+                    (MediaType.APPLICATION_JSON_UTF8_VALUE))
+               .andExpect(jsonPath("$.status", Matchers.is("STATUS400")))
+               .andExpect(jsonPath("$.*", Matchers.hasSize(3)))
+               ;
+// ===== test product name's length is too longer end =====
+        
+// ===== test over quantity start =====
+        List<Products> temp4 = new ArrayList<>();
+    	Products products4 = new Products();
+    	products4.setProductName("test1");
+    	products4.setQuantity(99999999);
+        temp4.add(products4);
+ 
+        mockMvc.perform(post("/client/orderProducts")
+               .contentType(MediaType.APPLICATION_JSON_UTF8)
+               .content(asJsonString(temp4))
                .accept(MediaType.APPLICATION_JSON))
                .andExpect(status().isOk())
                .andExpect(content().contentType
@@ -170,15 +170,15 @@ public class ClientControllerTest {
 // ===== test over quantity end =====
 
 // ===== test normal case start =====
-    	List<Products> temp = new ArrayList<>();
-    	Products products = new Products();
-    	products.setProductName("test1");
-    	products.setQuantity(5);
-        temp.add(products);
+    	List<Products> temp5 = new ArrayList<>();
+    	Products products6 = new Products();
+    	products6.setProductName("test1");
+    	products6.setQuantity(5);
+        temp5.add(products6);
  
         mockMvc.perform(post("/client/orderProducts")
                .contentType(MediaType.APPLICATION_JSON_UTF8)
-               .content(asJsonString(temp))
+               .content(asJsonString(temp5))
                .accept(MediaType.APPLICATION_JSON))
                .andExpect(status().isOk())
                .andExpect(content().contentType

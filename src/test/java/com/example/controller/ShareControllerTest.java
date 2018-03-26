@@ -31,6 +31,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import com.example.service.impl.ShareServiceImpl;
 import com.example.view.CommodityDTO;
 import com.example.view.OrdersDTO;
+import com.example.view.ProductsDTO;
 
 @AutoConfigureMockMvc
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -39,6 +40,7 @@ public class ShareControllerTest {
 	
 	@Autowired
 	private MockMvc mockMvc;
+	private ClientController clientController;
 
 //    @Mock
 //    private ShareServiceImpl shareServ;
@@ -107,17 +109,17 @@ public class ShareControllerTest {
                 ;
 
     	mockMvc
-	        .perform(get("/share/getOrderList?id=1")
+	        .perform(get("/share/getOrderList?id=2")
 	                .accept(MediaType.APPLICATION_JSON))
 	        .andExpect(status().isOk())
 	        .andExpect(jsonPath("$.message", Matchers.is("")))
 	        .andExpect(jsonPath("$.status", Matchers.is("SUCCESS")))
 	        
-	        .andExpect(jsonPath("$.result[0].orderId", is(1)))
-	        .andExpect(jsonPath("$.result[0].commodity[0].productName", is("test1")))
-	        .andExpect(jsonPath("$.result[0].commodity[0].price", is(30)))
+	        .andExpect(jsonPath("$.result[0].orderId", is(2)))
+	        .andExpect(jsonPath("$.result[0].commodity[0].productName", is("test2")))
+	        .andExpect(jsonPath("$.result[0].commodity[0].price", is(10)))
 	        .andExpect(jsonPath("$.result[0].commodity[0].quantity", is(5)))
-	        .andExpect(jsonPath("$.result[0].commodity[0].total", is(150)))
+	        .andExpect(jsonPath("$.result[0].commodity[0].total", is(50)))
 	        
 	        .andExpect(jsonPath("$.*", Matchers.hasSize(3)))
 	        ;
