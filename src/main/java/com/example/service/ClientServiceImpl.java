@@ -46,7 +46,7 @@ public class ClientServiceImpl implements IClientService {
 	
 	@Override
 	@Transactional
-	public void orderProduct(int orderId, List<Products> products) {
+	public void orderProudcts(int orderId, List<Products> products) {
 		boolean exist = false;
 		int resultIndex = 0;
 		ArrayList<Products> result = new ArrayList<>();

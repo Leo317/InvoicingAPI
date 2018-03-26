@@ -67,17 +67,12 @@ public class ClientController {
 				}
 				
 				int orderId = clientServ.getOrderId();
-				clientServ.orderProduct(orderId + 1, products);
+				clientServ.orderProudcts(orderId + 1, products);
 				
 				return new AjaxResponse(Status.SUCCESS, "", null);
 			}
 		}
 		return new AjaxResponse(Status.ERROR, "paramter is null", null);
 	}
-
-	@RequestMapping("/")
-	public String find() {
-		return "HHefwfwfewfH";
-	}
-
+	
 }

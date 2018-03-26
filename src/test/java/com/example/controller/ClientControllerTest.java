@@ -3,6 +3,8 @@ package com.example.controller;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
@@ -35,12 +37,16 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.RequestBuilder;
 import org.springframework.test.web.servlet.ResultActions;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
@@ -57,33 +63,39 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 
+import junit.framework.Assert;
+
 @RunWith(SpringJUnit4ClassRunner.class)
 public class ClientControllerTest {
+	
+	@Autowired
 	private MockMvc mockMvc;
-
-    @Mock
-    private ClientServiceImpl clientServ;
+	
+//	@Mock
+//	@Autowired
+//    private IClientService clientServ;
 
     @InjectMocks
-    private ClientController userController;
+    @Autowired
+    private ClientController clientController;
 
     @Before
     public void init(){
         MockitoAnnotations.initMocks(this);
         mockMvc = MockMvcBuilders
-                .standaloneSetup(userController)
-                
+                .standaloneSetup(clientController)
+
                 .build();
     }
     
     @Test
     public void testFindOrderableProducts() throws Exception {
     	
-    	List<Products> test = Arrays.asList(
-    			new Products(5, 55, "test1", 30, 5, true),
-    			new Products(3, 33, "test2", 10, 3, true));
+//    	List<Products> test = Arrays.asList(
+//    			new Products(5, 55, "test1", 30, 50, true),
+//    			new Products(3, 33, "test2", 10, 30, true));
     	
-    	when(clientServ.getOrderableProductsList()).thenReturn(test);
+//    	when(clientServ.getOrderableProductsList()).thenReturn(test);
     	
         mockMvc.perform(get("/client/getOrderableProductsList")
         		.accept(MediaType.APPLICATION_JSON))
@@ -95,65 +107,81 @@ public class ClientControllerTest {
                 .andExpect(jsonPath("$.result[0].productId", is(55)))
                 .andExpect(jsonPath("$.result[0].productName", is("test1")))
                 .andExpect(jsonPath("$.result[0].price", is(30)))
-                .andExpect(jsonPath("$.result[0].quantity", is(5)))
+                .andExpect(jsonPath("$.result[0].quantity", is(50)))
                 .andExpect(jsonPath("$.result[0].auction", is(true)))
                 
                 .andExpect(jsonPath("$.result[1].id", is(3)))
                 .andExpect(jsonPath("$.result[1].productId", is(33)))
                 .andExpect(jsonPath("$.result[1].productName", is("test2")))
                 .andExpect(jsonPath("$.result[1].price", is(10)))
-                .andExpect(jsonPath("$.result[1].quantity", is(3)))
+                .andExpect(jsonPath("$.result[1].quantity", is(30)))
                 .andExpect(jsonPath("$.result[1].auction", is(true)))
                 
                 .andExpect(jsonPath("$.*", Matchers.hasSize(3)))
                 ;
         
-        verify(clientServ, times(1)).getOrderableProductsList();
-        verifyNoMoreInteractions(clientServ);
+//        verify(clientServ, times(1)).getOrderableProductsList();
+//        verifyNoMoreInteractions(clientServ);
 //        verify(clientServ).getOrderableProductsList();
     }
     
     
     @Test
     public void testOrderProudcts() throws Exception {
-//    	ProductsDTO[] temp = new ProductsDTO[2];
-//    	temp[0] = new ProductsDTO("test1", "4");
-//    	temp[1] = new ProductsDTO("test2", "2");
-//    	
-//    	mockMvc.perform(
-//                post("/client/orderProducts")
-//                        .contentType(MediaType.APPLICATION_JSON_UTF8)
-//                        .content(convertObjectToJsonBytes(temp))
-//        )
-//                .andExpect(MockMvcResultMatchers.status().isOk())
-//                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-//                .andExpect(jsonPath("success", is(true)));
-    	
-    	
-    	
-////    	String test1 = "{\"productName\":\"test1\",\"quantity\":\"3\"}";
-//    	ObjectMapper mapper = new ObjectMapper();
-////        ObjectWriter ow = mapper.writer().withDefaultPrettyPrinter();
-////        java.lang.String requestJson = ow.writeValueAsString(test1);
-//    	ProductsDTO[] products = new ProductsDTO[2];
-//    	
-//    	products[0] = new ProductsDTO("test1", "3");
-//    	products[1] = new ProductsDTO("test1", "5");
-//        
-//    	String test1 = "{\"productName\":\"test1\",\"quantity\":\"3\"}";  
-//        String reuslt = mockMvc.perform(post("/client/orderProducts")
-//        		.contentType(MediaType.APPLICATION_JSON_UTF8)  
-//        		.accept(MediaType.APPLICATION_JSON)
-//                .content(mapper.writeValueAsString(products)))
-//                .andExpect(status().isOk())
-////                .andExpect(jsonPath("$.id").value("1"))  
-//                .andReturn().getResponse().getContentAsString();  
-//        System.out.println(reuslt);
+    	List<Products> temp = new ArrayList<>();
+    	Products products = new Products();
+    	products.setProductName("test1");
+    	products.setQuantity(5);
+        temp.add(products);
+        
+//        when(clientServ.getProductQuantity(products.getProductName())).thenReturn(50);
+        
+        mockMvc.perform(post("/client/orderProducts")
+               .contentType(MediaType.APPLICATION_JSON_UTF8)
+               .content(asJsonString(temp))
+               .accept(MediaType.APPLICATION_JSON))
+               .andExpect(status().isOk())
+               .andExpect(content().contentType
+                    (MediaType.APPLICATION_JSON_UTF8_VALUE))
+               .andExpect(jsonPath("$.message", Matchers.is("")))
+               .andExpect(jsonPath("$.status", Matchers.is("SUCCESS")))
+               .andExpect(jsonPath("$.*", Matchers.hasSize(3)))
+               ;
+        
+        mockMvc
+        .perform(get("/share/getOrderList")
+                .accept(MediaType.APPLICATION_JSON_UTF8))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.message", Matchers.is("")))
+        .andExpect(jsonPath("$.status", Matchers.is("SUCCESS")))
+        
+        .andExpect(jsonPath("$.result[0].commodity[0].productName", is("test1")))
+        .andExpect(jsonPath("$.result[0].commodity[0].quantity", is(5)))
+        
+        .andExpect(jsonPath("$.*", Matchers.hasSize(3)))
+        ;
+        
+//        verify(clientServ, times(1)).orderProudcts(1, temp);
+        
+        
+//        MvcResult result = mockMvc.perform(MockMvcRequestBuilders
+//        		.post("/client/orderProducts")
+//        		.content(asJsonString(temp))
+//        		.accept(MediaType.APPLICATION_JSON))
+//        		.andExpect(status().isOk())
+//        		.andReturn();
+//		int status = result.getResponse().getStatus();
+//		Assert.assertEquals("Âe’`",200,status);
     }
-    
-    public static byte[] convertObjectToJsonBytes(Object object) throws IOException {
-        ObjectMapper mapper = new ObjectMapper();
-        mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
-        return mapper.writeValueAsBytes(object);
+
+    public static String asJsonString(final Object obj) {
+        try {
+            final ObjectMapper mapper = new ObjectMapper();
+            final String jsonContent = mapper.writeValueAsString(obj);
+            System.out.println(jsonContent);
+            return jsonContent;
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 }
