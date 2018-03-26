@@ -27,7 +27,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import com.example.model.Products;
-import com.example.service.ShareServiceImpl;
+import com.example.service.impl.ShareServiceImpl;
 import com.example.view.CommodityDTO;
 import com.example.view.OrdersDTO;
 

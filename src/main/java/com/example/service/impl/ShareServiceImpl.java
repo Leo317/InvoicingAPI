@@ -1,4 +1,4 @@
-package com.example.service;
+package com.example.service.impl;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -12,11 +12,12 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.example.dao.IShareDao;
 import com.example.model.Orders;
+import com.example.service.ShareService;
 import com.example.view.CommodityDTO;
 import com.example.view.OrdersDTO;
 
 @Service("shareService")
-public class ShareServiceImpl implements IShareService {
+public class ShareServiceImpl implements ShareService {
   
 	@Autowired
 	private IShareDao shareDao;

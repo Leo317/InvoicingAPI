@@ -4,7 +4,7 @@ import java.util.List;
 
 import com.example.model.Products;
 
-public interface IClientService {
+public interface ClientService {
 	
 	public List<Products> getOrderableProductsList();
 	public boolean getProductExist(String productName);

@@ -12,14 +12,13 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.page.AjaxResponse;
 import com.example.page.Response;
 import com.example.page.Status;
-import com.example.service.CommonTools;
-import com.example.service.IShareService;
+import com.example.service.ShareService;
 
 @RestController
 @RequestMapping("/share")
 public class ShareController {
 	@Autowired
-	IShareService shareServ;
+	ShareService shareServ;
 	
 	private static final Logger logger = LoggerFactory.getLogger(ShareController.class);
 	

@@ -1,4 +1,4 @@
-package com.example.service;
+package com.example.service.impl;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -11,9 +11,10 @@ import org.springframework.transaction.annotation.Transactional;
 import com.example.dao.IClientDao;
 import com.example.model.Orders;
 import com.example.model.Products;
+import com.example.service.ClientService;
 
 @Service("clientService")
-public class ClientServiceImpl implements IClientService {
+public class ClientServiceImpl implements ClientService {
   
 	@Autowired
 	private IClientDao clientDao;
@@ -21,6 +22,9 @@ public class ClientServiceImpl implements IClientService {
 	@Override
 	@Transactional
 	public List<Products> getOrderableProductsList() {
+		System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+		System.out.println("Service IMPL");
+		System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
 		return clientDao.getOrderableProductsList();
 	}
 	

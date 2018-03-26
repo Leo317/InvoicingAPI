@@ -18,19 +18,23 @@ import com.example.model.Products;
 import com.example.page.AjaxResponse;
 import com.example.page.Response;
 import com.example.page.Status;
-import com.example.service.IClientService;
+import com.example.service.ClientService;
 import com.example.view.ProductsDTO;
 
 @RestController
 @RequestMapping("/client")
 public class ClientController {
 	@Autowired
-	IClientService clientServ;
+	ClientService clientServ;
 
 	private static final Logger logger = LoggerFactory.getLogger(ClientController.class);
 
 	@RequestMapping(value = "/getOrderableProductsList", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	public Response findOrderableProducts() {
+		System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+		System.out.println("Controller");
+		System.out.println(clientServ.getOrderableProductsList());
+		System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
 		return new AjaxResponse(Status.SUCCESS, "", clientServ.getOrderableProductsList());
 	}
 
