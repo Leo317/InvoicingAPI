@@ -1,4 +1,4 @@
-package com.example.dao;
+package com.example.dao.impl;
 
 import java.util.List;
 
@@ -7,24 +7,15 @@ import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.example.dao.ClientDao;
 import com.example.model.Orders;
 import com.example.model.Products;
 
 @Repository("clientDao")
-public class ClientDaoImpl implements IClientDao {
+public class ClientDaoImpl implements ClientDao {
 	
 	@Autowired
 	SessionFactory sessionFactory;
-
-	@Override
-	public void initProduct(Products product) {
-		this.sessionFactory.getCurrentSession().save(product);
-	}
-	
-	@Override
-	public void initOrder(Orders order) {
-		this.sessionFactory.getCurrentSession().save(order);
-	}
 	
 	@SuppressWarnings("unchecked")
 	@Override
@@ -56,14 +47,6 @@ public class ClientDaoImpl implements IClientDao {
         Query query = this.sessionFactory.openSession().createQuery("select max(orderId) from Orders ");
         this.sessionFactory.openSession().close();
         return ((query.list().toString().equals("[null]"))) ?0 :(int)query.list().get(0);
-	}
-	
-	@Override
-	public int getProductPrice(String productName) {
-        Query query = this.sessionFactory.openSession().createQuery("select MAX(price) from Products "
-        		+ "where product_name=:productName").setParameter("productName", productName);
-        this.sessionFactory.openSession().close();
-        return (int)query.list().get(0);
 	}
 	
 	@Override

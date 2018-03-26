@@ -10,7 +10,6 @@ public interface ClientService {
 	public boolean getProductExist(String productName);
 	public int getProductQuantity(String productName);
 	public int getOrderId();
-	public int getProductPrice(String productName);
 	
 	public void orderProudcts(int orderId, List<Products> products);
 	

@@ -31,10 +31,6 @@ public class ClientController {
 
 	@RequestMapping(value = "/getOrderableProductsList", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	public Response findOrderableProducts() {
-		System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
-		System.out.println("Controller");
-		System.out.println(clientServ.getOrderableProductsList());
-		System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
 		return new AjaxResponse(Status.SUCCESS, "", clientServ.getOrderableProductsList());
 	}
 
@@ -47,6 +43,10 @@ public class ClientController {
 				str.append(productsDTOInput.getProductName());
 				if (StringUtils.isBlank(productsDTOInput.getProductName())) {
 					str.append(" is error input.");
+					return new AjaxResponse(Status.STATUS400, str.toString(), null);
+				}
+				if (!clientServ.getProductExist(productsDTOInput.getProductName())) {
+					str.append(" is not exist!!!");
 					return new AjaxResponse(Status.STATUS400, str.toString(), null);
 				}
 				if (!NumberUtils.isDigits(productsDTOInput.getQuantity())) {

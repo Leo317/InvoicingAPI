@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.example.dao.IClientDao;
+import com.example.dao.ClientDao;
 import com.example.model.Orders;
 import com.example.model.Products;
 import com.example.service.ClientService;
@@ -17,14 +17,11 @@ import com.example.service.ClientService;
 public class ClientServiceImpl implements ClientService {
   
 	@Autowired
-	private IClientDao clientDao;
+	private ClientDao clientDao;
 	
 	@Override
 	@Transactional
 	public List<Products> getOrderableProductsList() {
-		System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
-		System.out.println("Service IMPL");
-		System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
 		return clientDao.getOrderableProductsList();
 	}
 	
@@ -41,11 +38,6 @@ public class ClientServiceImpl implements ClientService {
 	@Override
 	public int getOrderId() {
 		return clientDao.getOrderId();
-	}
-	
-	@Override
-	public int getProductPrice(String productName) {
-		return clientDao.getProductPrice(productName);
 	}
 	
 	@Override

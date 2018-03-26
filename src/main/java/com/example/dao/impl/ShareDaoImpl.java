@@ -1,4 +1,4 @@
-package com.example.dao;
+package com.example.dao.impl;
 
 import java.util.List;
 
@@ -7,6 +7,7 @@ import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.example.dao.IShareDao;
 import com.example.model.Orders;
 
 @Repository("shareDao")
