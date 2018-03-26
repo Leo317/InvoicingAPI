@@ -176,19 +176,39 @@ public class ClientControllerTest {
     	products5.setQuantity(5);
         temp5.add(products5);
         
-        Products products6 = new Products();
-    	products6.setProductName("test1");
-    	products6.setQuantity(5);
-        temp5.add(products6);
-        
-        Products products7 = new Products();
-        products7.setProductName("test2");
-        products7.setQuantity(5);
-        temp5.add(products7);
-        
         mockMvc.perform(post("/client/orderProducts")
                .contentType(MediaType.APPLICATION_JSON_UTF8)
                .content(asJsonString(temp5))
+               .accept(MediaType.APPLICATION_JSON))
+               .andExpect(status().isOk())
+               .andExpect(content().contentType
+                    (MediaType.APPLICATION_JSON_UTF8_VALUE))
+               .andExpect(jsonPath("$.message", Matchers.is("")))
+               .andExpect(jsonPath("$.status", Matchers.is("SUCCESS")))
+               .andExpect(jsonPath("$.*", Matchers.hasSize(3)))
+               ;
+// ===== test normal case end (the same product name order) =====
+
+// ===== test normal case start (the same product name order) =====
+    	List<Products> temp6 = new ArrayList<>();
+    	Products products6 = new Products();
+    	products6.setProductName("test1");
+    	products6.setQuantity(5);
+    	temp6.add(products6);
+        
+        Products products7 = new Products();
+        products7.setProductName("test1");
+        products7.setQuantity(5);
+    	temp6.add(products7);
+        
+        Products products8 = new Products();
+        products8.setProductName("test2");
+        products8.setQuantity(5);
+        temp6.add(products8);
+        
+        mockMvc.perform(post("/client/orderProducts")
+               .contentType(MediaType.APPLICATION_JSON_UTF8)
+               .content(asJsonString(temp6))
                .accept(MediaType.APPLICATION_JSON))
                .andExpect(status().isOk())
                .andExpect(content().contentType
