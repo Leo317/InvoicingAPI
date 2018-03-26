@@ -93,47 +93,42 @@ public class StoreControllerTest {
     @Test
     public void testList() throws Exception{
 
-        mockMvc.perform(get("/list"))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.message", Matchers.is("")))
-                .andExpect(jsonPath("$.status", Matchers.is("SUCCESS")))
-                .andExpect(content()
-                  .contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-                .andExpect(jsonPath("$.*", Matchers.hasSize(3)))
-                .andExpect(jsonPath("$.result[0].productId", is(4)))
-                .andExpect(jsonPath("$.result[0].productName", is("John's Coke")))
-                .andExpect(jsonPath("$.result[0].price", is(110)))
-                .andExpect(jsonPath("$.result[0].quantity", is(230)))
-                .andExpect(jsonPath("$.result[0].auction", is(true)))
-                .andExpect(jsonPath("$.result[1].productId", is(3)))
-                .andExpect(jsonPath("$.result[1].productName", is("John's Cookie")))
-                .andExpect(jsonPath("$.result[1].price", is(75)))
-                .andExpect(jsonPath("$.result[1].quantity", is(95)))
-                .andExpect(jsonPath("$.result[1].auction", is(true)));
+		mockMvc.perform(get("/list"))
+		        .andExpect(status().isOk())
+		        .andExpect(jsonPath("$.message", Matchers.is("")))
+				.andExpect(jsonPath("$.status", Matchers.is("SUCCESS")))
+				.andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+				.andExpect(jsonPath("$.*", Matchers.hasSize(3)))
+				.andExpect(jsonPath("$.result[0].productId", is(55)))
+				.andExpect(jsonPath("$.result[0].productName", is("test1")))
+				.andExpect(jsonPath("$.result[0].price", is(30)))
+				.andExpect(jsonPath("$.result[0].auction", is(true)))
+				.andExpect(jsonPath("$.result[1].productId", is(33)))
+				.andExpect(jsonPath("$.result[1].productName", is("test2")))
+				.andExpect(jsonPath("$.result[1].price", is(10)))
+				.andExpect(jsonPath("$.result[1].auction", is(true)));
         
-        mockMvc.perform(get("/list?keyword=a"))
+        mockMvc.perform(get("/list?keyword=e"))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.message", Matchers.is("")))
         .andExpect(jsonPath("$.status", Matchers.is("SUCCESS")))
         .andExpect(content()
           .contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
         .andExpect(jsonPath("$.*", Matchers.hasSize(3)))
-        .andExpect(jsonPath("$.result[0].productId", is(2)))
-        .andExpect(jsonPath("$.result[0].productName", is("Potato Snack")))
-        .andExpect(jsonPath("$.result[0].price", is(110)))
-        .andExpect(jsonPath("$.result[0].quantity", is(3)))
+        .andExpect(jsonPath("$.result[0].productId", is(55)))
+        .andExpect(jsonPath("$.result[0].productName", is("test1")))
+        .andExpect(jsonPath("$.result[0].price", is(30)))
         .andExpect(jsonPath("$.result[0].auction", is(true)))
-        .andExpect(jsonPath("$.result[1].productId", is(1)))
-        .andExpect(jsonPath("$.result[1].productName", is("Sausage")))
-        .andExpect(jsonPath("$.result[1].price", is(42)))
-        .andExpect(jsonPath("$.result[1].quantity", is(210)))
-        .andExpect(jsonPath("$.result[1].auction", is(false)));
+        .andExpect(jsonPath("$.result[1].productId", is(33)))
+        .andExpect(jsonPath("$.result[1].productName", is("test2")))
+        .andExpect(jsonPath("$.result[1].price", is(10)))
+        .andExpect(jsonPath("$.result[1].auction", is(true)));
         
         String auctionStr = "tyu";
 		String[] strArray = 
   		  { "The auction parameter: ", auctionStr, " is invalid. It should be \"true\" or \"false\"" };
         
-        mockMvc.perform(get("/list?keyword=a&auction=tyu"))
+        mockMvc.perform(get("/list?keyword=e&auction=tyu"))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.message", Matchers.is(StringUtils.join(strArray))))
         .andExpect(jsonPath("$.status", Matchers.is("STATUS400")))
@@ -141,18 +136,21 @@ public class StoreControllerTest {
           .contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
         .andExpect(jsonPath("$.result", Matchers.is(nullValue())));        
         
-        mockMvc.perform(get("/list?keyword=a&auction=false"))
+        mockMvc.perform(get("/list?keyword=e&auction=true"))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.message", Matchers.is("")))
         .andExpect(jsonPath("$.status", Matchers.is("SUCCESS")))
         .andExpect(content()
           .contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
         .andExpect(jsonPath("$.*", Matchers.hasSize(3)))
-        .andExpect(jsonPath("$.result[0].productId", is(1)))
-        .andExpect(jsonPath("$.result[0].productName", is("Sausage")))
-        .andExpect(jsonPath("$.result[0].price", is(42)))
-        .andExpect(jsonPath("$.result[0].quantity", is(210)))
-        .andExpect(jsonPath("$.result[0].auction", is(false)));
+        .andExpect(jsonPath("$.result[0].productId", is(55)))
+        .andExpect(jsonPath("$.result[0].productName", is("test1")))
+        .andExpect(jsonPath("$.result[0].price", is(30)))
+        .andExpect(jsonPath("$.result[0].auction", is(true)))
+        .andExpect(jsonPath("$.result[1].productId", is(33)))
+        .andExpect(jsonPath("$.result[1].productName", is("test2")))
+        .andExpect(jsonPath("$.result[1].price", is(10)))
+        .andExpect(jsonPath("$.result[1].auction", is(true)));
         
     }
     
