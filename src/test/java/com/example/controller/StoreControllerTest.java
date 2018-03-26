@@ -3,7 +3,7 @@ package com.example.controller;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.nullValue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -52,20 +52,24 @@ public class StoreControllerTest {
     public void testPurchase() throws Exception{
 		List<Products> testList = new ArrayList<>();
 		Products products = new Products();
-		products.setProductId(1);
-		products.setProductName("Sausage");
-		products.setPrice(42);
-		products.setQuantity(210);
-		products.setAuction(false);
+		products.setProductId(5);
+		products.setProductName("Hamburger");
+		products.setPrice(60);
+		products.setQuantity(100);
+		products.setAuction(true);
 		testList.add(products);
 
-		mockMvc.perform(put("/purchase").contentType(MediaType.APPLICATION_JSON_UTF8)
-				.content(asJsonString(testList))
-				.accept(MediaType.APPLICATION_JSON)).andExpect(status().isOk())
-				.andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-				.andExpect(jsonPath("$.message", Matchers.is("")))
-				.andExpect(jsonPath("$.status", Matchers.is("SUCCESS")))
-				.andExpect(jsonPath("$.*", Matchers.hasSize(3)));
+        mockMvc.perform(post("/purchase")
+                .contentType(MediaType.APPLICATION_JSON_UTF8)
+                .content(asJsonString(testList))
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType
+                     (MediaType.APPLICATION_JSON_UTF8_VALUE))
+                .andExpect(jsonPath("$.message", Matchers.is("")))
+                .andExpect(jsonPath("$.status", Matchers.is("SUCCESS")))
+                .andExpect(jsonPath("$.*", Matchers.hasSize(3)))
+                ;
     }
     
     @Test
