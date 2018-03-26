@@ -4,6 +4,7 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.nullValue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -59,6 +60,7 @@ public class StoreControllerTest {
 		products.setAuction(true);
 		testList.add(products);
 
+		//insert a new product
         mockMvc.perform(post("/purchase")
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
                 .content(asJsonString(testList))
@@ -69,6 +71,22 @@ public class StoreControllerTest {
                 .andExpect(jsonPath("$.message", Matchers.is("")))
                 .andExpect(jsonPath("$.status", Matchers.is("SUCCESS")))
                 .andExpect(jsonPath("$.*", Matchers.hasSize(3)))
+                ;
+        
+		List<Products> test2List = new ArrayList<>();
+		Products products2 = new Products();
+		products2.setProductId(1);
+		products2.setProductName("Sausage");
+		products2.setPrice(10);
+		products2.setQuantity(210);
+		products2.setAuction(false);
+		test2List.add(products2);
+
+		//update an existed product
+        mockMvc.perform(put("/purchase")
+                .contentType(MediaType.APPLICATION_JSON_UTF8)
+                .content(asJsonString(test2List))
+                .accept(MediaType.APPLICATION_JSON))
                 ;
     }
     
