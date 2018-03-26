@@ -2,16 +2,13 @@ package com.example.controller;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.nullValue;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyNoMoreInteractions;
-import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
@@ -20,51 +17,59 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
-import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import com.example.model.Products;
-import com.example.service.ProductFinder;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
+@AutoConfigureMockMvc
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @RunWith(SpringJUnit4ClassRunner.class)
 public class StoreControllerTest {
+	@Autowired
 	private MockMvc mockMvc;
 	
-	@Mock
-	ProductFinder productFinder;
-	
 	@InjectMocks
+	@Autowired
 	private StoreController storeController;
 	
     @Before
     public void init(){
         MockitoAnnotations.initMocks(this);
         mockMvc = MockMvcBuilders
-                .standaloneSetup(storeController)
-                
+                .standaloneSetup(storeController)                
                 .build();
     }
     
     @Test
     public void testPurchase() throws Exception{
-        MockitoAnnotations.initMocks(this);
-        mockMvc = MockMvcBuilders
-                .standaloneSetup(storeController)
-                
-                .build();
+		List<Products> testList = new ArrayList<>();
+		Products products = new Products();
+		products.setProductId(1);
+		products.setProductName("Sausage");
+		products.setPrice(42);
+		products.setQuantity(210);
+		products.setAuction(false);
+		testList.add(products);
+
+		mockMvc.perform(put("/purchase").contentType(MediaType.APPLICATION_JSON_UTF8)
+				.content(asJsonString(testList))
+				.accept(MediaType.APPLICATION_JSON)).andExpect(status().isOk())
+				.andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+				.andExpect(jsonPath("$.message", Matchers.is("")))
+				.andExpect(jsonPath("$.status", Matchers.is("SUCCESS")))
+				.andExpect(jsonPath("$.*", Matchers.hasSize(3)));
     }
     
     @Test
     public void testList() throws Exception{
-    	List<Products> productList = Arrays.asList(
-    	  new Products(1, 1, "Sausage", 42, 210, false),
-    	  new Products(2, 2, "Potato Snack", 110, 23, true));        
-
-        when(productFinder.findAll()).thenReturn(productList);
 
         mockMvc.perform(get("/list"))
                 .andExpect(status().isOk())
@@ -73,24 +78,16 @@ public class StoreControllerTest {
                 .andExpect(content()
                   .contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
                 .andExpect(jsonPath("$.*", Matchers.hasSize(3)))
-                .andExpect(jsonPath("$.result[0].productId", is(1)))
-                .andExpect(jsonPath("$.result[0].productName", is("Sausage")))
-                .andExpect(jsonPath("$.result[0].price", is(42)))
-                .andExpect(jsonPath("$.result[0].quantity", is(210)))
-                .andExpect(jsonPath("$.result[0].auction", is(false)))
-                .andExpect(jsonPath("$.result[1].productId", is(2)))
-                .andExpect(jsonPath("$.result[1].productName", is("Potato Snack")))
-                .andExpect(jsonPath("$.result[1].price", is(110)))
-                .andExpect(jsonPath("$.result[1].quantity", is(23)))
+                .andExpect(jsonPath("$.result[0].productId", is(4)))
+                .andExpect(jsonPath("$.result[0].productName", is("John's Coke")))
+                .andExpect(jsonPath("$.result[0].price", is(110)))
+                .andExpect(jsonPath("$.result[0].quantity", is(230)))
+                .andExpect(jsonPath("$.result[0].auction", is(true)))
+                .andExpect(jsonPath("$.result[1].productId", is(3)))
+                .andExpect(jsonPath("$.result[1].productName", is("John's Cookie")))
+                .andExpect(jsonPath("$.result[1].price", is(75)))
+                .andExpect(jsonPath("$.result[1].quantity", is(95)))
                 .andExpect(jsonPath("$.result[1].auction", is(true)));
-
-        verify(productFinder, times(1)).findAll();
-        verifyNoMoreInteractions(productFinder);
-        
-        String keyword = "a";  
-        
-        when(productFinder.findByKeyword(keyword))
-          .thenReturn(productList);
         
         mockMvc.perform(get("/list?keyword=a"))
         .andExpect(status().isOk())
@@ -99,19 +96,16 @@ public class StoreControllerTest {
         .andExpect(content()
           .contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
         .andExpect(jsonPath("$.*", Matchers.hasSize(3)))
-        .andExpect(jsonPath("$.result[0].productId", is(1)))
-        .andExpect(jsonPath("$.result[0].productName", is("Sausage")))
-        .andExpect(jsonPath("$.result[0].price", is(42)))
-        .andExpect(jsonPath("$.result[0].quantity", is(210)))
-        .andExpect(jsonPath("$.result[0].auction", is(false)))
-        .andExpect(jsonPath("$.result[1].productId", is(2)))
-        .andExpect(jsonPath("$.result[1].productName", is("Potato Snack")))
-        .andExpect(jsonPath("$.result[1].price", is(110)))
-        .andExpect(jsonPath("$.result[1].quantity", is(23)))
-        .andExpect(jsonPath("$.result[1].auction", is(true)));
-
-        verify(productFinder, times(1)).findByKeyword(keyword);
-        verifyNoMoreInteractions(productFinder);
+        .andExpect(jsonPath("$.result[0].productId", is(2)))
+        .andExpect(jsonPath("$.result[0].productName", is("Potato Snack")))
+        .andExpect(jsonPath("$.result[0].price", is(110)))
+        .andExpect(jsonPath("$.result[0].quantity", is(3)))
+        .andExpect(jsonPath("$.result[0].auction", is(true)))
+        .andExpect(jsonPath("$.result[1].productId", is(1)))
+        .andExpect(jsonPath("$.result[1].productName", is("Sausage")))
+        .andExpect(jsonPath("$.result[1].price", is(42)))
+        .andExpect(jsonPath("$.result[1].quantity", is(210)))
+        .andExpect(jsonPath("$.result[1].auction", is(false)));
         
         String auctionStr = "tyu";
 		String[] strArray = 
@@ -123,15 +117,7 @@ public class StoreControllerTest {
         .andExpect(jsonPath("$.status", Matchers.is("STATUS400")))
         .andExpect(content()
           .contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-        .andExpect(jsonPath("$.result", Matchers.is(nullValue())));
-        
-        auctionStr = "false";
-        boolean auction = Boolean.parseBoolean(auctionStr);
-    	List<Products> productPartList = Arrays.asList(
-    	    	  new Products(1, 1, "Sausage", 42, 210, false));
-        
-        when(productFinder.findByCond(keyword, auction))
-          .thenReturn(productPartList);
+        .andExpect(jsonPath("$.result", Matchers.is(nullValue())));        
         
         mockMvc.perform(get("/list?keyword=a&auction=false"))
         .andExpect(status().isOk())
@@ -146,7 +132,16 @@ public class StoreControllerTest {
         .andExpect(jsonPath("$.result[0].quantity", is(210)))
         .andExpect(jsonPath("$.result[0].auction", is(false)));
         
-        verify(productFinder, times(1)).findByCond(keyword, auction);
-        verifyNoMoreInteractions(productFinder);
+    }
+    
+    public static String asJsonString(final Object obj) {
+        try {
+            final ObjectMapper mapper = new ObjectMapper();
+            final String jsonContent = mapper.writeValueAsString(obj);
+            System.out.println(jsonContent);
+            return jsonContent;
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 }
