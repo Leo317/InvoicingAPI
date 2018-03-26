@@ -6,6 +6,8 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -80,7 +82,21 @@ public class ShareControllerTest {
 //    			"quantity" : 5
 //    		}
 //    	]
-    	
+
+
+
+// ===== test quantity value is not Integer start =====
+        mockMvc.perform(get("/share/getOrderList?id=2.")
+               .accept(MediaType.APPLICATION_JSON))
+               .andExpect(status().isOk())
+               .andExpect(content().contentType
+                    (MediaType.APPLICATION_JSON_UTF8_VALUE))
+               .andExpect(jsonPath("$.status", Matchers.is("STATUS400")))
+               .andExpect(jsonPath("$.*", Matchers.hasSize(3)))
+               ;
+// ===== test quantity value is not Integer end =====
+        
+// ===== test normal case start =====
         mockMvc
                 .perform(get("/share/getOrderList")
                         .accept(MediaType.APPLICATION_JSON))
@@ -107,7 +123,9 @@ public class ShareControllerTest {
                 
                 .andExpect(jsonPath("$.*", Matchers.hasSize(3)))
                 ;
+// ===== test normal case end =====
 
+// ===== test normal case start =====
     	mockMvc
 	        .perform(get("/share/getOrderList?id=2")
 	                .accept(MediaType.APPLICATION_JSON))
@@ -123,5 +141,6 @@ public class ShareControllerTest {
 	        
 	        .andExpect(jsonPath("$.*", Matchers.hasSize(3)))
 	        ;
+// ===== test normal case end =====
     }
 }

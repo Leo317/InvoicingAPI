@@ -79,7 +79,7 @@ public class ClientControllerTest {
     public void testOrderProudcts() throws Exception {
 // ===== test productsDTOs is null start =====
     	List<Products> temp = new ArrayList<>();
- 
+    	
         mockMvc.perform(post("/client/orderProducts")
                .contentType(MediaType.APPLICATION_JSON_UTF8)
                .content(asJsonString(temp))
@@ -98,7 +98,7 @@ public class ClientControllerTest {
     	products1.setProductName("test1");
     	products1.setQuantity("5.");
         temp1.add(products1);
- 
+        
         mockMvc.perform(post("/client/orderProducts")
                .contentType(MediaType.APPLICATION_JSON_UTF8)
                .content(asJsonString(temp1))
@@ -117,7 +117,7 @@ public class ClientControllerTest {
     	products2.setProductName(null);
     	products2.setQuantity(5);
         temp2.add(products2);
- 
+        
         mockMvc.perform(post("/client/orderProducts")
                .contentType(MediaType.APPLICATION_JSON_UTF8)
                .content(asJsonString(temp2))
@@ -136,7 +136,7 @@ public class ClientControllerTest {
     	products3.setProductName("test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1");
     	products3.setQuantity(5);
         temp3.add(products3);
- 
+        
         mockMvc.perform(post("/client/orderProducts")
                .contentType(MediaType.APPLICATION_JSON_UTF8)
                .content(asJsonString(temp3))
@@ -155,7 +155,7 @@ public class ClientControllerTest {
     	products4.setProductName("test1");
     	products4.setQuantity(99999999);
         temp4.add(products4);
- 
+        
         mockMvc.perform(post("/client/orderProducts")
                .contentType(MediaType.APPLICATION_JSON_UTF8)
                .content(asJsonString(temp4))
@@ -169,13 +169,23 @@ public class ClientControllerTest {
                ; 
 // ===== test over quantity end =====
 
-// ===== test normal case start =====
+// ===== test normal case start (the same product name order) =====
     	List<Products> temp5 = new ArrayList<>();
-    	Products products6 = new Products();
+    	Products products5 = new Products();
+    	products5.setProductName("test1");
+    	products5.setQuantity(5);
+        temp5.add(products5);
+        
+        Products products6 = new Products();
     	products6.setProductName("test1");
     	products6.setQuantity(5);
         temp5.add(products6);
- 
+        
+        Products products7 = new Products();
+        products7.setProductName("test2");
+        products7.setQuantity(5);
+        temp5.add(products7);
+        
         mockMvc.perform(post("/client/orderProducts")
                .contentType(MediaType.APPLICATION_JSON_UTF8)
                .content(asJsonString(temp5))
@@ -187,7 +197,7 @@ public class ClientControllerTest {
                .andExpect(jsonPath("$.status", Matchers.is("SUCCESS")))
                .andExpect(jsonPath("$.*", Matchers.hasSize(3)))
                ;
-// ===== test normal case end =====
+// ===== test normal case end (the same product name order) =====
     }
 
     public static String asJsonString(final Object obj) {
