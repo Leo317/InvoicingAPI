@@ -110,17 +110,6 @@ public class ShareControllerTest {
                 .andExpect(jsonPath("$.result[0].commodity[0].quantity", is(5)))
                 .andExpect(jsonPath("$.result[0].commodity[0].total", is(150)))
                 
-                .andExpect(jsonPath("$.result[0].commodity[1].productName", is("test2")))
-                .andExpect(jsonPath("$.result[0].commodity[1].price", is(10)))
-                .andExpect(jsonPath("$.result[0].commodity[1].quantity", is(5)))
-                .andExpect(jsonPath("$.result[0].commodity[1].total", is(50)))
-                
-                .andExpect(jsonPath("$.result[1].orderId", is(2)))
-                .andExpect(jsonPath("$.result[1].commodity[0].productName", is("test2")))
-                .andExpect(jsonPath("$.result[1].commodity[0].price", is(10)))
-                .andExpect(jsonPath("$.result[1].commodity[0].quantity", is(5)))
-                .andExpect(jsonPath("$.result[1].commodity[0].total", is(50)))
-                
                 .andExpect(jsonPath("$.*", Matchers.hasSize(3)))
                 ;
 // ===== test normal case end =====
@@ -134,10 +123,16 @@ public class ShareControllerTest {
 	        .andExpect(jsonPath("$.status", Matchers.is("SUCCESS")))
 	        
 	        .andExpect(jsonPath("$.result[0].orderId", is(2)))
-	        .andExpect(jsonPath("$.result[0].commodity[0].productName", is("test2")))
-	        .andExpect(jsonPath("$.result[0].commodity[0].price", is(10)))
+	        .andExpect(jsonPath("$.result[0].commodity[0].productName", is("test1")))
+	        .andExpect(jsonPath("$.result[0].commodity[0].price", is(30)))
 	        .andExpect(jsonPath("$.result[0].commodity[0].quantity", is(5)))
-	        .andExpect(jsonPath("$.result[0].commodity[0].total", is(50)))
+	        .andExpect(jsonPath("$.result[0].commodity[0].total", is(150)))
+	        
+	        .andExpect(jsonPath("$.result[0].orderId", is(2)))
+            .andExpect(jsonPath("$.result[0].commodity[1].productName", is("test2")))
+            .andExpect(jsonPath("$.result[0].commodity[1].price", is(10)))
+            .andExpect(jsonPath("$.result[0].commodity[1].quantity", is(5)))
+            .andExpect(jsonPath("$.result[0].commodity[1].total", is(50)))
 	        
 	        .andExpect(jsonPath("$.*", Matchers.hasSize(3)))
 	        ;

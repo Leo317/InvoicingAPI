@@ -193,12 +193,12 @@ public class ClientControllerTest {
     	List<Products> temp6 = new ArrayList<>();
     	Products products6 = new Products();
     	products6.setProductName("test1");
-    	products6.setQuantity(5);
+    	products6.setQuantity(3);
     	temp6.add(products6);
         
         Products products7 = new Products();
         products7.setProductName("test1");
-        products7.setQuantity(5);
+        products7.setQuantity(2);
     	temp6.add(products7);
         
         Products products8 = new Products();
