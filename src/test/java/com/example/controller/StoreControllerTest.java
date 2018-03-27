@@ -89,18 +89,18 @@ public class StoreControllerTest {
 		test2List.add(products2);
 
 		//update an existed product
-//		RequestBuilder request = null;
-//		request = put("/purchase/{id}", products2.getProductId()) 
-//				.param("productName", "test1")
-//				.param("price", "22") 
-//				.param("quantity", "50000") 
-//				.param("auction", "true") 
-//				.param("updateTime", "1521505578249"); 
-//        mockMvc.perform(request)
-//                .andExpect(status().isOk())
-//                .andExpect(content().contentType
-//                     (MediaType.APPLICATION_JSON))
-//                ;
+		RequestBuilder request = null;
+		request = put("/purchase/{id}", products2.getProductId()) 
+				.param("productName", "test1")
+				.param("price", "22") 
+				.param("quantity", "50000") 
+				.param("auction", "true") 
+				.param("updateTime", "1521505578249"); 
+        mockMvc.perform(request)
+                .andExpect(status().isOk())
+                .andExpect(content().contentType
+                     (MediaType.APPLICATION_JSON))
+                ;
     }
     
     @Test
