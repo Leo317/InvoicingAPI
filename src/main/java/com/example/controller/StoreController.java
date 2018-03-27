@@ -19,7 +19,6 @@ import com.example.model.Products;
 import com.example.page.AjaxResponse;
 import com.example.page.Response;
 import com.example.page.Status;
-import com.example.service.CommonTools;
 import com.example.service.ProductFinder;
 import com.example.service.PurchaseHelper;
 
@@ -29,8 +28,6 @@ public class StoreController {
   PurchaseHelper purchaseHelper;
   
   private static final Logger logger = LoggerFactory.getLogger(StoreController.class);
-  private static final String INVALID_MESSAGE = " is invalid.";
-  
   @RequestMapping(value = "/purchase", method = RequestMethod.POST, produces = {"application/json"})
   public Response purchase(@RequestBody Products[] products) {
 	List<Products> list = Arrays.asList(products);
@@ -43,39 +40,6 @@ public class StoreController {
     	
       String productId = String.valueOf(
         product.getProductId());
-      String productName = product.getProductName();
-      String price = String.valueOf(
-    	product.getPrice());
-      String quantity = String.valueOf(
-        product.getQuantity());
-	  String[] auctionStrArray = 
-	    { "The product id: ", productId, INVALID_MESSAGE };
-	  String[] priceStrArray = 
-		{ "The product price: ", price, INVALID_MESSAGE };
-	  String[] quantityStrArray = 
-		{ "The product quantity: ", quantity, INVALID_MESSAGE };
-	  String[] productNameStrArray = 
-		{ "The product name: ", productName, INVALID_MESSAGE };
-      
-      if(!CommonTools.isInteger(productId)) {
-        return new AjaxResponse(Status.STATUS400, 
-          StringUtils.join(auctionStrArray), null);	    	  
-      }
-      
-      if(!CommonTools.isInteger(price)) {
-        return new AjaxResponse(Status.STATUS400, 
-          StringUtils.join(priceStrArray), null);	    	  
-      }
-      
-      if(!CommonTools.isInteger(quantity)) {
-        return new AjaxResponse(Status.STATUS400, 
-          StringUtils.join(quantityStrArray), null);	    	  
-      }
-      
-      if(!CommonTools.productNameLengthCheck(productName)) {
-        return new AjaxResponse(Status.STATUS400, 
-          StringUtils.join(productNameStrArray), null);	    	  
-      }
       
 	  String[] productExistedTrueStrArray = 
 		{ "productExisted true pass, productId: ", productId };
