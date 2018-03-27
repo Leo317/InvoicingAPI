@@ -1,18 +1,22 @@
 package com.example.controller;
 
+import java.sql.Timestamp;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
 import org.apache.commons.lang3.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.model.Products;
@@ -27,7 +31,6 @@ public class StoreController {
   @Autowired
   PurchaseHelper purchaseHelper;
   
-  private static final Logger logger = LoggerFactory.getLogger(StoreController.class);
   @RequestMapping(value = "/purchase", method = RequestMethod.POST, produces = {"application/json"})
   public Response purchase(@RequestBody Products[] products) {
 	List<Products> list = Arrays.asList(products);
@@ -37,34 +40,44 @@ public class StoreController {
 	    + "has duplicate ones based on the same productId.", null);	
 	}
     for(Products product : list) {
-    	
-      String productId = String.valueOf(
-        product.getProductId());
-      
-	  String[] productExistedTrueStrArray = 
-		{ "productExisted true pass, productId: ", productId };
-	  String productExistedTrueMessage = 
-		StringUtils.join(productExistedTrueStrArray);
-	  String[] productExistedFalseStrArray = 
-		{ "productExisted false pass, productId: ", productId };
-	  String productExistedFalseMessage = 
-		StringUtils.join(productExistedFalseStrArray);
 
-	  String updateProductMessage = "updateProduct success.";
-	  String insertProductMessage = "insertProduct success."; 
+      purchaseHelper.insertProduct(product);
 
-      if(purchaseHelper.productExisted(product.getProductId())) {
-    	logger.debug(productExistedTrueMessage);
-        purchaseHelper.updateProduct(product);
-        logger.debug(updateProductMessage);
-      } else {
-    	logger.debug(productExistedFalseMessage);
-    	purchaseHelper.insertProduct(product);
-    	logger.debug(insertProductMessage);
-      }
-    }
+    }    
     
 	return new AjaxResponse(Status.SUCCESS, "", null);
+  }
+  
+  @RequestMapping(value = "/purchase/{id}", method = RequestMethod.PUT)
+  public @ResponseBody Products updatePurchase(@PathVariable("id") int productId, 
+			                                   @RequestParam String productName, 
+			                                   @RequestParam int price,
+			                                   @RequestParam int quantity,
+			                                   @RequestParam boolean auction,
+			                                   @RequestParam String updateTime) { 
+
+    Products products = new Products();
+    products.setProductId(productId);
+    products.setProductName(productName);
+    products.setPrice(price);
+    products.setQuantity(quantity);
+    products.setAuction(auction);
+    
+    String pattern = "yyyy-MM-dd";
+    SimpleDateFormat datetimeFormatter1 = 
+      new SimpleDateFormat(pattern);    
+    Date date = null;
+	try {
+		date = datetimeFormatter1.parse(updateTime);
+	} catch (ParseException e) {
+		
+	}
+	date = date == null ? new Date() : date;
+	long timeValue = date.getTime();
+    Timestamp updateTimestamp = new Timestamp(timeValue);
+    products.setUpdateTime(updateTimestamp);
+    purchaseHelper.updateProduct(products);
+    return products;	
   }
   
   @Autowired

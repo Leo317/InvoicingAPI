@@ -1,7 +1,6 @@
 package com.example.service;
 
 import java.sql.Timestamp;
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,13 +17,8 @@ public class PurchaseHelper {
   private IStoreDao iStoreDao;
   
   public boolean productExisted(int productId) {
-	List<Products> prodList = new ArrayList<Products>();
-	prodList = iStoreDao.productExisted(productId);
-    if((prodList != null) && (!prodList.isEmpty())) {
-      return true;	
-    } else {
-      return false;	
-    }
+	List<Products> prodList = iStoreDao.productExisted(productId);
+    return (prodList != null) && (!prodList.isEmpty());
   }
   
   public void insertProduct(Products prod) {

@@ -76,7 +76,7 @@ public class StoreControllerTest {
         
 		List<Products> test2List = new ArrayList<>();
 		Products products2 = new Products();
-		products2.setProductId(1);
+		products2.setProductId(33);
 		products2.setProductName("Sausage");
 		products2.setPrice(10);
 		products2.setQuantity(210);
@@ -84,10 +84,16 @@ public class StoreControllerTest {
 		test2List.add(products2);
 
 		//update an existed product
-        mockMvc.perform(put("/purchase")
+        mockMvc.perform(post("/purchase")
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
                 .content(asJsonString(test2List))
                 .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType
+                     (MediaType.APPLICATION_JSON_UTF8_VALUE))
+                .andExpect(jsonPath("$.message", Matchers.is("")))
+                .andExpect(jsonPath("$.status", Matchers.is("SUCCESS")))
+                .andExpect(jsonPath("$.*", Matchers.hasSize(3)))
                 ;
     }
     
