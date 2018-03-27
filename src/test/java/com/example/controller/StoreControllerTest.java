@@ -99,14 +99,15 @@ public class StoreControllerTest {
 				.andExpect(jsonPath("$.status", Matchers.is("SUCCESS")))
 				.andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
 				.andExpect(jsonPath("$.*", Matchers.hasSize(3)))
-				.andExpect(jsonPath("$.result[0].productId", is(55)))
-				.andExpect(jsonPath("$.result[0].productName", is("test1")))
-				.andExpect(jsonPath("$.result[0].price", is(30)))
+				.andExpect(jsonPath("$.result[0].productId", is(33)))
+				.andExpect(jsonPath("$.result[0].productName", is("test2")))
+				.andExpect(jsonPath("$.result[0].price", is(10)))
 				.andExpect(jsonPath("$.result[0].auction", is(true)))
-				.andExpect(jsonPath("$.result[1].productId", is(33)))
-				.andExpect(jsonPath("$.result[1].productName", is("test2")))
-				.andExpect(jsonPath("$.result[1].price", is(10)))
-				.andExpect(jsonPath("$.result[1].auction", is(true)));
+				.andExpect(jsonPath("$.result[1].productId", is(55)))
+				.andExpect(jsonPath("$.result[1].productName", is("test1")))
+				.andExpect(jsonPath("$.result[1].price", is(30)))
+				.andExpect(jsonPath("$.result[1].auction", is(true)))
+				;
         
         mockMvc.perform(get("/list?keyword=e"))
         .andExpect(status().isOk())
@@ -115,14 +116,15 @@ public class StoreControllerTest {
         .andExpect(content()
           .contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
         .andExpect(jsonPath("$.*", Matchers.hasSize(3)))
-        .andExpect(jsonPath("$.result[0].productId", is(55)))
-        .andExpect(jsonPath("$.result[0].productName", is("test1")))
-        .andExpect(jsonPath("$.result[0].price", is(30)))
-        .andExpect(jsonPath("$.result[0].auction", is(true)))
-        .andExpect(jsonPath("$.result[1].productId", is(33)))
-        .andExpect(jsonPath("$.result[1].productName", is("test2")))
-        .andExpect(jsonPath("$.result[1].price", is(10)))
-        .andExpect(jsonPath("$.result[1].auction", is(true)));
+		.andExpect(jsonPath("$.result[0].productId", is(33)))
+		.andExpect(jsonPath("$.result[0].productName", is("test2")))
+		.andExpect(jsonPath("$.result[0].price", is(10)))
+		.andExpect(jsonPath("$.result[0].auction", is(true)))
+		.andExpect(jsonPath("$.result[1].productId", is(55)))
+		.andExpect(jsonPath("$.result[1].productName", is("test1")))
+		.andExpect(jsonPath("$.result[1].price", is(30)))
+		.andExpect(jsonPath("$.result[1].auction", is(true)))
+		;
         
         String auctionStr = "tyu";
 		String[] strArray = 
@@ -143,14 +145,15 @@ public class StoreControllerTest {
         .andExpect(content()
           .contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
         .andExpect(jsonPath("$.*", Matchers.hasSize(3)))
-        .andExpect(jsonPath("$.result[0].productId", is(55)))
-        .andExpect(jsonPath("$.result[0].productName", is("test1")))
-        .andExpect(jsonPath("$.result[0].price", is(30)))
-        .andExpect(jsonPath("$.result[0].auction", is(true)))
-        .andExpect(jsonPath("$.result[1].productId", is(33)))
-        .andExpect(jsonPath("$.result[1].productName", is("test2")))
-        .andExpect(jsonPath("$.result[1].price", is(10)))
-        .andExpect(jsonPath("$.result[1].auction", is(true)));
+		.andExpect(jsonPath("$.result[0].productId", is(33)))
+		.andExpect(jsonPath("$.result[0].productName", is("test2")))
+		.andExpect(jsonPath("$.result[0].price", is(10)))
+		.andExpect(jsonPath("$.result[0].auction", is(true)))
+		.andExpect(jsonPath("$.result[1].productId", is(55)))
+		.andExpect(jsonPath("$.result[1].productName", is("test1")))
+		.andExpect(jsonPath("$.result[1].price", is(30)))
+		.andExpect(jsonPath("$.result[1].auction", is(true)))
+		;
         
     }
     
