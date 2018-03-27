@@ -78,7 +78,7 @@ public class StoreControllerTest {
 		Products products2 = new Products();
 		products2.setProductId(55);
 		products2.setProductName("test1");
-		products2.setPrice(22);
+		products2.setPrice(30);
 		products2.setQuantity(50000);
 		products2.setAuction(true);
 	    
