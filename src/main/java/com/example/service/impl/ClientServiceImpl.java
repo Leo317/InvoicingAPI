@@ -67,8 +67,7 @@ public class ClientServiceImpl implements ClientService {
 		}
 		
 		for (Products index : result) {
-			Products product = new Products();
-			product = clientDao.getProductInfo(index.getProductName());
+			Products product = clientDao.getProductInfo(index.getProductName());
 			
 			Orders orderProduct = new Orders();
 			orderProduct.setOrderId(orderId);

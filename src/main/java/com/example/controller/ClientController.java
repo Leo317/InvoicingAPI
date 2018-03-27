@@ -5,8 +5,6 @@ import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -26,8 +24,6 @@ import com.example.view.ProductsDTO;
 public class ClientController {
 	@Autowired
 	ClientService clientServ;
-
-	private static final Logger logger = LoggerFactory.getLogger(ClientController.class);
 
 	@RequestMapping(value = "/getOrderableProductsList", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	public Response findOrderableProducts() {

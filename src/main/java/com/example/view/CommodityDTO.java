@@ -1,9 +1,6 @@
 package com.example.view;
 
 import java.sql.Timestamp;
-import java.util.ArrayList;
-
-import com.example.model.Orders;
 
 public class CommodityDTO {
 	

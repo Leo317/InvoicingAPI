@@ -1,8 +1,6 @@
 package com.example.controller;
 
 import org.apache.commons.lang3.math.NumberUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -19,8 +17,6 @@ import com.example.service.ShareService;
 public class ShareController {
 	@Autowired
 	ShareService shareServ;
-	
-	private static final Logger logger = LoggerFactory.getLogger(ShareController.class);
 	
 	@RequestMapping(value = "/getOrderList", method = RequestMethod.GET, produces = {"application/json"})
 	public Response findOne(@RequestParam(value = "id", required = true, defaultValue = "0") String id) {

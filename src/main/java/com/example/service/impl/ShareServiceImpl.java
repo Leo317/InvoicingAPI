@@ -4,8 +4,6 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,13 +20,11 @@ public class ShareServiceImpl implements ShareService {
 	@Autowired
 	private IShareDao shareDao;
 	
-	private static final Logger logger = LoggerFactory.getLogger(ShareServiceImpl.class);
-	
 	@Override
 	@Transactional
 	public List<OrdersDTO> findAll() {
 		List<Orders> ordersList = shareDao.findAll();
-		List<OrdersDTO> result = new ArrayList<OrdersDTO>();
+		List<OrdersDTO> result = new ArrayList<>();
 		boolean exist = false;
 		int resultIndex = 0;
 		
@@ -81,13 +77,13 @@ public class ShareServiceImpl implements ShareService {
 	@Transactional
 	public List<OrdersDTO> findOne(int id) {
 		List<Orders> ordersList = shareDao.findOne(id);
-		List<OrdersDTO> result = new ArrayList<OrdersDTO>();
+		List<OrdersDTO> result = new ArrayList<>();
 		
 		OrdersDTO temp = new OrdersDTO();
 		temp.setOrderId(id);
 		List<CommodityDTO> list = new ArrayList<>();
 		
-		if (ordersList.size() > 0) {
+		if (!ordersList.isEmpty()) {
 			for (int i = 0; i < ordersList.size(); i++) {
 				CommodityDTO commodity = new CommodityDTO();
 				commodity.setProductName(ordersList.get(i).getProductName());
