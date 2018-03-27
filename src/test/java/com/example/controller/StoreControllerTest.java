@@ -1,17 +1,15 @@
 package com.example.controller;
 
+import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.nullValue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
@@ -27,7 +25,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.RequestBuilder;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import com.example.model.Products;
@@ -75,32 +72,22 @@ public class StoreControllerTest {
                 .andExpect(jsonPath("$.message", Matchers.is("")))
                 .andExpect(jsonPath("$.status", Matchers.is("SUCCESS")))
                 .andExpect(jsonPath("$.*", Matchers.hasSize(3)))
-                ;
-        
-		List<Products> test2List = new ArrayList<>();
+                ;        
+
+        //update
 		Products products2 = new Products();
 		products2.setProductId(55);
 		products2.setProductName("test1");
 		products2.setPrice(22);
 		products2.setQuantity(50000);
 		products2.setAuction(true);
-	    Timestamp updateTimestamp = new Timestamp((new Date()).getTime());
-	    products2.setUpdateTime(updateTimestamp);
-		test2List.add(products2);
-
-		//update an existed product
-		RequestBuilder request = null;
-		request = put("/purchase/{id}", products2.getProductId()) 
-				.param("productName", "test1")
-				.param("price", "22") 
-				.param("quantity", "50000") 
-				.param("auction", "true") 
-				.param("updateTime", "1521505578249"); 
-        mockMvc.perform(request)
+	    
+        mockMvc.perform(post("/purchase/55")
+                .contentType(MediaType.APPLICATION_JSON_UTF8)
+                .content(asJsonString(products2))
+                .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(content().contentType
-                     (MediaType.APPLICATION_JSON))
-                ;
+                .andExpect(content().string(equalTo("success")));
     }
     
     @Test

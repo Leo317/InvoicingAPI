@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.example.dao.IStoreDao;
+import com.example.dao.impl.StoreDaoImpl;
 import com.example.model.Products;
 
 @Service("purchaseHelper")
@@ -29,13 +30,9 @@ public class PurchaseHelper {
 	iStoreDao.save(prod);
   }
   
+  @Autowired
+  private StoreDaoImpl storeDaoImpl;
   public void updateProduct(Products prod) {
-	iStoreDao.updateProducts(
-	  prod.getProductId(), 
-	  prod.getProductName(),
-	  prod.getPrice(), 
-	  prod.getQuantity(), 
-	  prod.isAuction(),
-	  new Timestamp(System.currentTimeMillis()));  
+	  storeDaoImpl.updateProduct(prod);
   }
 }
