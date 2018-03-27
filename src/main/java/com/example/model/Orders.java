@@ -26,25 +26,8 @@ public class Orders implements Serializable {
 
 	private Integer quantity;
 	
+	@Column(name="create_time")
 	private Timestamp createTime;
-	
-	public Orders() {
-	}
-
-	public Orders(Integer orderId, String productName, Integer quantity, Timestamp createTime) {
-		this.orderId = orderId;
-		this.productName = productName;
-		this.quantity = quantity;
-		this.createTime = createTime;
-	}
-
-	public Integer getId() {
-		return id;
-	}
-
-	public void setId(Integer id) {
-		this.id = id;
-	}
 
 	public Integer getOrderId() {
 		return orderId;
@@ -70,16 +53,7 @@ public class Orders implements Serializable {
 		this.quantity = quantity;
 	}
 
-	public Timestamp getCreateTime() {
-		return createTime;
-	}
-
 	public void setCreateTime(Timestamp createTime) {
 		this.createTime = createTime;
-	}
-
-	public static long getSerialversionuid() {
-		return serialVersionUID;
-	}
-	
+	}	
 }
