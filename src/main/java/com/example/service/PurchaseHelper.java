@@ -1,7 +1,6 @@
 package com.example.service;
 
 import java.sql.Timestamp;
-import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,11 +15,6 @@ import com.example.model.Products;
 public class PurchaseHelper {
   @Autowired
   private IStoreDao iStoreDao;
-  
-  public boolean productExisted(int productId) {
-	List<Products> prodList = iStoreDao.productExisted(productId);
-    return (prodList != null) && (!prodList.isEmpty());
-  }
   
   public void insertProduct(Products prod) {
 	prod.setCreateTime(
