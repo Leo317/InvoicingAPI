@@ -10,6 +10,8 @@ import java.util.List;
 import java.util.Set;
 
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -30,6 +32,8 @@ import com.example.service.PurchaseHelper;
 public class StoreController {
   @Autowired
   PurchaseHelper purchaseHelper;
+  
+  private static final Logger logger = LoggerFactory.getLogger(StoreController.class);
   
   @RequestMapping(value = "/purchase", method = RequestMethod.POST, produces = {"application/json"})
   public Response purchase(@RequestBody Products[] products) {
@@ -70,7 +74,7 @@ public class StoreController {
 	try {
 		date = datetimeFormatter1.parse(updateTime);
 	} catch (ParseException e) {
-		
+		logger.error(e.toString());	
 	}
 	date = date == null ? new Date() : date;
 	long timeValue = date.getTime();

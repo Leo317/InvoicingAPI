@@ -9,7 +9,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
@@ -25,6 +27,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.RequestBuilder;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import com.example.model.Products;
@@ -76,25 +79,28 @@ public class StoreControllerTest {
         
 		List<Products> test2List = new ArrayList<>();
 		Products products2 = new Products();
-		products2.setProductId(33);
-		products2.setProductName("Sausage");
-		products2.setPrice(10);
-		products2.setQuantity(210);
-		products2.setAuction(false);
+		products2.setProductId(55);
+		products2.setProductName("test1");
+		products2.setPrice(22);
+		products2.setQuantity(50000);
+		products2.setAuction(true);
+	    Timestamp updateTimestamp = new Timestamp((new Date()).getTime());
+	    products2.setUpdateTime(updateTimestamp);
 		test2List.add(products2);
 
 		//update an existed product
-        mockMvc.perform(post("/purchase")
-                .contentType(MediaType.APPLICATION_JSON_UTF8)
-                .content(asJsonString(test2List))
-                .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andExpect(content().contentType
-                     (MediaType.APPLICATION_JSON_UTF8_VALUE))
-                .andExpect(jsonPath("$.message", Matchers.is("")))
-                .andExpect(jsonPath("$.status", Matchers.is("SUCCESS")))
-                .andExpect(jsonPath("$.*", Matchers.hasSize(3)))
-                ;
+//		RequestBuilder request = null;
+//		request = put("/purchase/{id}", products2.getProductId()) 
+//				.param("productName", "test1")
+//				.param("price", "22") 
+//				.param("quantity", "50000") 
+//				.param("auction", "true") 
+//				.param("updateTime", "1521505578249"); 
+//        mockMvc.perform(request)
+//                .andExpect(status().isOk())
+//                .andExpect(content().contentType
+//                     (MediaType.APPLICATION_JSON))
+//                ;
     }
     
     @Test
