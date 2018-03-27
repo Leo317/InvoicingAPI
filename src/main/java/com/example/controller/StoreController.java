@@ -1,9 +1,7 @@
 package com.example.controller;
 
 import java.util.Arrays;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,11 +27,6 @@ public class StoreController {
   @RequestMapping(value = "/purchase", method = RequestMethod.POST, produces = {"application/json"})
   public Response purchase(@RequestBody Products[] products) {
 	List<Products> list = Arrays.asList(products);
-	Set<Products> set = new HashSet<>(list);
-	if(set.size() < list.size()) {
-	  return new AjaxResponse(Status.STATUS400, "The products you input "
-	    + "has duplicate ones based on the same productId.", null);	
-	}
     for(Products product : list) {
 
       purchaseHelper.insertProduct(product);
