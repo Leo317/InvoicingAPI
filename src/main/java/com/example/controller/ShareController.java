@@ -13,12 +13,11 @@ import com.example.page.Status;
 import com.example.service.ShareService;
 
 @RestController
-@RequestMapping("/share")
 public class ShareController {
 	@Autowired
 	ShareService shareServ;
 	
-	@RequestMapping(value = "/getOrderList", method = RequestMethod.GET, produces = {"application/json"})
+	@RequestMapping(value = "/share/getOrderList", method = RequestMethod.GET, produces = {"application/json"})
 	public Response findOne(@RequestParam(value = "id", required = true, defaultValue = "0") String id) {
 		// http://127.0.0.1:8080/share/getOrderList?id=1.aaa
 		if (!NumberUtils.isDigits(id)) {

@@ -1,14 +1,26 @@
 package com.example.security;
 
-//OAuth2Configuration
-//@Configuration
-//@EnableResourceServer
-public class ResourceServerConfiguration /*extends ResourceServerConfigurerAdapter*/ {
+import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.oauth2.config.annotation.web.configuration.EnableResourceServer;
+import org.springframework.security.oauth2.config.annotation.web.configuration.ResourceServerConfigurerAdapter;
 
-//    @Override
-//    public void configure(HttpSecurity http) throws Exception {
-//        http.authorizeRequests().antMatchers("/**").authenticated()
-//                .anyRequest().authenticated();
-//    }
+@EnableGlobalMethodSecurity(prePostEnabled = true)
+@EnableResourceServer
+@Configuration
+public class ResourceServerConfiguration extends ResourceServerConfigurerAdapter {
+    @Override
+    public void configure(HttpSecurity http) throws Exception {
+        http.headers().frameOptions().disable().and()
+                .authorizeRequests()
+                .antMatchers("/","/home","/register","/login").permitAll()
+                .antMatchers("/private/**").authenticated()
+                .antMatchers("/client/**").authenticated()
+                .antMatchers("/share/**").authenticated()
+                .antMatchers("/purchase/**").authenticated()
+                .antMatchers("/list/**").authenticated();
+    }
 
 }

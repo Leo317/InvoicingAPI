@@ -10,7 +10,7 @@ import org.springframework.orm.hibernate5.HibernateTransactionManager;
 
 @SpringBootApplication
 public class RestfulapiApplication {
-	// "客戶/共用端API文件" by Leo
+	// API Document
 	// https://hackmd.io/xcwOtLhUToe-GDc0I8KvDwO
 	
 	public static void main(String[] args) {

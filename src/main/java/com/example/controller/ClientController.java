@@ -7,6 +7,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -20,17 +21,17 @@ import com.example.service.ClientService;
 import com.example.view.ProductsDTO;
 
 @RestController
-@RequestMapping("/client")
+@PreAuthorize("hasRole('ROLE_USER')")
 public class ClientController {
 	@Autowired
 	ClientService clientServ;
 
-	@RequestMapping(value = "/getOrderableProductsList", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/client/getOrderableProductsList", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	public Response findOrderableProducts() {
 		return new AjaxResponse(Status.SUCCESS, "", clientServ.getOrderableProductsList());
 	}
 
-	@RequestMapping(value = "/orderProducts", method = RequestMethod.POST, produces = { "application/json" })
+	@RequestMapping(value = "/client/orderProducts", method = RequestMethod.POST, produces = { "application/json" })
 	public Response orderProudcts(@RequestBody List<ProductsDTO> productsDTOs) {
 		if (!productsDTOs.isEmpty()) {
 			for (ProductsDTO productsDTOInput : productsDTOs) {

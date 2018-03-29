@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,6 +21,7 @@ import com.example.service.ProductFinder;
 import com.example.service.PurchaseHelper;
 
 @RestController
+@PreAuthorize("hasRole('ROLE_ADMIN')")
 public class StoreController {
   @Autowired
   PurchaseHelper purchaseHelper;
