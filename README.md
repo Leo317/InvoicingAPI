@@ -1,5 +1,8 @@
 # InvoicingAPI
 
+# 如果要執行UT
+- 請先將ClientController/StoreController內的@PreAuthorize("hasRole('XXX')")註解掉
+
 執行後
 
 # 管理員身分
