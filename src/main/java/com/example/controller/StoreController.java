@@ -21,7 +21,7 @@ import com.example.service.ProductFinder;
 import com.example.service.PurchaseHelper;
 
 @RestController
-@PreAuthorize("hasRole('ROLE_ADMIN')")
+//@PreAuthorize("hasRole('ROLE_ADMIN')")
 public class StoreController {
   @Autowired
   PurchaseHelper purchaseHelper;
