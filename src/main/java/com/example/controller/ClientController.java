@@ -21,7 +21,7 @@ import com.example.service.ClientService;
 import com.example.view.ProductsDTO;
 
 @RestController
-//@PreAuthorize("hasRole('ROLE_USER')")
+@PreAuthorize("hasRole('ROLE_USER')")
 public class ClientController {
 	@Autowired
 	ClientService clientServ;
