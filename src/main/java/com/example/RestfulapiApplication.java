@@ -12,6 +12,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.orm.hibernate5.HibernateTransactionManager;
 
 import com.example.utils.AppPropertiesUtils;
+import com.example.utils.DevAppPropertiesUtils;
 
 @SpringBootApplication
 public class RestfulapiApplication {
@@ -19,11 +20,17 @@ public class RestfulapiApplication {
 	// https://hackmd.io/xcwOtLhUToe-GDc0I8KvDwO
 	
 	private static final Logger logger = 
-        LoggerFactory.getLogger(RestfulapiApplication.class); 
+        LoggerFactory.getLogger(RestfulapiApplication.class);
+	private static final String DEFAULT_PROFILE = "--spring.profiles.active=default";
 		
 	public static void main(String[] args) {
-		AppPropertiesUtils.initProperties(args[0]);
-		printEnvironmentsProperties(args[0]);
+		if(args == null || args[0].equals(DEFAULT_PROFILE)) {
+		  AppPropertiesUtils.initProperties();
+		  printEnvironmentsProperties("default");
+		} else {
+		  DevAppPropertiesUtils.initProperties();
+		  printEnvironmentsProperties("dev");
+		}
         ConfigurableApplicationContext context = SpringApplication.run(RestfulapiApplication.class, args);
         context.getBean(RestfulapiApplication.class);
 	}

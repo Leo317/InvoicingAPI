@@ -5,20 +5,20 @@ import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 
-@Profile("default")
-public class AppPropertiesUtils {
+@Profile("dev")
+public class DevAppPropertiesUtils {
 	public static void initProperties() {
     	
     	PropertySourcesPlaceholderConfigurer propertySourcePlaceholderConfigurer
     	  = new PropertySourcesPlaceholderConfigurer();
     	Resource[] resources = new ClassPathResource[]
     	{
-    	  new ClassPathResource("application.properties")
+    	  new ClassPathResource("application-dev.properties")
     	};
     	propertySourcePlaceholderConfigurer.setLocations(resources);    	
     }
 	
-	private AppPropertiesUtils() {
+	private DevAppPropertiesUtils() { 
 		
 	}
 }
