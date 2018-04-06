@@ -31,9 +31,10 @@ dependencies {
 	compile('org.springframework.boot:spring-boot-starter-mail')
 	compile('org.springframework.boot:spring-boot-starter-security')
 	compile("io.jsonwebtoken:jjwt:${jjwtVersion}")
-	
+
+    //utils	
 	compile group: 'org.apache.commons', name: 'commons-lang3', version: '3.0'
-	//compile('org.mariadb.jdbc:mariadb-java-client')
+	compile group: 'commons-io', name: 'commons-io', version: '2.6'
 	runtime('org.postgresql:postgresql')
 	testCompile('org.springframework.boot:spring-boot-starter-test')
 }

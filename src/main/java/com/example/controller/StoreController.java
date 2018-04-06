@@ -20,6 +20,7 @@ import com.example.service.ProductFinder;
 import com.example.service.PurchaseHelper;
 
 @RestController
+@RequestMapping("/store")
 public class StoreController {
   @Autowired
   PurchaseHelper purchaseHelper;
