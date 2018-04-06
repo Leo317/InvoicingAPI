@@ -28,25 +28,43 @@ public class Orders implements Serializable {
 	
 	@Column(name="create_time")
 	private Timestamp createTime;
+	
+	private String roleName;
+
+	public Integer getId() {
+		return id;
+	}
 
 	public Integer getOrderId() {
 		return orderId;
-	}
-
-	public void setOrderId(Integer orderId) {
-		this.orderId = orderId;
 	}
 
 	public String getProductName() {
 		return productName;
 	}
 
-	public void setProductName(String productName) {
-		this.productName = productName;
-	}
-
 	public Integer getQuantity() {
 		return quantity;
+	}
+
+	public Timestamp getCreateTime() {
+		return createTime;
+	}
+
+	public String getRoleName() {
+		return roleName;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
+	public void setOrderId(Integer orderId) {
+		this.orderId = orderId;
+	}
+
+	public void setProductName(String productName) {
+		this.productName = productName;
 	}
 
 	public void setQuantity(Integer quantity) {
@@ -55,5 +73,9 @@ public class Orders implements Serializable {
 
 	public void setCreateTime(Timestamp createTime) {
 		this.createTime = createTime;
-	}	
+	}
+
+	public void setRoleName(String roleName) {
+		this.roleName = roleName;
+	}
 }

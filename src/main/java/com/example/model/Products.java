@@ -37,71 +37,78 @@ public class Products implements Serializable {
 	private Timestamp createTime;
 	
 	private Timestamp updateTime;
-
-	public Products() {
-	}
+	
+	private String roleName;
 
 	public Integer getId() {
 		return id;
-	}
-
-	public void setId(Integer id) {
-		this.id = id;
 	}
 
 	public Integer getProductId() {
 		return productId;
 	}
 
-	public void setProductId(Integer productId) {
-		this.productId = productId;
-	}
-
 	public String getProductName() {
 		return productName;
-	}
-
-	public void setProductName(String productName) {
-		this.productName = productName;
 	}
 
 	public Integer getPrice() {
 		return price;
 	}
 
-	public void setPrice(Integer price) {
-		this.price = price;
-	}
-
 	public Integer getQuantity() {
 		return quantity;
-	}
-
-	public void setQuantity(Integer quantity) {
-		this.quantity = quantity;
 	}
 
 	public boolean isAuction() {
 		return auction;
 	}
 
-	public void setAuction(boolean auction) {
-		this.auction = auction;
-	}
-
 	public Timestamp getCreateTime() {
 		return createTime;
-	}
-
-	public void setCreateTime(Timestamp createTime) {
-		this.createTime = createTime;
 	}
 
 	public Timestamp getUpdateTime() {
 		return updateTime;
 	}
 
+	public String getRoleName() {
+		return roleName;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
+	public void setProductId(Integer productId) {
+		this.productId = productId;
+	}
+
+	public void setProductName(String productName) {
+		this.productName = productName;
+	}
+
+	public void setPrice(Integer price) {
+		this.price = price;
+	}
+
+	public void setQuantity(Integer quantity) {
+		this.quantity = quantity;
+	}
+
+	public void setAuction(boolean auction) {
+		this.auction = auction;
+	}
+
+	public void setCreateTime(Timestamp createTime) {
+		this.createTime = createTime;
+	}
+
 	public void setUpdateTime(Timestamp updateTime) {
 		this.updateTime = updateTime;
+	}
+
+	public void setRoleName(String roleName) {
+		this.roleName = roleName;
 	}
 }
