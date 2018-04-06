@@ -37,8 +37,6 @@ public class Products implements Serializable {
 	private Timestamp createTime;
 	
 	private Timestamp updateTime;
-	
-	private String roleName;
 
 	public Integer getId() {
 		return id;
@@ -72,10 +70,6 @@ public class Products implements Serializable {
 		return updateTime;
 	}
 
-	public String getRoleName() {
-		return roleName;
-	}
-
 	public void setId(Integer id) {
 		this.id = id;
 	}
@@ -106,9 +100,5 @@ public class Products implements Serializable {
 
 	public void setUpdateTime(Timestamp updateTime) {
 		this.updateTime = updateTime;
-	}
-
-	public void setRoleName(String roleName) {
-		this.roleName = roleName;
 	}
 }

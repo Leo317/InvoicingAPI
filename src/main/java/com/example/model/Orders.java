@@ -28,8 +28,6 @@ public class Orders implements Serializable {
 	
 	@Column(name="create_time")
 	private Timestamp createTime;
-	
-	private String roleName;
 
 	public Integer getId() {
 		return id;
@@ -51,10 +49,6 @@ public class Orders implements Serializable {
 		return createTime;
 	}
 
-	public String getRoleName() {
-		return roleName;
-	}
-
 	public void setId(Integer id) {
 		this.id = id;
 	}
@@ -73,9 +67,5 @@ public class Orders implements Serializable {
 
 	public void setCreateTime(Timestamp createTime) {
 		this.createTime = createTime;
-	}
-
-	public void setRoleName(String roleName) {
-		this.roleName = roleName;
 	}
 }
