@@ -12,25 +12,26 @@ import org.springframework.security.core.Authentication;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 
-class TokenAuthenticationService {
+public class TokenAuthenticationService {
 
 	static final long EXPIRATIONTIME = 864_000_000; // 10 days
 	static final String SECRET = "ThisIsASecret";
-	static final String TOKEN_PREFIX = "Bearer";
 	static final String HEADER_STRING = "Authorization";
+	static String tokenPrefix = "Wistron";
 
-	static void addAuthentication(HttpServletResponse res, String username) {
+	public static void addAuthentication(HttpServletResponse res, String username) {
 		String jwtPrefix = Jwts.builder().setSubject(username)
 				.setExpiration(new Date(System.currentTimeMillis() + EXPIRATIONTIME))
 				.signWith(SignatureAlgorithm.HS512, SECRET).compact();
-		res.addHeader(HEADER_STRING, TOKEN_PREFIX + " " + jwtPrefix);
+		tokenPrefix = tokenPrefix + " " + username;
+		res.addHeader(HEADER_STRING, tokenPrefix + " " + jwtPrefix);
 	}
 
-	static Authentication getAuthentication(HttpServletRequest request) {
+	public static Authentication getAuthentication(HttpServletRequest request) {
 		String token = request.getHeader(HEADER_STRING);
 		if (token != null) {
 			// parse the token.
-			String user = Jwts.parser().setSigningKey(SECRET).parseClaimsJws(token.replace(TOKEN_PREFIX, "")).getBody()
+			String user = Jwts.parser().setSigningKey(SECRET).parseClaimsJws(token.replace(tokenPrefix, "")).getBody()
 					.getSubject();
 
 			return user != null ? new UsernamePasswordAuthenticationToken(user, null, Collections.emptyList()) : null;
