@@ -15,11 +15,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.jwthandler.TokenAuthenticationService;
 import com.example.model.Products;
 import com.example.page.AjaxResponse;
 import com.example.page.Response;
 import com.example.page.Status;
+import com.example.security.service.TokenAuthenticationService;
 import com.example.service.ClientService;
 import com.example.view.ProductsDTO;
 

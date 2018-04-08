@@ -12,7 +12,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.GenericFilterBean;
 
-import com.example.jwthandler.TokenAuthenticationService;
+import com.example.security.service.TokenAuthenticationService;
 
 public class JWTAuthenticationFilter extends GenericFilterBean {
 	@Override

@@ -1,4 +1,4 @@
-package com.example.jwthandler;
+package com.example.security.service;
 
 import java.util.Collections;
 import java.util.Date;

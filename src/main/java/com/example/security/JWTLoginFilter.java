@@ -1,7 +1,7 @@
 package com.example.security;
 
-import com.example.jwthandler.TokenAuthenticationService;
 import com.example.security.model.AccountCredentials;
+import com.example.security.service.TokenAuthenticationService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;

@@ -15,11 +15,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.jwthandler.TokenAuthenticationService;
 import com.example.model.Products;
 import com.example.page.AjaxResponse;
 import com.example.page.Response;
 import com.example.page.Status;
+import com.example.security.service.TokenAuthenticationService;
 import com.example.service.ProductFinder;
 import com.example.service.PurchaseHelper;
 
