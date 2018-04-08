@@ -27,6 +27,7 @@ public class TokenAuthenticationService {
 				.setExpiration(new Date(System.currentTimeMillis() + EXPIRATIONTIME))
 				.signWith(SignatureAlgorithm.HS512, SECRET).compact();
 
+		userNameWithToken = "";
 		StringBuilder stringBuilder = new StringBuilder(userNameWithToken);
 		if(username.compareTo("client") == 0) {
 			userNameWithToken = stringBuilder
