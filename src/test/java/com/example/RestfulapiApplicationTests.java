@@ -8,6 +8,11 @@ import org.springframework.test.context.junit4.SpringRunner;
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class RestfulapiApplicationTests {
+    @Test    
+    public void testMain() {
+      RestfulapiApplication.main(new String[] {"default"});        
+    }
+
 
 	@Test
 	public void contextLoads() {

@@ -20,9 +20,12 @@
      </encoder>
    </appender>
    
-   <logger name="com.example" level="error"
-		additivity="false">
-		<appender-ref ref="FILEDEBUG" />
+<!--    <logger name="com.example" level="error" -->
+<!-- 		additivity="false"> -->
+<!-- 		<appender-ref ref="FILEDEBUG" /> -->
+<!--    </logger> -->
+   <logger name="com.example" level="info">
+		<appender-ref ref="STDOUT" />
    </logger>
    
    <logger name="com.example.controller" level="error"
@@ -35,7 +38,7 @@
 		<appender-ref ref="FILEDEBUG" />
    </logger>   
    
-   <root>
-     <appender-ref ref="STDOUT" />
-   </root>
+<!--    <root> -->
+<!--      <appender-ref ref="STDOUT" /> -->
+<!--    </root> -->
 </configuration>
