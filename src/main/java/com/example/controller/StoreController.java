@@ -3,6 +3,8 @@ package com.example.controller;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -13,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.jwthandler.TokenAuthenticationService;
 import com.example.model.Products;
 import com.example.page.AjaxResponse;
 import com.example.page.Response;
@@ -72,5 +75,11 @@ public class StoreController {
         return new AjaxResponse(Status.SUCCESS, "", productFinder.findByCond(keyword, auction));
       }
     }
+  }
+  
+  @RequestMapping(value = "/getToken", method = RequestMethod.GET)
+  public String getToken(HttpServletRequest request) {
+	  String[] parts = request.getHeader(TokenAuthenticationService.HEADER_STRING).split(" ");
+	  return parts[1];
   }
 }

@@ -1,5 +1,7 @@
 package com.example.controller;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.apache.commons.lang3.math.NumberUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -8,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.jwthandler.TokenAuthenticationService;
 import com.example.page.AjaxResponse;
 import com.example.page.Response;
 import com.example.page.Status;
@@ -31,6 +34,12 @@ public class ShareController {
 			else
 				return new AjaxResponse(Status.SUCCESS, "", shareServ.findOne(Integer.parseInt(id)));
 		}
+	}
+	
+	@RequestMapping(value = "/getToken", method = RequestMethod.GET)
+	public String getToken(HttpServletRequest request) {
+		String[] parts = request.getHeader(TokenAuthenticationService.HEADER_STRING).split(" ");
+		return parts[1];
 	}
 }
 

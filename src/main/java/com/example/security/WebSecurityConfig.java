@@ -11,13 +11,13 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @Configuration
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
-	private static final String ROLESTORE = "ROLE_STORE";  
-	private static final String ROLECUSTOMER = "ROLE_CUSTOMER";  
+	private static final String ROLESTORE = "STORE";  
+	private static final String ROLECUSTOMER = "CUSTOMER";  
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-		http.csrf().disable().authorizeRequests().antMatchers("/store").hasAnyRole(ROLESTORE)
-												 .antMatchers("/client").hasAnyRole(ROLECUSTOMER)
-												 .antMatchers("/share").hasAnyRole(ROLESTORE)
+		http.csrf().disable().authorizeRequests().antMatchers("/store").access("hasRole('ROLE_STORE')")
+												 .antMatchers("/client").access("hasRole('ROLE_CUSTOMER')")
+												 .antMatchers("/share").access("hasRole('ROLE_STORE')")
 				                                 .antMatchers(HttpMethod.POST, "/login").permitAll()
 				                                 .anyRequest().authenticated().and()
 				// We filter the api/login requests
@@ -29,9 +29,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Override
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-		auth.inMemoryAuthentication().withUser("client").password("client").authorities(ROLECUSTOMER)
-		                       .and().withUser("store").password("store").authorities(ROLESTORE)
-		                       .and().withUser("share").password("share").authorities(ROLESTORE);
+		auth.inMemoryAuthentication().withUser("client").password("client").roles(ROLECUSTOMER)
+		                       .and().withUser("store").password("store").roles(ROLESTORE)
+		                       .and().withUser("share").password("share").roles(ROLESTORE);
 
 	}
 }

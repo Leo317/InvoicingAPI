@@ -3,6 +3,8 @@ package com.example.controller;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.jwthandler.TokenAuthenticationService;
 import com.example.model.Products;
 import com.example.page.AjaxResponse;
 import com.example.page.Response;
@@ -77,4 +80,9 @@ public class ClientController {
 		return new AjaxResponse(Status.ERROR, "paramter is null", null);
 	}
 	
+	@RequestMapping(value = "/getToken", method = RequestMethod.GET)
+	public String getToken(HttpServletRequest request) {
+		String[] parts = request.getHeader(TokenAuthenticationService.HEADER_STRING).split(" ");
+		return parts[1];
+	}
 }
