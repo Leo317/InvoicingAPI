@@ -9,6 +9,8 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 
+import com.example.security.model.RoleNames;
+
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 
@@ -25,7 +27,30 @@ public class TokenAuthenticationService {
 				.setExpiration(new Date(System.currentTimeMillis() + EXPIRATIONTIME))
 				.signWith(SignatureAlgorithm.HS512, SECRET).compact();
 
-		userNameWithToken = TOKEN_PREFIX + " " + username;
+		StringBuilder stringBuilder = new StringBuilder(userNameWithToken);
+		if(username.compareTo("client") == 0) {
+			userNameWithToken = stringBuilder
+			.append(TOKEN_PREFIX)
+			.append(" ")
+			.append(RoleNames.CUSTOMER)
+			.append(" ")
+			.append(username).toString();
+		} else if(username.compareTo("store") == 0) {
+			userNameWithToken = stringBuilder
+			.append(TOKEN_PREFIX)
+			.append(" ")
+			.append(RoleNames.STORE)
+			.append(" ")
+			.append(username).toString();			
+		} else if(username.compareTo("share") == 0) {
+			userNameWithToken = stringBuilder
+			.append(TOKEN_PREFIX)
+			.append(" ")
+			.append(RoleNames.STORE)
+			.append(" ")
+			.append(username).toString();			
+		}
+
 		res.addHeader(HEADER_STRING, userNameWithToken + " " + jwtPrefix);
 	}
 
