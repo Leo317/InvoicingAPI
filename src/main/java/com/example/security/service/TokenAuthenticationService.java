@@ -1,65 +1,69 @@
 package com.example.security.service;
 
+import java.security.Key;
 import java.util.Collections;
 import java.util.Date;
 
+import javax.crypto.spec.SecretKeySpec;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.xml.bind.DatatypeConverter;
 
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 
-import com.example.security.model.RoleNames;
-
+import io.jsonwebtoken.JwtBuilder;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 
 public class TokenAuthenticationService {
 
 	public static final long EXPIRATIONTIME = 864_000_000; // 10 days
-	public static final String SECRET = "ThisIsASecret";
+	public static final String SECRET = "Xmx128hahaha";
 	public static final String HEADER_STRING = "Authorization";
-	public static final String TOKEN_PREFIX = "Wistron";
-	static String userNameWithToken = "";
+	public static final String ISSUER = "Wistron";
+	public static final String SUBJECT = "InvoicingAPI";
 
 	public static void addAuthentication(HttpServletResponse res, String username) {
-		String jwtPrefix = Jwts.builder().setSubject(username)
-				.setExpiration(new Date(System.currentTimeMillis() + EXPIRATIONTIME))
-				.signWith(SignatureAlgorithm.HS512, SECRET).compact();
+		String jwtToken = createJwt(username, ISSUER, SUBJECT, EXPIRATIONTIME);
 
-		userNameWithToken = "";
-		StringBuilder stringBuilder = new StringBuilder(userNameWithToken);
-		if(username.compareTo("client") == 0) {
-			userNameWithToken = stringBuilder
-			.append(TOKEN_PREFIX)
-			.append(" ")
-			.append(RoleNames.CUSTOMER)
-			.append(" ")
-			.append(username).toString();
-		} else if(username.compareTo("store") == 0) {
-			userNameWithToken = stringBuilder
-			.append(TOKEN_PREFIX)
-			.append(" ")
-			.append(RoleNames.STORE)
-			.append(" ")
-			.append(username).toString();			
-		} else if(username.compareTo("share") == 0) {
-			userNameWithToken = stringBuilder
-			.append(TOKEN_PREFIX)
-			.append(" ")
-			.append(RoleNames.STORE)
-			.append(" ")
-			.append(username).toString();			
+		res.addHeader(HEADER_STRING, jwtToken);
+	}
+	
+	public static String createJwt(String id, String issuer, String subject, long ttlMilliseconds) {
+
+		SignatureAlgorithm signatureAlgorithm = SignatureAlgorithm.HS512;
+		
+		long nowMillis = System.currentTimeMillis();
+		Date now = new Date(ttlMilliseconds);
+		
+		//We will sign our JWT with our API key: SECRET
+		byte[] apiKeySecretBytes = DatatypeConverter.parseBase64Binary(SECRET);
+		Key signingKey = new SecretKeySpec(apiKeySecretBytes, signatureAlgorithm.getJcaName());
+		
+		//Let's set the JWT Claims
+		JwtBuilder builder = 
+		  Jwts.builder().setId(id)
+		                .setIssuedAt(now)
+		                .setSubject(subject)
+				        .setIssuer(issuer)
+				        .signWith(signatureAlgorithm, signingKey);
+		//If it has been specified, let's add the expiration
+		if(ttlMilliseconds >= 0) {
+		    long expMillis = nowMillis + ttlMilliseconds;
+		    Date exp = new Date(expMillis);
+		    builder.setExpiration(exp);
 		}
-
-		res.addHeader(HEADER_STRING, userNameWithToken + " " + jwtPrefix);
+		
+		//Builds the JWT and serializes it to a compact, URL-safe string
+		return builder.compact();
 	}
 
 	public static Authentication getAuthentication(HttpServletRequest request) {
 		String token = request.getHeader(HEADER_STRING);
 		if (token != null) {
 			// parse the token.
-			String user = Jwts.parser().setSigningKey(SECRET).parseClaimsJws(token.replace(userNameWithToken, "")).getBody()
+			String user = Jwts.parser().setSigningKey(SECRET).parseClaimsJws(token).getBody()
 					.getSubject();
 
 			return user != null ? new UsernamePasswordAuthenticationToken(user, null, Collections.emptyList()) : null;
