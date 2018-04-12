@@ -1,11 +1,12 @@
 package com.example.security.service;
 
+import java.io.UnsupportedEncodingException;
 import java.util.Date;
 
 import org.apache.tomcat.util.codec.binary.Base64;
 
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import com.auth0.jwt.JWT;
+import com.auth0.jwt.algorithms.Algorithm;
 
 public class Test {
 	
@@ -22,11 +23,25 @@ public class Test {
 		System.out.println(decodeString);
 	}
 	
-	public static String genAuthenticationJWT(String token) {
+	public static String genAuthenticationJWT(String userId) {
 		Date now = new Date();
-		String jwt = Jwts.builder().setId(token).setSubject(token).setIssuedAt(now)
-				.signWith(SignatureAlgorithm.HS256, SECRET).compact();
-		return jwt;
+//		String jwt = Jwts.builder().setId(token).setSubject(token).setIssuedAt(now)
+//				.signWith(SignatureAlgorithm.HS256, SECRET).compact();
+		Algorithm algorithm;
+		try {
+			algorithm = Algorithm.HMAC256(SECRET);
+			String jwt = JWT.create()
+			        .withClaim("userid", userId.toString())
+			        .withClaim("createdAt", now)
+			        .sign(algorithm);
+			return jwt;
+		} catch (IllegalArgumentException e) {
+			e.printStackTrace();
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		}
+
+		return null;
 	}
 	
     public static String getToken(String token) {

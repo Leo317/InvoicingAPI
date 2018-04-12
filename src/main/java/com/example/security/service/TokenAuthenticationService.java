@@ -1,5 +1,6 @@
 package com.example.security.service;
 
+import java.io.UnsupportedEncodingException;
 import java.util.Collections;
 
 import javax.servlet.http.HttpServletRequest;
@@ -8,10 +9,13 @@ import org.apache.tomcat.util.codec.binary.Base64;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 
+import com.auth0.jwt.JWT;
+import com.auth0.jwt.JWTVerifier;
+import com.auth0.jwt.algorithms.Algorithm;
+import com.auth0.jwt.exceptions.JWTVerificationException;
+import com.auth0.jwt.interfaces.DecodedJWT;
 import com.example.view.JwtBodyDTO;
 import com.google.gson.Gson;
-
-import io.jsonwebtoken.Jwts;
 
 public class TokenAuthenticationService {
 
@@ -60,14 +64,35 @@ public class TokenAuthenticationService {
 		String token = request.getHeader(HEADER_STRING);
 		if (token != null) {
 			// parse the token.
-			String user = Jwts.parser().setSigningKey(SECRET).parseClaimsJws(token).getBody()
-					.getSubject();
+//			String user = Jwts.parser().setSigningKey(SECRET).parseClaimsJws(token).getBody()
+//					.getSubject();
 			//String user = getToken(token).getSub();
+			String userId = getUserIdFromToken(token);
+			if((userId != null) && (userId.isEmpty())) {
+				userId = null;
+			}
 
-			return user != null ? new UsernamePasswordAuthenticationToken(user, null, Collections.emptyList()) : null;
+			return userId != null ? new UsernamePasswordAuthenticationToken(userId, null, Collections.emptyList()) : null;
 		}
 		return null;
 	}
+	
+    public static String getUserIdFromToken(String token) {
+        try {
+            Algorithm algorithm = Algorithm.HMAC256(SECRET);
+            JWTVerifier verifier = JWT.require(algorithm).build();
+            DecodedJWT jwt = verifier.verify(token);
+            return jwt.getClaim("userid").asString();
+        } catch (UnsupportedEncodingException exception) {
+            exception.printStackTrace();
+            //log WRONG Encoding message
+            return null;
+        } catch (JWTVerificationException exception) {
+            exception.printStackTrace();
+            //log Token Verification Failed
+            return null;
+        }
+    }
 	
     public static JwtBodyDTO getToken(String token) {
         String jwtToken = token;
