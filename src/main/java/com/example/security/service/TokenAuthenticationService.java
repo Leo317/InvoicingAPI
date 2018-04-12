@@ -5,7 +5,6 @@ import java.util.Collections;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.apache.tomcat.util.codec.binary.Base64;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 
@@ -14,8 +13,6 @@ import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.interfaces.DecodedJWT;
-import com.example.view.JwtBodyDTO;
-import com.google.gson.Gson;
 
 public class TokenAuthenticationService {
 
@@ -54,19 +51,6 @@ public class TokenAuthenticationService {
             //log Token Verification Failed
             return null;
         }
-    }
-	
-    public static JwtBodyDTO getToken(String token) {
-        String jwtToken = token;
-        // Decode
-        String[] split_string = jwtToken.split("\\.");
-        String base64EncodedBody = split_string[1];
-        // JWT Header
-        Base64 base64Url = new Base64(true);
-        // JWT Body
-        String body = new String(base64Url.decode(base64EncodedBody));
-		final Gson gson = new Gson();
-        return gson.fromJson(body, JwtBodyDTO.class);
     }
 
 	TokenAuthenticationService() {
