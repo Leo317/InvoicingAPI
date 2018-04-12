@@ -22,7 +22,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		.hasRole(RoleNames.STORE.toString())
 		.antMatchers("/client/**")
 		.hasRole(RoleNames.CUSTOMER.toString())
-	    .antMatchers("/share")
+	    .antMatchers("/share/**")
 		.hasRole(RoleNames.STORE.toString())
 		// Any other request must be authenticated
 		.anyRequest().authenticated().and()

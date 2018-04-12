@@ -1,4 +1,4 @@
-package com.example.security.service;
+package com.example;
 
 import java.io.UnsupportedEncodingException;
 import java.util.Date;
@@ -9,7 +9,7 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.example.security.model.RoleNames;
 
-public class Test {
+public class ClientJwtTokenGenerator {
 	
 	public static final long EXPIRATIONTIME = 864_000_000; // 10 days
 	public static final String SECRET = "Xmx128hahaha";
