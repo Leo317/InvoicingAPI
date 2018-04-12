@@ -3,9 +3,6 @@ package com.example.controller;
 import java.util.Arrays;
 import java.util.List;
 
-import javax.servlet.http.HttpServletRequest;
-
-import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -19,94 +16,59 @@ import com.example.model.Products;
 import com.example.page.AjaxResponse;
 import com.example.page.Response;
 import com.example.page.Status;
-import com.example.security.model.RoleNames;
-import com.example.security.service.TokenAuthenticationService;
 import com.example.service.ProductFinder;
 import com.example.service.PurchaseHelper;
 
 @RestController
 @RequestMapping("/store")
 public class StoreController {
-  public static final String ACCESS_DENIED = "Access Denied.";
-  
   @Autowired
   PurchaseHelper purchaseHelper;
   
   @RequestMapping(value = "/purchase", method = RequestMethod.POST, produces = {"application/json"})
-  public Response purchase(@RequestBody Products[] products, HttpServletRequest request) {
-	String[] token = request.getHeader(TokenAuthenticationService.HEADER_STRING).split(" ");
-		if (token[1].compareTo(RoleNames.STORE.toString()) == 0) {
+  public Response purchase(@RequestBody Products[] products) {
+	List<Products> list = Arrays.asList(products);
+    for(Products product : list) {
 
-			List<Products> list = Arrays.asList(products);
-			for (Products product : list) {
+      purchaseHelper.insertProduct(product);
 
-				purchaseHelper.insertProduct(product);
-
-			}
-
-			return new AjaxResponse(Status.SUCCESS, "", null);
-		} else {
-			return new AjaxResponse(Status.ERROR, ACCESS_DENIED, null);
-	    }
+    }    
+    
+	return new AjaxResponse(Status.SUCCESS, "", null);
   }
   
   @RequestMapping(value = "/purchase/{id}", method = RequestMethod.POST, produces = {"application/json"})
-  public Response updatePurchase(@PathVariable("id") int productId, 
-		  					   @RequestBody Products products,
-		  					   HttpServletRequest request) {
-	String[] token = request.getHeader(TokenAuthenticationService.HEADER_STRING).split(" ");
-	if (token[1].compareTo(RoleNames.STORE.toString()) == 0) {
-	  purchaseHelper.updateProduct(products);
-		return new AjaxResponse(Status.SUCCESS, "", null);
-	} else {
-		return new AjaxResponse(Status.ERROR, ACCESS_DENIED, null);	  
-	}
+  public String updatePurchase(@PathVariable("id") int productId, 
+		  					   @RequestBody Products products) {
+
+    purchaseHelper.updateProduct(products);
+    return Status.SUCCESS.toString();	
   }
   
   @Autowired
   ProductFinder productFinder;
   @RequestMapping(value = "/list", method = RequestMethod.GET, produces = {"application/json"})
   public Response list(@RequestParam(value="keyword", defaultValue="") String keyword,
-		  					 @RequestParam(value="auction", defaultValue="") String auctionStr,
-		  					 HttpServletRequest request) {
-    String[] token = request.getHeader(TokenAuthenticationService.HEADER_STRING).split(" ");
-		if (token[1].compareTo(RoleNames.STORE.toString()) == 0) {
-			if (StringUtils.isEmpty(keyword) && StringUtils.isEmpty(auctionStr)) {
-				return new AjaxResponse(Status.SUCCESS, "", productFinder.findAll());
-			} else {
-				if (StringUtils.isEmpty(auctionStr)) {
-					return new AjaxResponse(Status.SUCCESS, "", productFinder.findByKeyword(keyword));
-				} else {
-					if ((auctionStr.compareTo("true") != 0) && (auctionStr.compareTo("false") != 0)) {
-						String[] strArray = { "The auction parameter: ", auctionStr,
-								" is invalid. It should be \"true\" or \"false\"" };
-						return new AjaxResponse(Status.STATUS400, StringUtils.join(strArray), null);
-					}
-					boolean auction = Boolean.parseBoolean(auctionStr);
-					return new AjaxResponse(Status.SUCCESS, "", productFinder.findByCond(keyword, auction));
-				}
-			}
-		} else {
-			return new AjaxResponse(Status.ERROR, ACCESS_DENIED, null);			
-		}
+		  					 @RequestParam(value="auction", defaultValue="") String auctionStr) {
+    if(StringUtils.isEmpty(keyword) && 
+       StringUtils.isEmpty(auctionStr)) {
+      return new AjaxResponse(Status.SUCCESS, "", productFinder.findAll());
+    } else {
+      if(StringUtils.isEmpty(auctionStr)) {    
+        return new AjaxResponse(Status.SUCCESS, "", 
+          productFinder.findByKeyword(keyword));
+      } else {
+    	if((auctionStr.compareTo("true") != 0) &&
+    	   (auctionStr.compareTo("false") != 0)) {
+    		String[] strArray = 
+    		  { "The auction parameter: ", auctionStr, " is invalid. It should be \"true\" or \"false\"" };
+          return new AjaxResponse(Status.STATUS400, 
+        		                  StringUtils.join(strArray), 
+                                  null);   		
+    	}
+        boolean auction = Boolean.parseBoolean(auctionStr);
+        return new AjaxResponse(Status.SUCCESS, "", productFinder.findByCond(keyword, auction));
+      }
+    }
   }
-  
-	@RequestMapping(value = "/decode", method = RequestMethod.GET)
-	public String getToken(HttpServletRequest request) {
-		String[] user = request.getHeader(TokenAuthenticationService.HEADER_STRING).split(" ");
-		String jwtToken = user[3];
-		// Decode
-		String[] split_string = jwtToken.split("\\.");
-		String base64EncodedHeader = split_string[0];
-		String base64EncodedBody = split_string[1];
-		// String base64EncodedSignature = split_string[2];
-		// JWT Header
-		Base64 base64Url = new Base64(true);
-		String header = new String(base64Url.decode(base64EncodedHeader));
-		// JWT Body
-		String body = new String(base64Url.decode(base64EncodedBody));
-		StringBuilder response = new StringBuilder(user[0]);
-		return response.append(",").append(user[1]).append(",").append(user[2]).append(header).append(",").append(body)
-				.toString();
-	}
 }
