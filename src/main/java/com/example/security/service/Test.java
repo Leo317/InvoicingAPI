@@ -7,6 +7,7 @@ import org.apache.tomcat.util.codec.binary.Base64;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
+import com.example.security.model.RoleNames;
 
 public class Test {
 	
@@ -15,9 +16,12 @@ public class Test {
 	public static final String HEADER_STRING = "Authorization";
 	public static final String ISSUER = "Wistron";
 	public static final String SUBJECT = "InvoicingAPI";
+	//Token params
+	public static final String USERID = "123";
+	public static final String ROLEID = RoleNames.STORE.toString();
 
 	public static void main(String[] args) {
-		String token = genAuthenticationJWT("");
+		String token = genAuthenticationJWT(USERID);
 	    System.out.println(token);
 		String decodeString = getToken(token);
 		System.out.println(decodeString);
@@ -25,13 +29,12 @@ public class Test {
 	
 	public static String genAuthenticationJWT(String userId) {
 		Date now = new Date();
-//		String jwt = Jwts.builder().setId(token).setSubject(token).setIssuedAt(now)
-//				.signWith(SignatureAlgorithm.HS256, SECRET).compact();
 		Algorithm algorithm;
 		try {
 			algorithm = Algorithm.HMAC256(SECRET);
 			String jwt = JWT.create()
 			        .withClaim("userid", userId.toString())
+			        .withClaim("roles", ROLEID)
 			        .withClaim("createdAt", now)
 			        .sign(algorithm);
 			return jwt;

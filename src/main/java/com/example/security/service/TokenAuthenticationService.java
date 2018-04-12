@@ -1,12 +1,16 @@
 package com.example.security.service;
 
 import java.io.UnsupportedEncodingException;
-import java.util.Collections;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.User;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
@@ -26,12 +30,11 @@ public class TokenAuthenticationService {
 		String token = request.getHeader(HEADER_STRING);
 		if (token != null) {
 
-			String userId = getUserIdFromToken(token);
-			if((userId != null) && (userId.isEmpty())) {
-				userId = null;
-			}
+			User principal = parseUserFromToken(token);
 
-			return userId != null ? new UsernamePasswordAuthenticationToken(userId, null, Collections.emptyList()) : null;
+			System.out.println(principal.getAuthorities());
+			return principal != null ? 
+			    new UsernamePasswordAuthenticationToken(principal, null, principal.getAuthorities()) : null;
 		}
 		return null;
 	}
@@ -52,6 +55,38 @@ public class TokenAuthenticationService {
             return null;
         }
     }
+    
+    public static String getRolesFromToken(String token) {
+        try {
+            Algorithm algorithm = Algorithm.HMAC256(SECRET);
+            JWTVerifier verifier = JWT.require(algorithm).build();
+            DecodedJWT jwt = verifier.verify(token);
+            return jwt.getClaim("roles").asString();
+        } catch (UnsupportedEncodingException exception) {
+            exception.printStackTrace();
+            //log WRONG Encoding message
+            return null;
+        } catch (JWTVerificationException exception) {
+            exception.printStackTrace();
+            //log Token Verification Failed
+            return null;
+        }
+    }
+    
+	public static User parseUserFromToken(String token) {
+
+		String userId = getUserIdFromToken(token);
+		String roleString = getRolesFromToken(token);
+		List<SimpleGrantedAuthority> roles = new ArrayList<>();
+		if (!StringUtils.isEmpty(roleString)) {
+			String[] roleValues = StringUtils.split(roleString, ",");
+			for (String roleValue : roleValues) {
+				roles.add(new SimpleGrantedAuthority("ROLE_" + roleValue));
+			}
+		}
+		
+		return new User(userId, token, roles);
+	}
 
 	TokenAuthenticationService() {
 	}

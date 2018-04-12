@@ -6,6 +6,8 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 
+import com.example.security.model.RoleNames;
+
 @Configuration
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
@@ -16,12 +18,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		.csrf()
 		.disable()
 		.authorizeRequests()
-		.antMatchers("/store")
-		.authenticated()
-		.antMatchers("/client")
-		.authenticated()
+		.antMatchers("/store/**")
+		.hasRole(RoleNames.STORE.toString())
+		.antMatchers("/client/**")
+		.hasRole(RoleNames.CUSTOMER.toString())
 	    .antMatchers("/share")
-	    .authenticated()
+		.hasRole(RoleNames.STORE.toString())
 		// Any other request must be authenticated
 		.anyRequest().authenticated().and()
 		// Custom filter for authenticating users using tokens
