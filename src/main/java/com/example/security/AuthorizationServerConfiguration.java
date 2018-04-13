@@ -85,7 +85,7 @@ public class AuthorizationServerConfiguration extends AuthorizationServerConfigu
 //        oauthServerSecurity.checkTokenAccess("isAuthenticated()");
     	oauthServerSecurity.allowFormAuthenticationForClients();
 //    	oauthServerSecurity
-//        	.tokenKeyAccess("isAnonymous() || hasRole('ROLE_TRUSTED_CLIENT')") // permitAll() //‘ ‘S‘LÜñTokenKeyEndpoint
+//        	.tokenKeyAccess("isAnonymous() || hasRole('ROLE_TRUSTED_CLIENT')") // permitAll() //TokenKeyEndpoint
 //        	.checkTokenAccess("hasRole('TRUSTED_CLIENT')")
 //        ;
     }
