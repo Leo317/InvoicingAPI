@@ -9,7 +9,7 @@
 # 管理員身分
 可透過
 - http://localhost:8080/oauth/token
-> Postman 請在 body 內選擇 x-www-form-urlencoded 的模式
+> Postman 請在 body 內選擇 x-www-form-urlencoded 的模式 (https://tools.ietf.org/html/rfc6749#section-4.1.3)
 ![管理端body參數](https://i.imgur.com/ubGbgde.jpg)
 - 拿到管理員的 access_token
 - 再執行管理端的商品Service
