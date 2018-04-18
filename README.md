@@ -4,7 +4,17 @@
 - 還沒時間修改，所以請先將ClientController/StoreController內的@PreAuthorize("hasRole('XXX')")註解掉
 - 修改面向為可在測試程式執行時，先要一組Token，然後才開始進行UT測試
 
-執行後
+執行後，先於DB執行以下SQL，建立腳色與權限
+(http://javasampleapproach.com/spring-framework/spring-security/use-spring-security-jdbc-authentication-postgresql-spring-boot)
+
+‵‵‵
+INSERT INTO users(username,password,enabled) VALUES ('admin','admin', true);
+INSERT INTO users(username,password,enabled) VALUES ('client','client', true);
+
+INSERT INTO user_roles (user_role_id, username, role) VALUES (1, 'admin', 'ROLE_ADMIN');
+INSERT INTO user_roles (user_role_id, username, role) VALUES (2, 'client', 'ROLE_USER');
+-- INSERT INTO user_roles (user_role_id, username, role) VALUES (3, 'admin', 'ROLE_USER');
+‵‵`
 
 # 管理員身分
 可透過
